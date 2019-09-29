@@ -492,6 +492,7 @@ img {
   background-color: #f97700;
   color: #fff;
   border-color: #f97700;
+  padding: 20px 89px;
 }
 
 .button_orange:hover {
@@ -746,6 +747,8 @@ img {
   background-repeat: repeat-y;
   position: absolute;
   right: -6px;
+  top: 0;
+  bottom: 0;
   z-index: 9;
 }
 
@@ -869,7 +872,6 @@ img {
   color: #f97700;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.06rem;
 }
 
 .footer__hotline p {
@@ -878,11 +880,21 @@ img {
 
 .footer__tel {
   font-size: 2.75rem;
+  letter-spacing: -0.8px;
+}
+
+.footer__tel p:last-child {
+  letter-spacing: 0.5px;
 }
 
 .footer__hours {
   font-size: 1.6875rem;
   margin: 6px 0 55px;
+  letter-spacing: -0.6px;
+}
+
+.footer__hours p:first-child {
+  letter-spacing: 0.5px;
 }
 
 .footer__bottom {
@@ -917,7 +929,7 @@ img {
   }
 
   .button_orange {
-    padding: 20px 65px;
+    padding: 20px 59px;
   }
 
   .step__number {
@@ -1020,8 +1032,20 @@ img {
     margin-bottom: -2px;
   }
 
+  .footer__tel p:last-child {
+    letter-spacing: 0.3px;
+  }
+
   .footer__tel {
     font-size: 2.3125rem;
+  }
+
+  .footer__hours {
+    letter-spacing: -0.8px;
+  }
+
+  .footer__hours p:first-child {
+    letter-spacing: 0.1px;
   }
 
   .footer__hours {
@@ -1038,6 +1062,10 @@ img {
 @media screen and (max-width: 992px) {
   .container {
     max-width: 720px;
+  }
+
+  .button_orange {
+    margin: 0 auto;
   }
 
   .step__title {
@@ -1084,7 +1112,7 @@ img {
   }
 
   .header__right-side .button {
-    margin-left: 0;
+    margin: 0 auto;
   }
 
   .header__steps {
@@ -1160,6 +1188,7 @@ img {
         -ms-flex-order: -1;
             order: -1;
     margin-bottom: 30px;
+    text-align: center;
   }
 
   .footer__hours {
