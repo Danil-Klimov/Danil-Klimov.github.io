@@ -587,7 +587,7 @@ img {
 }
 
 .header__inner {
-  max-width: 570px;
+  max-width: 575px;
 }
 
 .header__left-side {
@@ -909,7 +909,7 @@ img {
 }
 
 .footer__hours p:first-child {
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 .footer__bottom {
