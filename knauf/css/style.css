@@ -564,6 +564,15 @@ img {
   margin-bottom: 5px;
 }
 
+.step__descr a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.step__descr a:hover {
+  text-decoration: underline;
+}
+
 .step__small {
   font-size: 0.75rem;
   letter-spacing: 0;
@@ -883,8 +892,14 @@ img {
   letter-spacing: -0.8px;
 }
 
-.footer__tel p:last-child {
+.footer__tel a {
+  text-decoration: none;
+  color: inherit;
   letter-spacing: 0.5px;
+}
+
+.footer__tel a:hover {
+  text-decoration: underline;
 }
 
 .footer__hours {
@@ -1032,7 +1047,7 @@ img {
     margin-bottom: -2px;
   }
 
-  .footer__tel p:last-child {
+  .footer__tel a {
     letter-spacing: 0.3px;
   }
 
@@ -1276,8 +1291,11 @@ img {
   }
 
   .content__header img {
-    max-width: 130px;
+    max-width: 150px;
     vertical-align: sub;
+    margin: 0 -5px 0 0;
+    position: relative;
+    top: 7px;
   }
 
   .content__item {
