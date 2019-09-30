@@ -1363,4 +1363,34 @@ img {
     margin-top: 20px;
   }
 }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .content__item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .content__item::after {
+    background-image: url(../img/circle.png);
+    left: 0;
+  }
+
+  .content__points {
+    width: 330px;
+    -webkit-flex-shrink: 0;
+        -ms-flex-negative: 0;
+            flex-shrink: 0;
+  }
+
+  .content__points::after {
+    background-image: url(../img/circle.png);
+  }
+
+  .content__prize {
+    width: 100%;
+  }
+}
 /*# sourceMappingURL=style.css.map */
