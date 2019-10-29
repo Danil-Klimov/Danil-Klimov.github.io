@@ -1,0 +1,4518 @@
+/// Used files (10): 
+/// ./xcore/modules/system/src/Plugins/client/jquery_once/ver212/jquery.once.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/ctools_ajax_extra/ctools_ajax_extra.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/jquery.xpopup.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_storage.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_box_ctrl.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_window_ctrl.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_types.js 
+/// sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_autorun.js 
+/// sites/all/modules/xlogic/xtools/src/Plugins/client/xbacktotop/jquery.xbacktotop.js 
+/// sites/all/modules/xlogic/xtools/src/Plugins/client/xtip/xtip.js 
+
+
+/// BEGIN ./xcore/modules/system/src/Plugins/client/jquery_once/ver212/jquery.once.js ///
+/*!
+ * jQuery Once v2.1.2 - http://github.com/robloach/jquery-once
+ * @license MIT, GPL-2.0
+ *   http://opensource.org/licenses/MIT
+ *   http://opensource.org/licenses/GPL-2.0
+ */
+
+/**
+ * Universal Module Definition
+ *
+ * jQuery Once has a dependency on jQuery, so we wrap the code with a UMD
+ * pattern in order to allow loading jQuery and jQuery Once through a module
+ * definition like CommonJS, AMD, or through a global object.
+ *
+ * @see {@link http://github.com/umdjs/umd}
+ */
+(function (factory) {
+  'use strict';
+
+  if (typeof exports === 'object') {
+    // CommonJS
+    factory(require('jquery'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    /* globals define */
+    define(['jquery'], factory);
+  } else {
+    // Global object
+    /* globals jQuery */
+    factory(jQuery);
+  }
+})(function ($) {
+  'use strict';
+
+  /**
+   * Ensures that the given ID is valid, returning 'once' if one is not given.
+   *
+   * @param {string} [id=once]
+   *   A string representing the ID to check. Defaults to `'once'`.
+   *
+   * @returns The valid ID name.
+   *
+   * @throws Error when an ID is provided, but not a string.
+   * @private
+   */
+  var checkId = function (id) {
+    id = id || 'once';
+    if (typeof id !== 'string') {
+      throw new Error('The jQuery Once id parameter must be a string');
+    }
+    return id;
+  };
+
+  /**
+   * Filter elements that have yet to be processed by the given data ID.
+   *
+   * @param {string} [id=once]
+   *   The data ID used to determine whether the given elements have already
+   *   been processed or not. Defaults to `'once'`.
+   *
+   * @returns jQuery collection of elements that have now run once by
+   *   the given ID.
+   *
+   * @example
+   * ``` javascript
+   * // The following will change the color of each paragraph to red, just once
+   * // for the 'changecolor' key.
+   * $('p').once('changecolor').css('color', 'red');
+   *
+   * // .once() will return a set of elements that yet to have the once ID
+   * // associated with them. You can return to the original collection set by
+   * // using .end().
+   * $('p')
+   *   .once('changecolorblue')
+   *     .css('color', 'blue')
+   *   .end()
+   *   .css('color', 'red');
+   *
+   * // To execute a function on the once set, you can use jQuery's each().
+   * $('div.calendar').once().each(function () {
+   *   // Since there is no once ID provided here, the key will be 'once'.
+   * });
+   * ```
+   *
+   * @see removeOnce
+   * @see findOnce
+   * @this jQuery
+   *
+   * @global
+   * @public
+   */
+  $.fn.once = function (id) {
+    // Build the jQuery Once data name from the provided ID.
+    var name = 'once-' + checkId(id);
+
+    // Find elements that don't have the jQuery Once class applied to them yet.
+    return this.filter(':not(.'+name+')').addClass(name);
+  };
+
+  /**
+   * Removes the once data from elements, based on the given ID.
+   *
+   * @param {string} [id=once]
+   *   A string representing the name of the data ID which should be used when
+   *   filtering the elements. This only filters elements that have already been
+   *   processed by the once function. The ID should be the same ID that was
+   *   originally passed to the once() function. Defaults to `'once'`.
+   *
+   * @returns jQuery collection of elements that were acted upon to remove their
+   *    once data.
+   *
+   * @example
+   * ``` javascript
+   * // Remove once data with the 'changecolor' ID. The result set is the
+   * // elements that had their once data removed.
+   * $('p').removeOnce('changecolor').css('color', '');
+   *
+   * // Any jQuery function can be performed on the result set.
+   * $('div.calendar').removeOnce().each(function () {
+   *   // Remove the calendar behavior.
+   * });
+   * ```
+   *
+   * @see once
+   * @this jQuery
+   *
+   * @global
+   * @public
+   */
+  $.fn.removeOnce = function (id) {
+    var name = 'once-' + checkId(id);
+    // Filter through the elements to find the once'd elements.
+    return this.findOnce(id).removeClass(name);
+  };
+
+  /**
+   * Filters elements that have already been processed once.
+   *
+   * @param {string} [id=once]
+   *   A string representing the name of the data id which should be used when
+   *   filtering the elements. This only filters elements that have already
+   *   been processed by the once function. The id should be the same id that
+   *   was originally passed to the once() function. Defaults to 'once'.
+   *
+   * @returns jQuery collection of elements that have been run once.
+   *
+   * @example
+   * ``` javascript
+   * // Find all elements that have been changecolor'ed once.
+   * $('p').findOnce('changecolor').each(function () {
+   *   // This function is called for all elements that has already once'd.
+   * });
+   *
+   * // Find all elements that have been acted on with the default 'once' key.
+   * $('p').findOnce().each(function () {
+   *   // This function is called for all elements that have been acted on with
+   *   // a 'once' action.
+   * });
+   * ```
+   *
+   * @see once
+   * @this jQuery
+   *
+   * @global
+   * @public
+   */
+  $.fn.findOnce = function (id) {
+    // Filter the elements by which do have the data.
+    var name = 'once-' + checkId(id);
+
+    return this.filter('.'+name);
+  };
+});
+;
+/// END ./xcore/modules/system/src/Plugins/client/jquery_once/ver212/jquery.once.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/ctools_ajax_extra/ctools_ajax_extra.js ///
+/*! XOverlay.js - v2.2.0 - 2015-05-11
+*
+* Copyright (c) 2015 XLogicSoft.ru; */
+
+
+// Make sure our objects are defined.
+XSyst.modules.xoverlay = {};
+
+// Short aliases
+var XO=XSyst.modules.xoverlay;
+
+
+/**
+ * Переопределим ctools команду reload так, чтобы обеспечить корректную обработку 
+ * хэша #xpopup. Без этой спец. обработки после вызова команды reload происходит повторное открытие xpopup-окна.
+ *
+ * Суть следующая:
+ *   Если в тек. хэше обнаружено #xpopup=, значит необходимо сначала вырезать хэш из location, 
+ *   после чего выполнить reload().
+ * 
+ */
+XSyst.registerCommand('reload', function(data) {
+
+  if(!$.xpopup.isOpen() || !location.hash){
+    location.reload();
+    return;      
+  }
+
+  var url = location.toString();
+  var i = url.indexOf('#xpopup=');
+  if(i == -1){
+    location.reload();
+    return; 
+  }
+
+  var url = url.substr(0,i);
+  location = url;
+});
+
+/**
+ * Bind links that will open modals to the appropriate function.
+ */
+$.ctools_ajax_extra=function(context,options) {
+
+  // Bind links
+  $('a.ctools-use-modal', context)
+  .once('ctools-use-ajax')
+  .on('click', XO.clickAjaxLink);
+
+  // Bind buttons
+  $('input.ctools-use-modal, button.ctools-use-modal', context)
+  .once('ctools-use-ajax')
+  .on('click', XO.clickAjaxButton);
+
+  //Добавим обработчики к submit-кнопкам внутри форм, загруженных ajax-ом
+  $('.b-xpopup__content form:not(.skip-use-ajax), form.ctools-use-ajax', context)
+  .add(context).filter('form') //context может сам быть формой, поэтому его также проверим
+  .find(':submit')
+  .once('ctools-use-ajax')
+  .on('click', XO.clickAjaxButton);
+};  
+
+
+$(document).on('xpopup_window_ajax_request_before',function(e,boxCtrl,req){
+  req.url= XSyst.ajax.urlReplaceNojs(req.url);
+
+  req.type = "POST";
+  req.data = $.extend(true,{},{ 'js': 1, 'ctools_ajax': 1,'popup':1},req.data);
+  req.global = true;
+  req.error = function(xhr) {
+    XSyst.ajax.handleErrors(xhr, req.url);
+  };
+  req.complete = function() {
+    // $('.ctools-ajaxing').removeClass('ctools-ajaxing');
+  };
+  //Мы не знаем в каком формате придёт ответ. Он может прийти в формате text.
+  // req.dataType = 'json';
+});
+
+$(document).on('xpopup_window_ajax_success',function(e,boxCtrl,data){
+  var commands=data.response;
+  // XSyst.ajax.respond(commands);
+
+  var newData=null;
+  $.each(commands,function (key,command){
+    if(command.command=='xoverlay_display'){
+      //Сохраним данные, переданные в команде для передачи в xpopup
+      //Выполнять эту команду не будем
+      newData=command;
+      return;
+    }
+    else{
+      //Выполним ctools-команду
+      XSyst.execCommand(command);
+    }
+  })
+
+  if(newData){
+    data.ajaxResponseOptions=newData;
+    data.ajaxResponseOptions.html=data.ajaxResponseOptions.html||data.ajaxResponseOptions.output || data.ajaxResponseOptions.content;
+    if(!data.ajaxResponseOptions.headerCaption && data.ajaxResponseOptions.title){
+      data.ajaxResponseOptions.headerCaption=data.ajaxResponseOptions.title;
+    }
+    delete data.ajaxResponseOptions.content;
+    delete data.ajaxResponseOptions.output;
+    delete data.ajaxResponseOptions.title;
+  }
+});
+
+$(document).on('xpopup_window_ready',function(e,boxCtrl){
+  XSyst.attachBehaviors(boxCtrl.getStorage().getElements().$box);
+  $('.ctools-ajaxing').removeClass('ctools-ajaxing');
+});
+
+/**
+ * Open popup window containing content from command
+ *
+ * @param  {[type]} command [description]
+ * @return {[type]}         [description]
+ */
+function _openPopup(command){
+  var options=command;
+  options.type='inline';
+  options.html = "<div>"+options.html+"</div>";
+  // delete options.html;
+  if(!options.headerCaption && options.title){
+    options.headerCaption=options.title;
+  }
+
+  $.xpopup.open(options);
+}
+
+
+/**
+ * Display the modal
+ *
+ * @todo -- document the settings.
+ */
+XO.show = function( el) {
+  var opts = {};
+
+  $.xpopup.open({},el);
+};
+
+/**
+ * Hide the modal
+ */
+XO.dismiss = function() {
+  $.xpopup.close();
+};
+
+
+
+/**
+ * Generic replacement click handler to open the modal with the destination
+ * specified by the href of the link.
+ */
+XO.clickAjaxLink = function (event) {
+
+  try{
+    // show the empty dialog right away.
+    $(this).addClass('ctools-ajaxing');
+    XO.show(this)
+  } 
+  catch (err) {
+    var url = $(this).attr('href');
+    var errMsg = XSyst.t("An error occurred while attempting to process") + ' ' + url;
+    alert(errMsg);
+    console.error(errMsg,err);
+    $('.ctools-ajaxing').removeClass('ctools-ajaxing');
+    return false;
+  }
+
+  return false;
+};
+
+
+/**
+ * Generic replacement click handler to open the modal with the destination
+ * specified by the href of the link.
+ */
+XO.clickAjaxButton = function() {
+  if ($(this).hasClass('ctools-ajaxing')) {
+    return false;
+  }
+
+  if($.xpopup.isOpen()){
+    $.xpopup.getBoxCtrl().setWindowStatus('loading');
+  }    
+  XSyst.ajax.clickAJAXButton.apply(this);
+  if (!$(this).hasClass('ctools-ajaxing')) {
+    XO.dismiss();
+  }
+
+  return false;
+};
+
+
+// The following are implementations of AJAX responder commands.
+/**
+ * TODO: перенести в xtools
+ *
+ * Простейшая команда, предназначена для передачи данных для дальнейшей произвольной обработки этих данных
+ * клиентскими скриптами. Может использоваться в тех случаях, когда требуется просто передать данные от сервера
+ * клиенту.
+ */
+XSyst.registerCommand('return_data', function(command) {
+
+});
+
+XSyst.registerCommand('inline', function(data) {
+  $('head').append(data.data);
+});
+
+XSyst.registerCommand('addClass', function(data) {
+  $(data.selector).addClass(data.data);
+});
+
+XSyst.registerCommand('removeClass', function(data) {
+  $(data.selector).removeClass(data.data);
+});
+
+XSyst.registerCommand('update_tab_active_content', function (data) {
+  var tab = $('.b-xtabs__tabs-tab._active', data.selector);
+  var urlActiveTab = tab.attr('rel');
+  var paneActiveTab = tab.attr('href') + '-pane';
+  
+  if ($(paneActiveTab).size() > 0 && typeof(urlActiveTab) != 'undefined'){
+    if (tab.hasClass('ctools-ajax-tab') == true) {
+      XSyst.ajax.commandsAJAXRequest({url: urlActiveTab, onComplete: function(){
+        tab.removeClass('ctools-ajaxing-tab');
+      }});
+    } else {
+      $(paneActiveTab).html('<div class="b-xtabs__content-item-loading"> </div>').load(urlActiveTab, function(){
+        XSyst.attachBehaviors(paneActiveTab);
+      });
+    }
+  }
+});
+
+XSyst.registerCommand('formReset', function(data) {
+  $(data.selector)[0].reset();
+});
+
+XSyst.registerCommand('setNotice', function(data) {
+  $.noticeAdd({
+    title: data.title,
+    text: data.text
+  });
+});
+
+
+/**
+ * AJAX responder command to place HTML within the modal.
+ *
+ * Перекрываем одноименную команду, определённую в ctools ajax-responder.js.
+ * Это необходимо для поддержки нормальной обработки команды html при открытом окне $.xpopup.
+ *
+ * Важно, чтобы данный файл подключался после  ctools ajax-responder.js.
+ */
+XSyst.registerCommand('html', function(command) {
+  if($.xpopup.isOpen() && !command.selector){
+    //Если окно $.xpopup сейчас открыто, то считаем, что содержимое из команды html
+    //необходимо отобразить именно в нём.
+    if(command.data)
+      command.html=command.data;
+
+    _openPopup(command);
+  }
+  else{
+    $(command.selector).html(command.data);
+    XSyst.attachBehaviors($(command.selector));
+  }
+});
+
+
+/**
+ * AJAX responder command to place HTML within the modal.
+ */
+XSyst.commands.xpopup_display = XSyst.commands.xoverlay_display = function(command) {
+  //добавлено для большей совместимости с форматом аналогичной комманды,
+  //возвращаемой ctools_modal_command_display (там используется свойство output)
+  if(command.output) {
+    command.html=command.output;
+  }
+
+  _openPopup(command);
+}
+
+/**
+ * AJAX responder command to dismiss the modal.
+ */
+XSyst.commands.xpopup_dismiss = XSyst.commands.xoverlay_dismiss = function(command) {
+  XO.dismiss();
+  // $('link.ctools-temporary-css').remove();
+}
+
+/**
+ * Display loading
+ */
+XSyst.commands.xpopup_loading = XSyst.commands.xoverlay_loading = function(command) {
+  XSyst.commands.xoverlay_display({
+    output: XSyst.widget(XO.currentSettings.throbberTheme),
+    title: XO.currentSettings.loadingText
+  });
+}
+
+/**
+ * Hide loading
+ */
+XSyst.commands.xpopup_ready = function() {
+  var command = {'status' : 'ready'};
+  XSyst.commands.xpopup_window_status(command);
+}
+
+/**
+ * Set xpopup window status 
+ */
+XSyst.commands.xpopup_window_status = function(command) {
+  if(!command.status)
+    command.status= 'ready';
+  $.xpopup.getBoxCtrl().setWindowStatus(command.status);
+}
+
+/**
+ * Обновляет форму 
+ */
+XSyst.commands.update_form = function(data) {
+  var selector = '.b-form_form-id_'+data.form_id;
+  $(selector).replaceWith(data.html);
+  $.xpopup.getBoxCtrl().setWindowStatus('ready');
+
+  XSyst.attachBehaviors($(selector));
+};
+
+
+XSyst.commands.xpopup_box_add_commands = function(data) {
+
+  $.xpopup.getBoxCtrl().addEventCommands(data.eventName,data.commands);
+}
+
+
+;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/ctools_ajax_extra/ctools_ajax_extra.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/jquery.xpopup.js ///
+/*! 
+ * XPopup v2.3.2 2016-10-21
+ * Copyright (c) 2014 Denis Anokhin, Maxim Anokhin, [XLogic](http://www.xlogicsoft.ru)
+ *
+ * XPopup website: http://www.xlogicsoft.ru/plugins/xpopup
+ * License text: MIT (http://opensource.org/licenses/MIT)
+ */
+;(function($) {
+
+  /**
+   * jQuery plugin
+   *
+   * Открывает всплывающее окно jquery.xpopup для отображения изображений
+   * 
+   * @param  object options [description]
+   * @return {[type]}         [description]
+   */
+  $.fn.xbox = function() {
+    return $(this).xpopup();
+    // return $(this).xpopup({type:'image'});
+  };
+
+  /**
+   * jQuery plugin
+   *
+   * Открывает всплывающее окно jquery.xpopup
+   * 
+   * @param  object options [description]
+   * @return {[type]}         [description]
+   */
+  $.fn.xpopup = function(options) {
+
+    return $(this).filter(':not(.b-xpopup-action_processed)').addClass('b-xpopup-action_processed').each(function(){
+
+      var triggerEl=this;
+
+      var actionClass=$.xpopup.getUtils().filterClassesByPrefixes(triggerEl,'b-xpopup-action_type_')[0];
+
+      return $(this).click(function(){
+        var action = null;
+        switch(actionClass){
+          // case 'b-xpopup-action_type_zoom':
+          //   action='zoom';
+          //   break;
+          case 'b-xpopup-action_type_back':
+            action='back';
+            break;
+          case 'b-xpopup-action_type_close':
+            action='close';
+            break;
+          case 'b-xpopup-action_type_open':
+          default:
+            action='open';
+            break;
+        }
+        $.xpopup[action](options,triggerEl);
+        return false;
+      });
+    });
+  };
+
+
+  ////////////////////////////////////
+  ////////////////////////////////////
+  ////////////////////////////////////
+
+
+  /**
+   * Public static functions
+   */
+ $.xpopup = {
+
+    /// PLugin system ///
+    registerPlugin: function(name, plugin) {
+      
+      var nameParts = name.split('.');
+      if(nameParts.length==2){
+        plugin.pluginType = nameParts[0];
+      }
+      else{
+        plugin.pluginType='custom';
+      }
+      plugin.pluginName=name;
+
+      //TODO: Refactor it!
+      if(!plugin.getBoxCtrl){
+        plugin.getBoxCtrl = function(){
+          return $.xpopup.getBoxCtrl();
+        };
+      }
+      if(!plugin.getWindowCtrl){
+        plugin.getWindowCtrl = function(){
+          return $.xpopup.getWindowCtrl();
+        };
+      }
+      plugin.getStorage = function(){
+        return $.xpopup.getStorage();
+      };
+
+      //TODO: remove it
+      plugin.getWindowData = function(checkNewData){
+        var 
+          st = this.getStorage(),
+          data = null;
+
+        if(checkNewData){
+          data=this.newWindowData;
+          data=data || st.getBoxWindow().opts;
+        }
+        else{
+          data=st.getBoxWindow().opts;
+        }
+        return data;
+      };
+
+      this.plugins=this.plugins||{};
+      this.plugins[name]=plugin;
+      this.pluginInvoke(name,'pluginInit');
+    },
+
+    pluginGet: function(name){
+      return this.plugins[name];
+    },
+
+    pluginInvoke: function(pluginName,funcName){
+      var p = this.pluginGet(pluginName);
+      var args=Array.prototype.slice.call(arguments, 2);
+      
+      if(p[funcName]){
+        return p[funcName].apply(p,args);
+      }
+      return null;
+    },
+    pluginInvokeAll: function(hookName,newWindowData){
+      var 
+        st = this.getStorage(),
+        curWindowData=newWindowData || (st.getBoxWindow() && st.getBoxWindow().opts);
+      if(!curWindowData)
+        return;
+
+      //сначала выполним на плагине текущего типа 
+      var plugin=this.pluginGet('content_type.'+curWindowData.type);
+      if(plugin && plugin.on && plugin.on[hookName]){
+        if(newWindowData){
+          plugin.newWindowData=newWindowData;
+        }        
+        plugin.on[hookName].call(plugin);
+        if(newWindowData){
+          plugin.newWindowData=null;
+        }
+      }
+
+      //пробежимся по остальным активным плагинам
+      $.each(this.plugins,function(pluginName,plugin){
+        //Плагин типа content_type вызывался выше
+        if(plugin.pluginType == 'content_type')
+          return;
+
+        //У плагина нет такого хука
+        if(!plugin.on || !plugin.on[hookName])
+          return; 
+
+        if(newWindowData){
+          plugin.newWindowData=newWindowData;
+        }
+        // if(typeof plugin.isActive=='function' && !plugin.isActive() ){
+        //   return;
+        // }
+
+        plugin.on[hookName].call(plugin);
+
+        if(newWindowData){
+          plugin.newWindowData=null;
+        }
+
+      });
+    },    
+
+    /// plugin system end ///
+
+    getStorage: function(){
+      var st =XPopupStorage.getInstance();
+      return st;
+    },
+    getBoxCtrl: function(){
+      return this.pluginGet('box_ctrl');
+    },
+    getWindowCtrl: function(){
+      return this.pluginGet('window_ctrl');
+    },
+    getUtils: function(){
+      return XPopupUtils.getInstance();
+    },
+
+    defaults: {   
+      // type: 'ajax',
+      skin: 'default',
+      skinMod: '',
+      preloader: true,
+      closeOnContentClick: false,
+      closeOnBgClick: true,
+      showCloseBtns: 'all', //'all','outside','inside','none'
+      showHeaderActions: true,
+      headerActionsSelector: null,
+      headerActions: null,
+      showBack: false,
+      fullRerender: true,
+      enableEscapeKey: true,
+      modal: false,
+      animation: true,
+      animationOpen: 'slide-down',
+      animationClose: 'slide-up',
+      animationDelay: 600,
+      headerSticked: false, //Если true, то header окна будет залипать при соприкосновении с верхней границей окна
+      // noInheritance: true,
+      // alignTop: false,
+      // prependTo: null,
+      changeUrl: false, //Если true, то при открытии xpopup-окна будет изменяться URL в адресной строке браузера
+      changeUrlHistory: false, //Eсли true, то изменения URL будут сохраняться и отслежаваться через history api. 
+      tClose: 'Close',
+      tError: 'Не удалось загрузить: %url%'
+    },
+
+    /**
+     * Public static constants
+     */
+    EVENT_NS: '.xpopup',
+    // EVENT_BOX_ANIMATION_BEFORE : 'xpopup_box_animation_before',  //Перед тем как бокс откроется (первый раз)
+    // EVENT_BOX_ANIMATION_AFTER : 'xpopup_box_animation_after',  //Перед тем как бокс откроется (первый раз)
+    EVENT_BOX_NEW_STATUS : 'xpopup_box_new_status',  //Перед тем как бокс откроется (первый раз)
+    EVENT_BOX_OPEN_BEFORE : 'xpopup_box_open_before',  //Перед тем как бокс откроется (первый раз)
+    EVENT_BOX_OPEN_AFTER : 'xpopup_box_open_after',  //После того как бокс открыт
+    EVENT_BOX_CLOSE_BEFORE : 'xpopup_box_close_before', //Перед тем как бокс закроется
+    EVENT_BOX_CLOSING : 'xpopup_box_closing', //Перед тем как бокс закроется
+    EVENT_BOX_CLOSE_AFTER : 'xpopup_box_close_after',  //После того как бокс закрыт
+    EVENT_BOX_CLOSED : 'xpopup_box_closed',  //После того как бокс закрыт
+    EVENT_POPUP_CLOSED : 'xpopup_popup_closed',  //После того как все боксы были закрыты 
+    EVENT_BOX_RESIZE_BEFORE : 'xpopup_box_resize_before',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_SETTINGS_ALTER: 'xpopup_window_settings_alter',
+    EVENT_WINDOW_CHANGE_BEFORE : 'xpopup_window_change_before',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_NEW_STATUS : 'xpopup_window_new_status',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_DISPOSE_BEFORE : 'xpopup_window_dispose_before',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_DISPOSE_AFTER : 'xpopup_window_dispose_after',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_CHANGING : 'xpopup_window_changing',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_CHANGE_AFTER : 'xpopup_window_change_after',  //Перед тем как размре бокса будут изменен
+    EVENT_WINDOW_LOADING : 'xpopup_window_loading',  //После того как новый контент добавлен в бокс
+    EVENT_WINDOW_READY : 'xpopup_window_ready',  //После того как новый контент добавлен в бокс
+    EVENT_WINDOW_AJAX_SUCCESS : 'xpopup_window_ajax_success',  //После того как новый контент добавлен в бокс
+    EVENT_WINDOW_AJAX_REQUEST_BEFORE : 'xpopup_window_ajax_request_before',  //После того как новый контент добавлен в бокс
+    
+    CLASS_BOX : 'b-xpopup',
+    CLASS_LOADING : 'b-xpopup_status_loading',
+    CLASS_READY : 'b-xpopup_status_ready',
+
+    /**
+     * Public static methods
+     */
+    back: function(options,triggerEl){
+      var 
+        st = this.getStorage(),
+        winData = st.getBoxWindow();
+
+      if(!winData || !winData.parentId){
+        console.warn('XPopup.back(): Parent window id is empty')
+      }
+      st.removeWindow(winData.id);
+      // win.dispose();///???
+      // $.xpopupStorage.setCurWindow(winData.parentId);
+      this.getBoxCtrl().open({id:winData.parentId});
+      // debugger
+    },
+
+    // zoom: function(options, triggerEl){
+    //   var 
+    //     st = this.getStorage(),
+    //     winData = st.getBoxWindow(),
+    //     el = st.getElements()
+    //     ;
+
+    //   // var $sizeEl=el.$container.find('.b-xpopup-size');
+    //   var $sizeEl=el.$container;
+    //   if(!winData.zoomed){
+    //     winData.zoomed=true;
+    //     winData._maxSizeSaved=$sizeEl.css('max-width');
+    //     winData._heightSaved=$sizeEl.css('height');
+    //     winData._marginTopSaved=$sizeEl.css('margin-top');
+    //     winData._marginBottomSaved=$sizeEl.css('margin-bottom');
+    //     $sizeEl.css({maxWidth:'100%',heidght: '100%',marginTop:0,marginBottom:0});
+    //     el.$box_and_bg.addClass('b-xpopup-option_zoomed_true');
+    //   }
+    //   else{
+    //     winData.zoomed=false;
+    //     if(winData._maxSizeSaved){
+    //       $sizeEl.css({
+    //         maxWidth:winData._maxSizeSaved,
+    //         heigdht:winData._heightSaved,
+    //         marginTop:winData._marginTopSaved,
+    //         marginBottom:winData._marginBottomSaved
+    //       } );
+    //       winData._maxSizeSaved=null;  
+    //     }
+    //     el.$box_and_bg.removeClass('b-xpopup-option_zoomed_true');
+    //   }
+
+    //   $.xpopup.emit($.xpopup.EVENT_BOX_RESIZE_BEFORE);
+    // },
+
+    open: function(options, triggerEl) {
+      options=options||{};
+
+      this.getBoxCtrl().open(options,triggerEl);
+    },
+
+    /**
+     * Без параметров полностью закрывает все открытые боксы.
+     * Если options.objType == 'win', то закрывает только текущее окно в текущем боксе.
+     * Если options.objType == 'box', то закырывает текущий бокс.
+     *
+     * Если передан options.objCount,  то будет закрыто не менее options.objCount окон/боксов.
+     *
+     * Если переадан options.objCount или options.objType, то анимация при закрытии отключается (это временная мера)
+     *
+     * Примеры: 
+     *  $.xpopup.close(); закрыть всё
+     *  $.xpopup.close({objType:'win'}); //закрыть тек. окно
+     *  $.xpopup.close('win'); //закрыть тек. окно
+     *  $.xpopup.close({objType:'box'}); //закрыть тек. бокс
+     *  $.xpopup.close('box'); //закрыть тек. бокс
+     *  $.xpopup.close({objType:'win',objCount:2}); //последовательно закрыть 2 окна
+     *  $.xpopup.close({objType:'box',objCount:2}); //последовательно закрыть 2 бокса
+     * 
+     * @param object options
+     *   Определяет, что необходимо закрыть
+     */
+    close: function(options) {
+
+      if($.type(options)=='string'){
+        options = {objType:options}
+      }
+
+      if(!options){
+        options = {};
+      }
+
+      switch(options.objType){
+        case 'win':
+          if(options.objCount > 1){
+            for(var i = 0; i<options.objCount; i++){
+              this.getWindowCtrl()._close();              
+            }
+          }
+          else{
+            this.getWindowCtrl().close();
+          }
+          break;
+        case 'box':
+          if(options.objCount > 1){
+            for(var i = 0; i<options.objCount; i++){
+              this.getWindowCtrl()._close(); //TODO: ошибка, нужно:getBoxCtrl(), но так пока не работает             
+            }
+          }
+          else{
+            this.getBoxCtrl().close();
+          }
+          break;
+        default: 
+          while(this.isOpen()){
+            //TODO: быстрый, но некрасиваый способ.
+            this.getWindowCtrl()._close();
+          }      
+      }
+
+    },
+    isOpen: function() {
+      return this.getBoxCtrl().isOpen();
+    },
+    
+    //Events
+    callDelayed: function(actionName, callback, delay) {
+
+      $.xpopup._timers=$.xpopup._timers||{};
+
+      if($.xpopup._timers[actionName]){
+        clearTimeout($.xpopup._timers[actionName]);
+        delete $.xpopup._timers[actionName];
+      }
+      $.xpopup._timers[actionName]=setTimeout(function(){
+        delete $.xpopup._timers[actionName];       
+        if(callback){
+          callback();
+        }
+      },delay);
+    },    
+    
+    emit: function(eventName, data) {
+      var hook=eventName.replace(/^xpopup\_/,'');
+      // console.log('XPOPUP.DEBUG.emit',hook,eventName,data);
+      this.pluginInvokeAll(hook);
+      if(data){
+        $(document).trigger(eventName,[this.getBoxCtrl(), data]);
+      }
+      else{
+        $(document).trigger(eventName,[this.getBoxCtrl()]);
+      }
+    }
+
+  };  ///$.xpopup end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+function XPopupUtils(){
+
+  if (arguments.callee._singletonInstance) {
+    return arguments.callee._singletonInstance;
+  }
+  arguments.callee._singletonInstance = this;  
+  
+  /**
+   * Преобразует camelCase в dashed-case
+   * 
+   * Пример:
+   *  camelToDash('xpopupBoxId') -> xpopup-box-id
+   *  
+   * @param {string} key 
+   */
+	this.camelToDash = function(key) {
+    return key.replace(/([A-Z])/g, "-$1").toLowerCase();
+  };
+
+  /**
+   * Наипростейший шаблонизатор. 
+   * Заменяет все переменные вида {varname}  значениями из объекта values.
+   * 
+   * @param  {string} template Шаблон
+   * @param  {object} values   Объект со значениями для замены
+   * @return {string}          [description]
+   */
+  this.renderTemplate = function(template, values, replaceAllVars) {
+    var res = template;
+    $.each(values, function(key, value) {
+      if(replaceAllVars){
+        res = res.replace(new RegExp("{"+key+"}",'g'),value);
+      }
+      else{
+        res = res.replace("{"+key+"}",value);
+      }
+    });
+    return res;
+  },
+
+  /**
+   * Выбирает среди всех классов элемента $sourceEl, только те css-классы, которые имеют один из префиксов,
+   * перечисленных в массиве classesPrefixes. 
+   * Если такие найдены, то удаляет эти классы из $targetEl. 
+   * Если переданы addClasses, то эти классы добавляются в $targetEl
+   * Если $tergetEl не передан, то классы удаляются из $sourceEl.
+   *
+   * Пример использования:
+   * 1) пусть есть элемент с class="b-xpopup-animation_open_slide b-xpopup-animation_close_slide"
+   *    replaceClassesByPrefixes($('.b-xpopup__box'),'b-xpopup-animation','b-xpopup-animation_open_zoom b-xpopup-animation_close_zoom',$('.b-xpopup'))
+   *    Результат:
+   *    - удалит из $('.b-xpopup') b-xpopup-animation_open_slide b-xpopup-animation_close_slide
+   *    - добавит в $('.b-xpopup') b-xpopup-animation_open_zoom b-xpopup-animation_close_zoom
+   * 
+   * @param  {[type]} el              [description]
+   * @param  {[type]} classesPrefixes [description]
+   * @return {[type]}                 [description]
+   */  
+  this.replaceClassesByPrefixes = function($sourceEl,removeClassesPrefixes,addClasses,$targetEl){
+    var removeClasses=this
+      .filterClassesByPrefixes($sourceEl,removeClassesPrefixes)
+      .join(' ')
+    ;
+
+    if(!$targetEl){
+      $targetEl = $sourceEl;
+    }
+    if(removeClasses){
+      $targetEl.removeClass(removeClasses);
+    }         
+
+    if(addClasses){
+      $targetEl.addClass(addClasses);
+    }
+
+  };
+
+  /**
+   * Выбирает среди всех классов элемента el, только те, которые имеют один из префиксов,
+   * перечисленных в массиве classesPrefixes. 
+   *
+   * Пример использования:
+   * 1) пусть есть элемент с class=""
+   * 
+   * @param  {[type]} el              [description]
+   * @param  {[type]} classesPrefixes [description]
+   * @return {[type]}                 [description]
+   */
+  this.filterClassesByPrefixes = function(el,classesPrefixes){
+    if(!el || !classesPrefixes){
+      return [];
+    }
+
+    if($.type(classesPrefixes)=='string'){
+      classesPrefixes=[classesPrefixes];
+    }
+
+    var classes=$(el).attr('class').split(/\s+/g);
+
+    var matchedClasses=[];
+    for(var i=0;i<classes.length;i++){
+      var cl=classes[i];
+      for(var j=0;j<classesPrefixes.length;j++){
+        var prefix=classesPrefixes[j];
+        if(cl.indexOf(prefix)!=-1){
+          matchedClasses.push(cl);
+        }
+      }
+    }
+
+    return matchedClasses;
+  }
+} //End of XPopupUtils
+
+XPopupUtils.getInstance = function() {
+  var utils = new XPopupUtils();
+  return utils;
+};
+
+
+})(jQuery);
+
+;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/jquery.xpopup.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_storage.js ///
+var XPopupStorage;
+
+;(function($) {
+
+  XPopupStorage = function(){
+
+    if (arguments.callee._singletonInstance) {
+      return arguments.callee._singletonInstance;
+    }
+    arguments.callee._singletonInstance = this;    
+
+    this.activeBoxId=undefined;
+    this._boxes=[];
+
+    this.getGlobal = function(){
+      return XPopupStorageGlobals.getInstance();
+    }
+    this.getElements = function(){
+      var elements = this.getBox().elements;
+      return elements;
+    }
+
+
+    this.setBoxNewWindow = function(id){
+      //TODO: add event:
+      this.getBox().newWindowId=id;
+    }
+    this.getBoxNewWindow = function(){
+      var id = this.getBox().newWindowId;
+      var win=this.findBoxWindows({id:id})[0];
+      return win;
+    }
+    this.setCurWindow = function(id){
+      this.getBox().curWindowId=id;
+    }
+
+    this.activateBox = function(boxId){
+
+      if(boxId=='new'){
+        boxId = this._boxes.length;
+      }
+      if(typeof boxId == 'undefined'){
+        if(typeof this.activeBoxId == 'undefined'){
+          boxId = 1;
+        }
+        else{
+          boxId = this.activeBoxId;
+        }
+      }
+      var box = this.findBoxById(boxId);
+      if(!box){
+        box = {
+          id: boxId,
+          status: null,
+          curWindowId: null,
+          elements: {},
+          windows: []
+        }
+        this._boxes.push(box);
+      }
+      this.activeBoxId = box.id;       
+      return this.activeBoxId;
+    }
+
+    this.getBox = function(boxId){
+      if(typeof boxId=='undefined'){
+        boxId = this.activeBoxId;
+      }
+      var box = this.findBoxById(boxId);
+      if(!box)
+        box = {
+          status: null,
+          curWindowId: null,
+          elements: {},
+          windows: []
+
+        };
+      return box;
+    }
+    this.deleteBox = function(){
+      var boxIndex = this.findBoxIndex(this.activeBoxId);
+      if(boxIndex!=-1){
+        var box = this._boxes[boxIndex];
+        var oldBoxId = box.id;
+        this._boxes.splice(boxIndex,1);
+        
+        box.elements.$box_and_bg.remove();
+        delete box;
+
+        if(this._boxes.length>0){
+          var box = this._boxes[this._boxes.length-1];
+          this.activeBoxId = box.id;
+        }
+        else{
+          this.activeBoxId = 1;
+        }
+      }
+    }
+
+    this.findBoxById = function(id){
+      var index=this.findBoxIndex(id);
+      if(index!=-1){
+        return this._boxes[index];
+      }
+      return null;
+    }
+    this.findBoxIndex = function(id){
+      var matchedIndex=-1;
+      $.each(this._boxes,function(index,item){
+        if(item.id == id){
+          matchedIndex=index;
+          return false;
+        }
+      })      
+      return matchedIndex;
+    },    
+
+    /**
+     * Считает число "используемых" боксов. Бокс считается "используемым", если в нём есть хотя бы одно окно.
+     * Если excludeBoxId не пустой, то бокс с таким id исключается из подсчёта.
+     *
+     * Данная ф-ция используется в обработчике события закрытия окна. Она необходима, чтобы определить 
+     * следует ли закрывать весь popup.
+     *  
+     * @param  int excludeBoxId [description]
+     * @return int             [description]
+     */
+    this.countUsableBoxes = function(excludeBoxId){
+      var n=0;
+      $.each(this._boxes,function(index,box){
+        if(typeof excludeBoxId !='undefined' && box.id == excludeBoxId){
+          return;
+        }
+        if(box.windows && box.windows.length > 0){
+          n++
+        }
+      })      
+      return n;
+    },   
+    // this.findWindowById = function(id){
+    //   var index=this.findWindowIndex(id);
+    //   if(index!=-1){
+    //     return this._windows[index];
+    //   }
+    //   return null;
+    // }
+    this.findWindowIndex = function(id,boxId){
+      var 
+        box = this.getBox(boxId),
+        matchedIndex=-1;
+
+      $.each(box.windows,function(index,item){
+        if(item.id == id){
+          matchedIndex=index;
+          return false;
+        }
+      })      
+      return matchedIndex;
+    },
+    this.getBoxWindow = function(id,boxId){
+      if(id == -1){
+        var winData= this.getBoxWindow(null,boxId);
+        id=winData?winData.parentId:null;
+      } 
+      else{
+        id=id || this.getBox(boxId).curWindowId;
+      }
+      var win=this.findBoxWindows({id:id},boxId)[0];
+      return win;
+    }
+
+    this.findBoxWindows = function(filters,boxId){
+      filters=filters || {};
+      filters.boxId=this.getBox(boxId).id;
+      return this.findWindows(filters);
+    }
+    this.findWindows = function(filters,boxId){
+      var box=this.getBox(boxId);
+      if(!filters){
+        return box.windows;
+      }
+
+      var matched=[];
+      $.each(box.windows,function(index,item){
+        if(filters.opened){
+          return;
+        }
+        if(filters.id && item.id!=filters.id){
+          return;
+        }
+        if(filters.parentId && item.parentId!=filters.parentId){
+          return;
+        }
+
+        matched.push(item);
+
+        if(filters.single){
+          return false;
+        }
+      })
+
+      return matched;
+    }
+
+    this.addWindow = function(winData){
+      var box = this.getBox();
+
+      //Разберёмся с boxId. Важно, чтобы оно совпадало с box.id. 
+      if(winData.boxId!=box.id){
+        if(winData.autoDetectedOptions){
+          winData.autoDetectedOptions.boxId = box.id;
+        }
+        else{
+          winData.autoDetectedOptions = {boxId:box.id}; 
+        }
+      }
+      winData.boxId=winData.opts.boxId = box.id;
+
+
+      var prevWinData=this.getBoxWindow();
+      if(prevWinData){
+        winData.parentId=prevWinData.id;
+      }
+      var index=-1;
+
+      if(winData.initialState){
+        //если текущее окно = loading, то найдём его, что произвести заменю на окно с новым состоянием
+        index=this.findWindowIndex(winData.initialState.id);
+        delete winData.initialState;
+      }
+      if(index<0){
+        if(winData.id){
+          index=this.findWindowIndex(winData.id);
+        }
+      }
+
+      //Сформируем parentId окна
+      // var dataPrev=this.getBoxWindow(-1);
+      // if(dataPrev && dataPrev.id != winData.id){
+      //   winData.parentId=dataPrev.id;
+      // }
+
+
+      // var index=this.findWindowIndex(winData.id);
+      // TODO: refactor it
+      if(index != -1){
+        //произведем замену временного окна loading
+        winData.id = box.windows[index].id;
+        box.windows.splice(index,1,winData); 
+      }
+      else{
+        box.windows.push(winData);
+      }
+
+      // this.getBox().curWindowId=winData.id;
+      return winData.id;
+    }
+
+    this.disposeWindow = function(id){
+      var index=this.findWindowIndex(id);
+      var box = this.getBox();
+      if(index!=-1){
+        var winData=box.windows[index];
+        winData.boxId=null;
+        if(this.getBox().curWindowId==id){
+          this.getBox().curWindowId=winData.parentId;
+        }
+      }
+      return index;
+    }
+    this.removeWindow = function(id){
+      var index=this.disposeWindow(id);
+      var box = this.getBox();      
+      if(index!=-1){
+        box.windows.splice(index,1);
+      }
+      if(box.windows.length==0){
+        this.deleteBox();
+      }
+      return index;
+    }
+
+  }
+
+  XPopupStorage.getInstance = function() {
+    var st = new XPopupStorage();
+    return st;
+  };  
+
+  function XPopupStorageGlobals(){
+
+    if (arguments.callee._singletonInstance) {
+      return arguments.callee._singletonInstance;
+    }
+    arguments.callee._singletonInstance = this;
+
+    var appVersion = navigator.appVersion;
+    // this.isIE7 = appVersion.indexOf("MSIE 7.") !== -1; 
+    // this.isIE8 = appVersion.indexOf("MSIE 8.") !== -1;
+    // this.isLowIE = this.isIE7 || this.isIE8;
+    this.isAndroid = (/android/gi).test(appVersion);
+    this.isIOS = (/iphone|ipad|ipod/gi).test(appVersion);
+    this.supportsHistory=!!(window.history && history.pushState);
+    this.histApi = window.history;
+    // We disable fixed positioned lightbox on devices that don't handle it nicely.
+    // If you know a better way of detecting this - let me know.
+    this.probablyMobile = (this.isAndroid || this.isIOS || /(Opera Mini)|Kindle|webOS|BlackBerry|(Opera Mobi)|(Windows Phone)|IEMobile/i.test(navigator.userAgent) );
+  }
+  XPopupStorageGlobals.getInstance = function() {
+    var globals = new XPopupStorageGlobals();
+    return globals;
+  };  
+
+})(jQuery);;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_storage.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_box_ctrl.js ///
+;(function($) {
+
+  /**
+   * Реализация контроллера окна
+   */
+   function XPopupBoxCtrl(){
+
+    /// Public methods ///
+
+    /**
+     * [open description]
+     * @return {[type]} [description]
+     */
+    this.open = function(options,triggerEl){
+      var 
+        st=this.getStorage(),
+        winData,
+        createNewWindow = true //требуется ли создавать новое окно или можно взять из стека
+        ;
+
+      if(triggerEl){
+        triggerEl = $(triggerEl);
+      }
+
+      if(options.id){
+        //Откроем окно, которое уже есть в кэше (например, для работы кнопки Back)
+        winData = st.getBoxWindow(options.id);
+        if(winData && winData.opts.fullRerender){
+          //Удалим результат предыдущего рендера, чтобы сформировать окно заново
+          delete winData.opts.html;
+          createNewWindow = false;
+        }
+      }
+      if(createNewWindow){
+        //Добавим данные окна в стэк
+        winData=this.buildWindowData(options,triggerEl);    
+
+        // var boxId = winData.opts.boxId||1; //st.activeBoxId+1;
+        if(!winData.opts.boxId){
+          st.activateBox();
+        }
+        else{
+          st.activateBox(winData.opts.boxId);
+        }
+
+        st.addWindow(winData);
+      }
+
+
+      //загрузим и установим окно
+      this.fetchCurWindow(winData.id);
+    };
+
+
+    this.fetchCurWindow = function(id){
+      var 
+        st=this.getStorage(), 
+        winCtrl = this.getWindowCtrl()
+        ;
+
+      // st.activateBox(winData.boxId);
+
+      //Установим id нового окна. 
+      //Оно будет использоваться для фоновой загрузки и последующей обработки данных окна.
+      st.setBoxNewWindow(id);
+      //Если текущего окна нет, то установим в качестве id текущего окна - id нового. 
+      //Это означает, что бокс только открывается.
+      if(!st.getBoxWindow()){
+        st.setCurWindow(id);
+      }
+
+      //Запускаем процесс загрузки данных нового окна
+      winCtrl.fetchContent();
+
+      //разбираемся со старым окном (перенести в колбэк или ивент)
+      if(!this.isOpen()){
+        $.xpopup.emit($.xpopup.EVENT_BOX_OPEN_BEFORE);         
+      }
+
+      //применяем новый контент
+      // winCtrl.applyContent();
+    };
+
+   /**
+    * [close description]
+    * @return {[type]} [description]
+    */
+   this.close = function(){
+     //TODO: Перенести логику закрытия бокса сюда. 
+     //Window.close() должно закрыть только окно, а не весь бокс
+     this.getWindowCtrl().close();
+   }; 
+    /**
+     * [isOpen description]
+     * @return {Boolean} [description]
+     */
+    this.isOpen = function(){
+      var 
+        boxData=this.getStorage().getBox();
+
+      return typeof boxData!='undefined' && boxData.status=='opened';
+    };
+
+    /**
+     * Добавляем данные окна в стек открытых окон
+     * 
+     * @param {[type]} options   
+     *   Содержит исходный объект настроек окна. Передаётся при вызове метода xpopup.open()
+     * @param {[type]} 
+     *   Содержит элемент, являющийся триггером открытия окна. Если в данном элементе 
+     *   переданы данные через data-xpopup-* отрибуты, то они будут добавлены в результирующий объект настроек
+     *   окна
+     */
+    this.buildWindowData = function(options,triggerEl){
+
+      var 
+        data={
+          passedOptions: options || {},
+          triggerOptions: _extractDataOptions(triggerEl,'trigger'),
+          triggerEl: triggerEl  //?
+        }
+        ;  
+      
+      //Получим предварительные опции для отображения окна
+      data.opts=this.getResultOptions(data,false);
+
+      // //TODO: auto detect window type and move it above getResultOptions()
+      // data.pluginDefaults=$.xpopup.pluginGet('content_type.'+data.opts.type).defaults || {};
+
+
+      //Если окно уже открыто и бокс сформирован
+      var contentOptions=_extractContentOptions(data);
+      if(contentOptions){
+        data.contentOptions=contentOptions;
+      }
+
+      // if(data.contentOptions){
+      //   //Получим результирующие опции для отображения окна
+      //   data.opts=this.getResultOptions(data,true);
+      // }
+      //Получим результирующие опции для отображения окна
+      data.opts=this.getResultOptions(data,true);
+
+      //Получим исходные входные данные
+      data.initial=$.extend(true,{},data.passedOptions,data.triggerOptions);    
+      if(!data.initial.content && $.type(data.opts.content)=='string'){
+        data.initial.content=data.opts.content;
+      }
+
+      //Сформируем id окна
+      if(data.opts.id){
+        //Было передано, то используем
+        data.id=data.opts.id;
+      }
+      else{
+        //Если не передано, то генерируем сами путём 
+        var nArgs=0,nValuesChars=0,nKeysChars=0;
+        $.each(data.initial,function(key,value){
+          nArgs++;
+          nKeysChars+=key.toString().length;
+          nValuesChars+=value.toString().length;
+        })
+        data.id=''+data.opts.type+'-'+data.opts.skin+'-n'+nArgs+'-ck'+nKeysChars+'-cv'+nValuesChars;
+      }
+
+
+      //Проверим, не является ли данный элемент частью галереи? 
+      //Если является, то произведём необходимые работы по настройке элементов этой галереи. 
+      //
+      //Для того, чтобы popup-окно работало в режиме галереи необходимо, чтобы:
+      // - каждый элемент (триггер окна) имел классы b-xpopup-gallery b-xpopup-gallery_id_{galleryId} b-xpopup-gallery__item b-xopup-gallery__item-{index}
+      // - каждый элемент (триггер окна) имел data-аттрибуты data-xpopup-gallery-id, data-xpopup-gallery-index, data-xpopup-gallery-items-count
+      var $triggerEl = data.triggerEl ? $(data.triggerEl): null;
+
+      var galleryId = data.opts.galleryId;
+      if(!galleryId && $triggerEl){
+        //Если galleryId, не передан (в опциях или data-аттрибутах), то попытаемся его определить
+        
+        var rel = $triggerEl.attr('rel');
+        if(rel && rel.indexOf('xbox')!=-1){
+          //Если триггер имеет аттрибут rel вида rel=xbox[<gallery>], то  из него galleryId=xbox-gallery.
+          //Если триггер имеет аттрибут rel='xbox', то galleryId = 'xbox'
+          galleryId = rel.replace(']','').replace(/\s|_/g,'-').replace('[','-');
+          var rel = $triggerEl.attr('rel');
+          $("[rel='"+rel+"']").addClass('b-xpopup-gallery b-xpopup-gallery_id_'+galleryId);
+        }
+        else if($triggerEl.hasClass('b-xpopup-gallery')){
+          //Получить из чего-то подобного ' b-xpopup b-xtip b-xpopup-gallery b-xpopup-gallery_id_ggg-aaa eee' 
+          //вот это: b-xpopup-gallery_id_ggg-aaa
+          var galleryIdClass = $triggerEl.match(/b-xpopup-gallery_id_(\S+)/gi);
+          if(galleryIdClass){
+            //Если такой класс (b-xpopup-gallery_id_ggg-aaa) найден, то осталось получить из него galleryId
+            galleryId = galleryIdClass.replace('b-xpopup-gallery_id_','');
+          }
+          else{
+            //По умолчанию установим galleryId в 'default'
+            galleryId = 'default';
+            $triggerEl.addClass('b-xpopup-gallery_id_'+galleryId);
+          }
+        }
+      }
+
+      if(galleryId && $triggerEl){
+        //Если элемент является частью галереи, то произведём настройку свойств каждого элемента этой галереи
+        var $items = $('.b-xpopup-gallery_id_'+galleryId);
+        var galleryItemsCount = $items.size();
+        //Признаком, что данный элемент уже был настроен как часть галереи, является наличие класса b-xpopup-gallery__item
+        $items.filter(':not(.b-xpopup-gallery__item)').each(function(index){
+          $(this).addClass('b-xpopup-gallery__item b-xpopup-gallery__item-'+index).data({
+            galleryId:galleryId,
+            galleryItemIndex:index,
+            galleryItemsCount: galleryItemsCount
+          });
+        });
+
+        data.galleryId = galleryId;
+        data.galleryItemsCount = galleryItemsCount;
+        data.galleryItemIndex = $items.index($triggerEl);
+      }
+
+      return data;
+    }; 
+
+
+    /**
+     * Перестроим результирующий массив исходных данных окна. 
+     * Это действие необходимо выполнить при получении контента окна,
+     * поскольку именно в этот момент производится извлечение настроек окна из его контента.
+     * 
+     * @param  {[type]} winData [description]
+     * @return {[type]}         [description]
+     */
+    this.rebuildWindowData = function(winData){
+
+      //Получим предварительные опции для отображения окна
+      //Это необходимо, чтобы далее проверить winData.opts.html
+      winData.opts = this.getResultOptions(winData,false);
+
+      // if(!winData.contentOptions && winData.opts.html){
+      //   winData.contentOptions = _extractContentOptions(winData);
+      //   if(winData.contentOptions){
+      //     //Получим результирующие опции для отображения окна
+      //     winData.opts = this.getResultOptions(winData,true);
+      //   }
+      // }
+      winData.contentOptions = _extractContentOptions(winData);
+      //Получим результирующие опции для отображения окна
+      winData.opts = this.getResultOptions(winData,true);
+      
+      //boxId мог быть изменен. учтем это
+      // if(winData.opts.boxId && winData.boxId!=winData.opts.boxId){
+      //   winData.boxId=winData.opts.boxId;
+      // }
+
+      return winData;
+    }; 
+
+    /**
+     * Формирует результирующий объект настроек для открытия текущего окна. 
+     * В настоящий момент текущим является окно, данные которого в голове стека.
+     *
+     * Для формирования результирующего объекта настроек используется следующий алгоритм:
+     * - идём от начала стека открытых окон
+     * - последовательно склеиваем опции настроек окон, отдавая приоритет последним добавленным окнам
+     * 
+     * @return 
+     *   Результирующий объект настроек, который можно передавать в XPopupWindow.open()
+     */
+    this.getResultOptions = function(windowData,completeBuild){
+      var 
+        st = this.getStorage(),
+        glob = st.getGlobal(),
+        o = {}
+        ;
+
+        if(completeBuild){
+          if(windowData.contentOptions){
+            o=$.extend(true,{}
+              // ,$.xpopup.defaults
+              // ,windowData.pluginDefaults
+              // ,windowData.autoDetectedOptions
+              ,windowData.opts
+              ,windowData.contentOptions
+              ,windowData.passedOptions
+              ,windowData.ajaxResponseOptions
+              ,windowData.triggerOptions
+              );
+          }
+          else{
+            o = windowData.opts;
+          }
+        }
+        else{
+          //Определим тип
+          if(!o.triggerEl)
+            o.triggerEl=windowData.triggerEl; ///???
+
+          this._autodetectOptions(windowData);
+
+          windowData.pluginDefaults=$.xpopup.pluginGet('content_type.'+windowData.autoDetectedOptions.type).defaults || {};
+
+          // var parentWinOptions = {};
+          // var cleanOptions = (windowData.triggerOptions && windowData.triggerOptions.noInheritance) 
+          //   || (windowData.ajaxResponseOptions && windowData.ajaxResponseOptions.noInheritance)
+          //   || (windowData.passedOptions && windowData.passedOptions.noInheritance) 
+          //   || (windowData.autoDetectedOptions && windowData.autoDetectedOptions.noInheritance) 
+          //   ;
+          
+          // cleanOptions = true;
+          // if(!cleanOptions){
+          //   if( typeof windowData.autoDetectedOptions.boxId == 'undefined' || (windowData.autoDetectedOptions.boxId == st.activeBoxId) ){
+          //     //Если мы в текущем активном боксе, то проверим, нет ли родительских окон        
+          //     var parentWin=st.getBoxWindow(null,windowData.boxId);
+          //     if(parentWin){
+          //       //Если это не первое открытое окно (т.е. некоторое дочернее окно)
+          //       //В этом случае в качестве базы используем результирующие опции родителя (если он есть)
+          //       parentWinOptions=$.extend(true,{},parentWin.opts);
+          //       //Ряд свойств родительского окна нельзя использовать при инициализации дочернего, поэтому исключим эти свойства.
+          //       $.each(parentWinOptions,function(key,value){
+          //         switch(key){
+          //           case 'html':
+          //           case 'content':
+          //           case 'type':
+          //           case 'showBack':
+          //           case 'width':
+          //           case 'height':
+          //           case 'headerSticked':
+          //           case 'showHeaderActions':
+          //           case 'headerActions':
+          //           case 'headerActionsSelector': 
+          //             parentWinOptions[key] = undefined;
+          //             break;
+          //           default:
+          //             if(windowData.boxId){
+          //               //maxHeight, initialMaxHeight, minHeight, initialMinHeight, ...
+          //               if(key.indexOf('Width')!=-1 || key.indexOf('Height')!=-1){
+          //                 parentWinOptions[key] = undefined;                          
+          //               }
+          //             }
+          //             // if(key.indexOf('header')!=-1 ){
+          //             //   parentWinOptions[key] = undefined;                          
+          //             // }
+          //         }
+          //       });                
+          //       // parentWinOptions.html=parentWinOptions.content=parentWinOptions.type=parentWinOptions.showBack=undefined;       
+
+          //     }
+          //   }
+          // }
+
+          o=$.extend(true,{}
+            ,$.xpopup.defaults
+            ,windowData.pluginDefaults
+            // ,parentWinOptions
+            ,windowData.autoDetectedOptions
+            ,windowData.passedOptions
+            ,windowData.ajaxResponseOptions
+            ,windowData.triggerOptions
+            );
+        }
+
+
+      //animation
+      if( completeBuild ){
+
+        /// Post process some complex options ///
+        if(o.type == 'inline' && !o.html){
+          o.html = $(o.content).first()[0];
+        }
+
+        if(o.animation==true){
+          if(glob.probablyMobile
+            ||!o.animationDelay
+            ){
+            //Отключим все эффекты в моб. версии, а также в случае устаревших браузеров
+            o.animation=false;
+          }
+        }
+        if(o.animation && o.animationClose && !o.animationDelay ) {
+          o.animationDelay=1000;
+        }
+        if( (!o.animation || !o.animationClose) && o.animationDelay) {
+          o.animationDelay=0;
+        }
+
+        //modal
+        if(o.modal) {
+          o.closeOnContentClick = false;
+          o.closeOnBgClick = false;
+          // o.showCloseBtn = false;
+          o.enableEscapeKey = false;
+        }        
+
+        //Обработаем настройки иконки окна
+        var oldHi=o.headerIcon;
+        var hi=null;
+        if(o['headerIconUrl']){
+          //Поддержка свойств headerIconUrl и headerIconLink            
+          hi="<img src='"+o['headerIconUrl']+"' />";
+        }
+        else if(o['headerIconClass']){
+          //Поддержка свойств headerIconClass и headerIconLink            
+          hi="<i class='"+o['headerIconClass']+" '></i>";
+        }
+
+        if(o['headerIconLink']){
+          hi="<a href='"+o['headerIconLink']+"' target='_blank' >"+hi+"</a>";
+        }
+        o.headerIcon=hi || oldHi;        
+
+        //Данные для подвала
+        if(typeof o.footerActions != 'undefined' && $.type(o.footerActions) == 'string' ){
+          o.footerActions = o.footerActions.trim();
+          if(o.footerActions.length == 0){
+            delete o.footerActions;
+          }
+          else{
+            o.footerActions = XSyst.parseJson(o.footerActions);
+          }
+        } 
+
+        //Обработаем настройки скина и установим необходимые классы 
+        //Возможна передача нескольких скинов, разделенных '.' либо в виде индексированного массива. 
+        //В этом случае соответствующие классы скинов будут добавлены в том же порядке. 
+        //Примеры:
+        //skin: 'default.default_white.default_white_big'
+        //skin: ['default','default_white','default_big']
+        var skins=$.isArray(o.skin) ? o.skin : o.skin.split('.');
+        o.skinClasses='';
+        $.each(skins, function(index,skin) {
+          o.skinClasses+=' b-xpopup_skin_'+skin+' ';  
+        });
+        o.mainClass=o.skinClasses;         
+
+
+        //skinMod
+        if(o.skinMod){
+          //Если переданы модификаторы скина, то произведем обработку их. 
+          //Принцип такой же как был описан для скинов:
+          //  Возможна передача нескольких модификаторов скинов, разделенных '.' либо в виде индексированного массива. 
+          //  В этом случае соответствующие классы скинов будут добавлены в том же порядке. 
+          //  Примеры:
+          //    skinMod: 'no-borders.centered'
+          //    skinMod: ['no-borders','centered']
+          var skinMods=$.isArray(o.skinMod) ? o.skinMod : o.skinMod.split('.');
+          o.skinModClasses='';
+          $.each(skinMods, function(index,skinMod) {
+            o.skinModClasses+=' b-xpopup_skinmod_'+skinMod+' ';  
+          });
+          o.mainClass+= ' '+o.skinModClasses;       
+        }        
+
+        //Дадим возможность плагинам внести свои изменения
+        //Например, ajax плагин здесь сможет установить content=$(winData.triggerEl).attr(href);
+        $.xpopup.pluginInvokeAll('window_settings_alter',o);
+      }
+
+      return o;
+    };
+
+    this._autodetectOptions = function(winData){
+
+
+      if(typeof winData.autoDetectedOptions!='undefined'){
+        return;
+      }
+
+      var o = winData.autoDetectedOptions = {};
+      o.type = winData.triggerOptions?winData.triggerOptions.type:null;
+      o.type = o.type||(winData.passedOptions?winData.passedOptions.type:null);
+
+      o.content = winData.triggerOptions?winData.triggerOptions.content:null;
+      o.content = o.content||(winData.passedOptions?winData.passedOptions.content:null);
+
+      o.boxId = winData.triggerOptions?winData.triggerOptions.boxId:null;
+      o.boxId = o.boxId||(winData.passedOptions?winData.passedOptions.boxId:null);
+
+      if(!o.type){
+        /// Автоматическое определение типа контента ///
+        if(!o.type){
+          //Тип не определён. Проверим не image ли это... Для этого нам необходимо проанализировать url. 
+          if(!o.content){
+            //Если o.content пустой, то будем считать, что мы кликнули по ссылке, которую нужно открыть в popup-окне.
+            //Для этого пропишем в o.content этот адрес
+            o.content = $(winData.triggerEl).attr('href');
+            if( !o.content ){
+              o.content = $(winData.triggerEl).attr('src');
+            }
+          }
+          if(o.content){
+            var url = o.content;
+            url=url.replace(/\?.*$/,'');// удалим всё, что url после ?, чтобы оставить только путь
+            if(url.match(/\.(png|gif|jpeg|jpg|svg)$/i)){
+              o.type = 'image';
+              o.boxId = 20;              
+            }
+          }
+        }
+        if(!o.type){
+          if(!o.content && winData.triggerEl && $(winData.triggerEl)){
+            o.content = $(winData.triggerEl).attr('href');
+          }
+          if(o.content && o.content.match(/^(\/|http:|https:)/)){
+            if (!XSyst.urlIsLocal(o.content)) {
+              o.type = 'iframe';
+            }
+            else{
+              o.type = 'ajax';
+            }
+          }      
+        }        
+
+        if(!o.type){
+          //Тип всё ещё не определён. Будем считать, что это inline...
+          o.type = 'inline';
+        }
+      }
+
+      if(o.type=='ajax' || o.type=='image' || o.type=='iframe'){
+        if(!o.content && winData.triggerEl && $(winData.triggerEl)){
+          o.content = $(winData.triggerEl).attr('href');
+        }
+        if( !o.content && winData.triggerEl ){
+          o.content = $(winData.triggerEl).attr('src');
+        }
+
+        //Если тип ajax, проверим, что url не картинка
+        var url = o.content;
+        url=url.replace(/\?.*$/,'');// удалим всё, что url после ?, чтобы оставить только путь
+        if(url.match(/\.(png|gif|jpeg|jpg|svg)$/i)){
+          o.type = 'image';
+          o.boxId = 20;
+        }
+      }  
+
+    };
+
+    /**
+     * Позволяет добавить команды, которые будут выполняться при наступлении события eventName. 
+     * 
+     * @param String eventName [description]
+     * @param Array commandsData   [description]
+     */
+    this.addEventCommands = function(eventName,commandsData){
+      $(document).on(eventName + $.xpopup.EVENT_NS,function(){
+        XSyst.execCommands(commandsData);
+      })
+    };
+
+    /// Private functions ///
+    
+    /**
+     * Формирует объект настроек, переданных для текущего окна в элементе окна .b-xpopup-data-container
+     * 
+     * @param  {[type]} windowOptions      [description]
+     *   Содержит опции текущего экрана
+     * @return {[type]}         
+     *   Объект настроек
+     */
+    function _extractContentOptions(winData){
+      var contentOptions=null;
+
+      var content=winData.opts.html;      
+      if(content){
+        //Контент может прийти в разном виде. Попробуем найти в нём элемент, который может содержать data-аттрибуты с настройками окна.
+        //Такой элемент всегд имеет класс b-xpopup-data-container. Он может быть как корневым элементом, так и дочерним.
+        var $content=$(content);
+        var $dataContainer = $content.filter('.b-xpopup-data-container').first();
+        if($dataContainer.size() == 0){
+          $dataContainer = $content.find('.b-xpopup-data-container').first();
+        }
+        if($dataContainer.size() > 0){
+          contentOptions=_extractDataOptions($dataContainer);
+        }
+
+        var headerActionsSelector = winData.opts.headerActionsSelector 
+          || (contentOptions && contentOptions.headerActionsSelector)
+          ;
+        //Если передан селектор для поиска действий, отображаемых в шапке, то попробуем найти такие ссылки
+        if(headerActionsSelector) {
+          var $actionsLinks = $content.find(headerActionsSelector);
+          var actions = [];
+          $actionsLinks.each(function(){
+            var $actionLink = $(this);
+            var href = $actionLink.attr('href');
+            if(!href )  {
+              return;
+            }
+            var title = $actionLink.attr('title') ||  $actionLink.html();
+            var action = {
+              url: href,
+              title: title,
+              data: $actionLink.data(),
+              classes: $actionLink.attr('class')
+            };
+            actions.push(action);
+          });
+          if(actions.length > 0) {
+            contentOptions = contentOptions || {};
+            contentOptions.headerActions = actions;
+          }
+        }
+      }
+    
+      return contentOptions;
+    };
+
+    /**
+     * Формирует объект настроек, переданных для текущего окна в виде дата-аттрибутов.
+     * 
+     * @param  {[type]} el      [description]
+     *   Содержит элемент, в котором нужно поискать дата-аттрибуты для окна
+     * @return {[type]}         
+     *   Объект настроек, переданных в виде дата-аттрибутов el
+     */
+    function _extractDataOptions(el,elType){
+
+      if($.type(el)!=='object'){
+        return null;
+      }
+      var $el=$(el);
+      var data=$el.data();
+      if($.isEmptyObject(data)){
+        return null;
+      }
+
+      var o={};
+
+      //Обработаем опции из дата аттрибутов
+      $.each(data,function(key,value){
+        var propName=key.slice(6); //remove xpopup prefix
+        propName=propName.charAt(0).toLowerCase() + propName.slice(1); //decapitalize prop name
+
+        switch(propName){
+          case 'modal':
+          case 'showCloseBtn':
+          case 'animation':
+          case 'showHeaderActions':
+            o[propName]=new Boolean(value).valueOf();
+            break;
+          default:
+            o[propName]=value;
+            break;
+        }
+      }); 
+
+      return o;
+    };
+
+
+
+    ///////////////////////////////
+    /// ОБработчики событий xpopup 
+    ///////////////////////////////
+    
+    this.on={
+
+      box_closing: function(){
+        this.setBoxStatus('closing');
+      },
+      box_close_after: function(){
+        this.setBoxStatus('closed');
+      },
+      box_closed: function(){
+        this.getStorage().deleteBox();
+      }
+
+
+    };
+    
+    //end hooks
+
+
+    this.setBoxStatus=function(newStatus){
+      var
+        boxData = this.getStorage().getBox(),
+        el = this.getStorage().getElements()
+      ;
+
+      if(!newStatus || newStatus==boxData.status){
+        return false;
+      }
+
+      var oldStatus=boxData.status;
+      boxData.status=newStatus;
+
+      if(el.$bg && el.$box){
+        $.xpopup.getUtils().replaceClassesByPrefixes(el.$box,['b-xpopup_box-status'],' b-xpopup_box-status_'+boxData.status, el.$box_and_bg);
+      }    
+
+      $.xpopup.emit($.xpopup.EVENT_BOX_NEW_STATUS,{newStatus:boxData.status,oldStatus:oldStatus});
+
+      return true;
+    };
+
+    this.setWindowStatus = function(newStatus){
+      var
+        boxData = this.getStorage().getBox(),
+        el = this.getStorage().getElements()
+      ;
+
+      if(!newStatus || newStatus==boxData.windowStatus){
+        return false;
+      }
+
+      var oldStatus=boxData.windowStatus;
+      boxData.windowStatus=newStatus;
+
+      if(el.$bg && el.$box){
+        $.xpopup.getUtils()
+        .replaceClassesByPrefixes(el.$box,'b-xpopup_status',' b-xpopup_status_'+boxData.windowStatus,el.$box_and_bg);
+      }    
+
+      $.xpopup.emit($.xpopup.EVENT_WINDOW_NEW_STATUS,{newStatus:boxData.windowStatus,oldStatus:oldStatus});
+      return true;
+    };
+
+  } //End of XPopupBoxCtrl
+
+$.xpopup.registerPlugin('box_ctrl', new XPopupBoxCtrl());
+
+})(jQuery);;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_box_ctrl.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_window_ctrl.js ///
+;
+(function($) {
+
+
+/**
+ * Private vars 
+ */
+var 
+	_window = $(window),
+	_document = $(document)
+	;
+
+
+/**
+ * Public functions
+ */
+var XPopupWindowCtrl = {
+
+	on: {
+		box_resize_before: function(){
+			var 
+				st = this.getStorage(),
+				winData = st.getBoxWindow(),				
+				el = st.getElements()					
+			;			
+			
+		  //Если размер окна изменился, необходимо пересчитать размер popup
+			this._updateContainerSizes(false);
+			
+			//Сохраним параметры "прямоугольника" окна
+			// winData.initialContentContainerRect = el.$container.get(0).getBoundingClientRect();
+			//Принудительно вызовем scroll-событие, чтобы переририсовать "залипающие плашки"
+			// el.$box.trigger('scroll' + $.xpopup.EVENT_NS);
+		},
+		window_open_before: function(){
+			var win = this;
+
+      win.dispose();
+		},
+		window_loading: function(){
+		  this.getBoxCtrl().setWindowStatus('loading');
+		},
+
+		window_dispose_before: function(){
+			var 
+				st = this.getStorage(),
+				winData = st.getBoxWindow()
+			;			
+		  if(winData.triggerEl){
+		  	$(winData.triggerEl).removeClass('b-xpopup-trigger_active');
+		  }
+		},
+		
+		window_ready: function(){
+			var 
+				win = this,
+				st = win.getStorage(),
+				winData = st.getBoxWindow(),				
+				el = st.getElements()					
+			;			
+			winData.initialContentContainerRect = el.$container.get(0).getBoundingClientRect();
+
+
+			win.getBoxCtrl().setWindowStatus('ready');
+		  
+		  if(winData.triggerEl){
+		  	$(winData.triggerEl).addClass('b-xpopup-trigger_active');
+			}
+		},		
+
+		window_change_after: function(){
+			var 
+				st = this.getStorage(),
+				winData = st.getBoxWindow(),
+				el = st.getElements()
+			;
+
+		  //Обновим классы скина и опций, поскольку они могли измениться 
+	  	$.xpopup.getUtils().replaceClassesByPrefixes(
+	  		el.$box,['b-xpopup_skin','b-xpopup_skinmod','b-xpopup-option','b-xpopup_type_'],
+	  		'b-xpopup_type_'+winData.opts.type +' '+winData.opts.skinClasses +' '+winData.opts.skinModClasses,
+	  		el.$box_and_bg);
+
+		  //Add close option classes
+		  if(winData.opts.closeOnContentClick){
+		  	el.$container.removeClass('b-xpopup-option_close_off').addClass('b-xpopup-option_close_on');
+		  }
+		  else{
+		  	el.$container.removeClass('b-xpopup-option_close_on').addClass('b-xpopup-option_close_off');
+		  }
+		  if(winData.opts.closeOnBgClick){
+		  	el.$box_and_bg.removeClass('b-xpopup-option_close_off').addClass('b-xpopup-option_close_on');
+		  }
+		  else{
+		  	el.$box_and_bg.removeClass('b-xpopup-option_close_on').addClass('b-xpopup-option_close_off');
+		  }
+
+		  //TODO: refactor it
+		  // if(boxData.windowStatus!='loading'){
+	  	// 	$.xpopup.emit($.xpopup.EVENT_WINDOW_READY);  
+	  	// }  
+		}
+
+	},
+	
+	_buildBoxElements: function(forceRebuild){
+		var 
+			win = this,
+			st = this.getStorage(),
+			boxData = st.getBox(),
+			winData=st.getBoxWindow(),
+			el = st.getElements()
+		;
+
+		if(el.$box){
+			if(!forceRebuild){
+				return false;
+			}
+			//Удалим и очистим элементы и события
+			el.$box_and_bg.remove();
+			_document.add(_window).off($.xpopup.EVENT_NS);
+		}
+
+		el.$bg = win._getEl('b-xpopup b-xpopup__bg b-xpopup__bg_box-id_'+winData.boxId);
+		el.$box = win._getEl('b-xpopup b-xpopup__box b-xpopup__box_box-id_'+winData.boxId).attr('tabindex', -1);
+		el.$box.css({
+			overflow: 'auto',
+			overflowX: 'hidden',
+			overflowY: 'auto'
+		})		
+		
+
+		el.$box_and_bg=el.$box.add(el.$bg);
+		el.$box_and_bg.on('click'+$.xpopup.EVENT_NS, function(e) {
+			if(win._checkIfClose(e.target)) {
+				win.close();
+			}
+		});
+
+		//Данный элемент необходим, чтобы было удобно добавлять padding-top сверху нужного размера при залипании заголовка окна или панелей.
+		el.$boxTopGap = win._getEl('b-xpopup__top-gap', el.$box);
+
+		el.$container = win._getEl('b-xpopup__content-container', el.$box);
+		el.$headerContainer = win._getEl('b-xpopup__header-container', el.$container);
+		el.$container.hover(
+			function(){
+				el.$box.addClass('b-xpopup_hover_content');
+			},
+			function(){
+				el.$box.removeClass('b-xpopup_hover_content');
+			}
+		)
+
+		el.$contentContainer = win._getEl('b-xpopup__content',el.$container);
+		el.$childContent = win._getEl('b-xpopup__content-child',el.$contentContainer);
+		el.$footerContainer = win._getEl('b-xpopup__footer-container', el.$container);
+
+		el.$loaderOut=$("<div class='b-xpopup-loader b-xpopup-loader_type_out b-xpopup-option_close_on'><span class='b-xpopup-loader__spinner b-xpopup-option_close_off'></span></div>").appendTo(el.$box);
+		el.$loaderIn=$("<div class='b-xpopup-loader b-xpopup-loader_type_in'><span class='b-xpopup-loader__spinner b-xpopup-option_close_off'></span></div>").appendTo(el.$container);
+
+
+		// add everything to DOM
+		el.$boxContainer = $(winData.opts.prependTo || 'body');
+		el.$boxHtmlContainer = $('html');
+		el.$box_and_bg.prependTo( el.$boxContainer );
+
+		//Разберемся с zIndex
+		var boxZIndex = 1000+10*boxData.id;
+		if(st.activeBoxId == boxData.id){
+			boxZIndex+=1000;
+		}		
+		el.$box.css({
+			zIndex: boxZIndex //чем больше boxId, тем "активнее" окно
+		});		
+		el.$bg.css({
+			zIndex: boxZIndex-1 //чем больше boxId, тем "активнее" окно
+		});		
+
+		/// Add event handlers ///
+		_document.on('keyup' + $.xpopup.EVENT_NS, function(e) {
+			var curWinData = st.getBoxWindow().opts;
+			var curEl = st.getElements();
+
+			// Close on ESC key
+			if(e.keyCode === 27 && curWinData.enableEscapeKey) {
+				win.closeOnEsc(e);
+				//запрет
+				e.stopImmediatePropagation();
+				return false;
+			}
+
+			//Навигация стрелками для галереи 
+			if( /*e.altKey && */ e.keyCode == 37 && curEl.$leftArrow){ /// left arrow
+				//Проверим, что нет элементов форм (textarea, input, select), получивших фокус
+				var noFocus=($(':focus').filter('textarea,input,select').size() == 0);
+				if(noFocus){
+					curEl.$leftArrow.click();
+				}
+			}
+			if( /*e.altKey && */ e.keyCode == 39 && curEl.$rightArrow){ /// right arrow
+				//Проверим, что нет элементов форм (textarea, input, select), получивших фокус
+				var noFocus=($(':focus').filter('textarea,input,select').size() == 0);
+				if(noFocus){
+					curEl.$rightArrow.click();
+				}
+			}
+		});
+
+		_window.on('resize' + $.xpopup.EVENT_NS, function() {
+			$.xpopup.callDelayed('window-resize',$.proxy(win,'_updateBoxSize'),200);
+		});
+
+		//Если разрешены залипающие плашки в окне
+		// if(winData.opts.headerSticked) {
+			//Обработаем событие onScroll в данном xpopup-боксе. 
+			//Это необходимо для обеспечения работы "залипающих сверху плашек"
+			//Проведём инициализацию залипающих плашек (если они есть) при первом скроле
+			el.$box.on('scroll' + $.xpopup.EVENT_NS, function(){
+				win._onScrollInBox();
+				//На всякий случай вызовем _onScrollInBox() через 100 мсек (если на предыдущем вызове ещё не были готовы элементы и просчёт прошёл некорректно) 
+				// $.xpopup.callDelayed('box-scroll',$.proxy(win,'_onScrollInBox'),200);
+			} );		
+		// }
+		
+	},
+
+	_onScrollInBox: function(){
+		var 
+			win = this,
+			st = win.getStorage(),
+			// winData=st.getBoxWindow(),
+			el = st.getElements()
+		;		
+
+		//Если не включен режим залипающего хидера или если содержимое окна ещё не ready, то выходим
+		if(st.getBox().windowStatus != 'ready') {
+			return;
+		}
+
+		var boxTop = 0; //el.$box.data('boxTop')||0;
+		el.$box.find('.b-xpopup-stick-top:not(.b-xpopup-stick-top-active)').each(function(){
+
+			var $this = $(this);
+			var paneRect = this.getBoundingClientRect(); //текущийй прямоугольник плашки
+			$this
+				.addClass('b-xpopup-stick-top-active') //активируем залипание плашки
+				.css({top:boxTop}) //установим верхнюю координату плашки в значение top
+			;
+			boxTop+=paneRect.height; //следующая плашка "прилипает" сразу после данной
+			//Увеличим педдинг сверху на размер плашки, которая стала sticked
+			el.$boxTopGap.css({height: boxTop});
+
+		});
+
+		//Инициаизация залипающих элементов завершена. Больше не требуется отслежиание события onscroll.
+		el.$box.off('scroll' + $.xpopup.EVENT_NS);
+	},
+
+	/**
+	 * Начинаем процесс получения данных для отображения в боксе. 
+	 * 
+	 * @param  data [description]
+	 */
+	fetchContent: function() {
+		var 
+			win = this,
+			st = this.getStorage(),			
+			boxData=st.getBox(),
+			newWinData=st.getBoxNewWindow()
+		;
+
+		if(!boxData.status){
+			// Building markup
+			// main containers are created only once
+			win._buildBoxElements();
+			win.getBoxCtrl().setBoxStatus('opening');
+			$.xpopup.emit($.xpopup.EVENT_BOX_OPEN_BEFORE);
+		}
+
+		if(!boxData.windowStatus){
+			win.getBoxCtrl().setWindowStatus('fetching');
+		}
+
+		if(newWinData.opts.html){
+			//Контент готов. Показываем...
+			win.applyContent();
+		}
+		else{
+			//Start window content fetching...
+			$.xpopup.pluginInvoke('content_type.'+newWinData.opts.type,'fetchContent');
+		}
+	},
+
+	/**
+	 * Контент окна получен и готов для показа. Произведем обновление окна.
+	 * 
+	 * @return {[type]}                   [description]
+	 */
+	applyContent: function(){
+		var 
+			win = this,
+			st = this.getStorage(),			
+			boxData=st.getBox(),
+			newWinData=st.getBoxNewWindow(),
+			el = st.getElements()
+		;
+
+		//Возможна ситуация, когда после получения ajax-ответа или анализа data-аттрибутов полученного контента
+		//окна, выясняется, что содержимое данного окна нужно отобразить в другом боксе (т.е. opts.boxId отличается от текущего boxData.id).
+		//Учтём это:
+		// - переместим winData в новый бокс
+		// - активируем новый бокс
+		// - создадим элементы нового бокса
+		// - отобразим окно в нужном боксе		
+		if(typeof newWinData.opts.boxId !=='undefined' && newWinData.opts.boxId!=boxData.id){
+			st.removeWindow(newWinData.id); //удалим окно из текущего бокса
+			st.activateBox(newWinData.opts.boxId);	 //создадим (если нужно) и активируем новый бокс
+			st.addWindow(newWinData);//добавим в него наше окно
+
+			boxData = st.getBox(); //получим ссылку на новый бокс
+
+			if(!boxData.status){
+				// Если это новый бокс, то необходимо создать его элементы
+				win._buildBoxElements();
+				win.getBoxCtrl().setBoxStatus('opening');
+				$.xpopup.emit($.xpopup.EVENT_BOX_OPEN_BEFORE);
+				el = st.getElements();
+			}			
+		}
+
+		if(boxData.curWindowId!=newWinData.id){
+			//Уведомим слушателей о том, что сейчас начнется процесс замены содержимого текущего окна
+			//Строка ниже может вызывать req.abort, что проявляется в отображении сообщения об ошибке вместо результата ajax-запроса
+			// $.xpopup.emit($.xpopup.EVENT_WINDOW_DISPOSE_BEFORE);
+		}
+
+		//Переключим текущее активное окно на новое окно 
+		boxData.curWindowId=newWinData.id;
+		$.xpopup.pluginInvoke('content_type.'+newWinData.opts.type,'applyContent');
+
+		//Обновим свойства окна, которые зависят от новых данных (размер, скин, заголовок...)		
+		var classesToadd = '';//newWinData.opts.mainClass;
+		if(newWinData.opts.animation==false){
+			classesToadd+=' b-xpopup-option_animation_false'
+		}
+		else{
+			classesToadd+=' b-xpopup-option_animation_true'
+		}
+		el.$box_and_bg.removeClass('b-xpopup-option_animation_false b-xpopup-option_animation_true');
+
+		if(classesToadd) {
+			el.$box_and_bg.addClass(classesToadd);
+		}
+
+		// remove scrollbar, add margin e.t.c
+		var windowHeight = newWinData.wH = _window.height();		
+		var windowStyles = {overflow:'hidden'};
+
+		if(win._hasScrollBar(windowHeight)){
+		  var s = win._getScrollbarSize();
+		  if(s) {
+		    windowStyles.marginRight = s;
+		  }
+		}		
+		el.$boxContainer.addClass('b-body-xpopup').css(windowStyles);	
+		el.$boxHtmlContainer.addClass('b-html-xpopup');
+
+		if( boxData.windowStatus=='ready' && boxData.status=='opening' ){
+			win._updateBoxAnimation('box-open');
+		}
+
+		if(boxData.status!='opened'){
+			//Теперь окно точно открыто
+			this.getBoxCtrl().setBoxStatus('opened');
+			$.xpopup.emit($.xpopup.EVENT_BOX_OPEN_AFTER);
+		}
+
+		//Окно полностью готово и показано
+		$.xpopup.emit($.xpopup.EVENT_WINDOW_READY);  
+	},
+
+	dispose: function(){
+		//TODO: ...	
+		// $.xpopup.emit('xpopup.window_dispose');
+	},
+
+	closeOnEsc: function(event){
+		var 
+			st = this.getStorage(),
+			glob = st.getGlobal();
+
+		if(glob.isFullScreen){
+			//Если мы фуллскрин режиме (например, при просмотре галереи через плагин fotorama), 
+			//то по Esc не нужно закрывать окно. 
+			return false;
+		}
+		this.close();
+	},
+	/**
+	 * Closes the popup
+	 */
+	close: function() {
+		var win=this;
+
+		$.xpopup.emit($.xpopup.EVENT_BOX_CLOSE_BEFORE);
+
+		win._updateBoxAnimation('box-close', $.proxy(win,'_close'));
+	},
+
+	/**
+	 * Helper for close() function
+	 */
+	_close: function() {
+		var win=this, 
+			st = this.getStorage(),
+			winData = st.getBoxWindow(),
+			el = st.getElements(),
+			glob = st.getGlobal(),
+			closePopup = (st.countUsableBoxes() == 1) //Если есть только один используемый (не пустой) бокс, то закрываем весь popup
+			;
+
+		if(!winData){
+			//Возможно, что открытых окон больше нет
+			return false;
+		}
+
+		$.xpopup.emit($.xpopup.EVENT_BOX_CLOSING);
+		$.xpopup.emit($.xpopup.EVENT_WINDOW_DISPOSE_BEFORE);
+
+		// if(winData._lastFocusedEl) {
+		// 	$(winData._lastFocusedEl).focus(); // put tab focus back
+		// }
+		winData.content = null;
+		winData.prevHeight = 0;
+
+		$.xpopup.emit($.xpopup.EVENT_WINDOW_DISPOSE_AFTER);
+		win.getBoxCtrl().setWindowStatus('closed');
+
+		/// History API Logic ///////////////////////////////////////////
+		//После закрытия окна необходимо восстановить ихсодный URL.
+		//Для этого запишем в location ранее сохраненное значение.
+		if(winData.opts.changeUrl && winData._oldDocumentUrl){
+			var i = winData._oldDocumentUrl.indexOf('#xpopup=');	
+			if(i!==-1){
+				//Чтобы окно закрылось в URL не должно быть  #xpopup=,
+				//Поэтому удалим это из URL
+				winData._oldDocumentUrl=winData._oldDocumentUrl.substr(0,i);
+			}
+
+			if(glob.histApi){
+				if(winData.opts.changeUrlHistory)
+					glob.histApi.pushState('', winData._oldDocumentTitle,winData._oldDocumentUrl);
+				else	
+					glob.histApi.replaceState('',winData._oldDocumentTitle,winData._oldDocumentUrl);
+			}
+			else{
+				window.location = winData._oldDocumentUrl;
+				document.title = winData._oldDocumentTitle;
+			}
+			winData._oldDocumentUrl=null;
+			winData._oldDocumentTitle=null;
+		}
+	
+		$.xpopup.emit($.xpopup.EVENT_BOX_CLOSE_AFTER);
+		$.xpopup.emit($.xpopup.EVENT_BOX_CLOSED);
+
+		if(closePopup){
+			el.$boxContainer.removeClass('b-body-xpopup').css({marginRight: '',overflow: 'auto'});
+			el.$boxHtmlContainer.removeClass('b-html-xpopup');
+			_document.off('keyup' + $.xpopup.EVENT_NS + ' focusin' + $.xpopup.EVENT_NS);
+			_document.add(_window).off($.xpopup.EVENT_NS);
+			$.xpopup.emit($.xpopup.EVENT_POPUP_CLOSED);
+		}
+		// winData.ev.off($.xpopup.EVENT_NS);
+	},
+	
+	_updateBoxSize: function() {
+		$.xpopup.emit($.xpopup.EVENT_BOX_RESIZE_BEFORE);
+	},
+
+
+
+	/**
+	 * Set HTML content of popup
+	 * TODO: remove it?
+	 */
+	setContent: function(newContent, type) {
+		var win=this, 
+			st = this.getStorage(),
+			winData = st.getBoxWindow(),
+			glob = st.getGlobal(),
+			el = st.getElements()
+			;
+
+		$.xpopup.emit($.xpopup.EVENT_WINDOW_CHANGE_BEFORE);
+		$.xpopup.emit($.xpopup.EVENT_WINDOW_CHANGING,{content:newContent,type:type});
+
+		if(!newContent)
+			return;
+
+		/////
+		//Сбросим все настройки залипания шапки/плашек, поскольку пришел новый контент
+		if(el.$boxTopGap.height() > 0) {  //Есть залипшая шапка или плашка
+			el.$box.find('.b-xpopup-stick-top').each(function(){
+				var $this = $(this);
+
+				$this
+					.removeData('savedScrollTop')
+					.removeData('savedWidth')
+					.removeClass('b-xpopup-stick-top-active')
+					.css({top:'auto'})
+					.outerWidth('auto')
+				;
+			});
+			// winData.initialContentContainerRect = {};
+			//Установим педдинг сверху в 0
+			el.$boxTopGap.css({height: 0});
+		}
+		//////			
+
+		win.getBoxCtrl().setWindowStatus('updating');
+
+		if(el.$content){
+			el.$content.hide().remove();
+		}
+		el.$content = $(newContent);
+
+		el.$childContent.empty();
+
+	  //Удалим header окна, поскольку содержимое изменилось и вероятно старый заголовок окна уже не актуален
+		if(el.$header){
+		  el.$header.remove();
+		}
+
+	  //Если для окна передан заголовок, то обновим его
+	  var hasHeader=win._buildHeader(el.$headerContainer);
+	  if(hasHeader){
+			el.$box.addClass('b-xpopup_has-header_true');
+	  }
+	  else{
+	  	el.$box.addClass('b-xpopup_has-header_false');
+	  }
+
+		if(el.$footer){
+			el.$footer.remove();
+		}
+
+	  //Если для окна передан подвал, то обновим его
+	  var hasFooter=win._buildFooter(el.$footerContainer);
+	  if(hasFooter){
+	  	el.$box.addClass('b-xpopup_has-footer_true');
+	  }
+	  else{
+	  	el.$box.addClass('b-xpopup_has-footer_false');
+	  }
+
+	  el.$content.appendTo(el.$contentContainer);
+
+    //Обновим стрелки навигации (Влево/Вправо)
+    win._updateArrow('left');
+		win._updateArrow('right');
+		
+		el.$box.removeClass('b-clicked-arrow_left').removeClass('b-clicked-arrow_right');
+		if(winData.opts.clickedArrow) {
+			el.$box.addClass('b-clicked-arrow_'+winData.opts.clickedArrow);
+		}
+
+    win._updateBoxSize(); 
+
+    //Если внутри содержимого есть xpopup-действия, то подключимся к ним
+    el.$content.find('.b-xpopup-action').xpopup();
+
+    $.xpopup.emit($.xpopup.EVENT_WINDOW_CHANGE_AFTER);      
+
+
+		/// History API Logic ///////////////////////////////////////////
+		//Обновим URL hash, чтобы у данного окна был уникальный URL, по которому его можно снова открыть
+		if(winData.opts.changeUrl){
+			var hash=[];
+			$.each(winData.initial,function(key,value){
+				var type = $.type(value);
+				if(type=='object' || type == 'array')
+					return; 
+				//Только простые свойства могут быть добавлены в хэш
+				hash.push(key+':'+value);
+			})
+			if(hash.length>0){
+				//Сохраним текущий url, чтобы при закрытии окна восстановить исходный адрес.
+				if(!winData._oldDocumentUrl){
+					winData._oldDocumentUrl = location.toString();
+					winData._oldDocumentTitle = document.title;
+				}
+
+				//Сформируем хэш данного окна
+				var hashStr = encodeURI('#xpopup='+hash.join(','));
+				//Изменим URL
+				if(glob.histApi){
+					var title = document.title+':'+winData.opts.headerCaption;
+					if(winData.opts.changeUrlHistory && hashStr!=location.hash)
+						glob.histApi.pushState('', title, hashStr);
+					else	
+						glob.histApi.replaceState('', title, hashStr);
+				}
+				else{
+					location.hash=hashStr;
+				}
+
+
+			}      
+		} //end if(winData.opts.changeUrl)
+
+	},
+
+
+	// Check to close popup or not
+	// "target" is an element that was clicked
+	_checkIfClose: function(target) {
+
+		var $target=$(target);
+
+		if($target.hasClass('b-xpopup__close')){
+			return true;
+		}
+		if($target.hasClass('b-xpopup-action')){
+			return false;
+		}
+
+		//Check close options
+		var onEl=$target.closest('.b-xpopup-option_close_on')[0];
+		var offEl=$target.closest('.b-xpopup-option_close_off')[0];
+
+		if(onEl && offEl){
+			if($.contains(onEl,offEl)){
+				//off внутри on
+				return false; 
+			}
+		}
+		else if(onEl){
+			//option 'on' has priority against 'off'
+		  return true;
+		}
+		else if(offEl){
+			return false;
+		}
+
+		if($target.parents('body').size() != 0){
+			//Никаких запретов на закрытие окна не нашли, 
+			//а сам элемент в основном дереве (т.е. это не какой-то удалённый из DOM элемент)
+			return true;
+		}
+		else{
+			//Элемент не принадлежит DOM-дереву (вероятно был удален). В этом случае запрещаем закрытие окна.
+			return false;
+		}
+	  
+	},
+	_hasScrollBar: function(winHeight) {
+		var 
+			st = this.getStorage(),
+			glob = st.getGlobal()
+			;
+
+		return (  (glob.isIE7 ? _document.height() : document.body.scrollHeight) > (winHeight || _window.height()) );
+	},
+
+
+
+	_getScrollbarSize: function() {
+		var 
+			st = this.getStorage(),
+			winData = st.getBoxWindow()
+			;
+
+		// thx David
+		if(winData.scrollbarSize === undefined) {
+			var scrollDiv = document.createElement("div");
+			scrollDiv.style.cssText = 'width: 99px; height: 99px; overflow: scroll; position: absolute; top: -9999px;';
+			document.body.appendChild(scrollDiv);
+			winData.scrollbarSize = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+			document.body.removeChild(scrollDiv);
+		}
+		return winData.scrollbarSize;
+	},
+
+	
+	_getEl: function (className, appendTo, html, raw) {
+		var el = document.createElement('div');
+
+		if(className=='b-xpopup__content'){
+			//Для области контента добавим clearfix, 
+			//чтобы избежать проблем с очесткой блоков контентной области 
+			className+=' b-xpopup-clearfix';
+		}
+		el.className = className;
+		if(html) {
+			el.innerHTML = html;
+		}
+		if(!raw) {
+			el = $(el);
+			if(appendTo) {
+				el.appendTo(appendTo);
+			}
+		} 
+		else if(appendTo) {
+			appendTo.appendChild(el);
+		}
+		return el;
+	},
+
+	_updateBoxAnimation: function(animationType,stopCallback){
+		var 
+			st = this.getStorage(),
+			winData = st.getBoxWindow(),
+		  el = st.getElements()
+		;
+
+		if(!winData.opts.animation){
+
+			if(stopCallback){
+				//Действие выполняем в любом случае
+				stopCallback();
+			}			
+			return false;
+		}
+
+		//start animation
+		var classes='';
+		if(animationType=='box-open'){
+		  if(winData.opts.animationOpen){
+		    classes+=' b-xpopup_animation_open-'+winData.opts.animationOpen;
+		  }
+		}
+		else if(animationType=='box-close'){
+		  if( winData.opts.animationClose){
+		    classes+=' b-xpopup_animation_close-'+winData.opts.animationClose;
+		  }
+		}  
+
+		if(classes){
+			el.$box_and_bg.addClass(classes);
+
+			//stop animation
+			$.xpopup.callDelayed('animation-'+animationType+'-stop',function(){
+				$.xpopup.getUtils().replaceClassesByPrefixes(el.$box,'b-xpopup_animation',null,el.$box_and_bg);
+
+				if(stopCallback){
+					stopCallback();
+				}
+
+			}, 
+			winData.opts.animationDelay)
+		}//end if(classes)
+
+	},
+
+	_buildHeader: function($headerContainer, calcMode){
+		var 
+			win = this,
+			st = this.getStorage(),
+			winData = st.getBoxWindow(),
+			utils = $.xpopup.getUtils(),
+			el = st.getElements(),
+			type = winData.opts.type,
+			hasHeader = false
+			;
+
+
+	  if(winData.opts.headerCaption){
+			var 
+				caption = winData.opts.headerCaption,
+	    	headerCaption = null,
+	    	headerIcon='',
+				headerBack = '', 
+				headerActions = '',
+	    	headerClasses = 'b-xpopup__header'
+				;
+				
+				if(caption){
+					if(typeof caption == 'string' && caption.charAt(0)=='.'){
+						caption = $(caption,winData.opts.html).html();
+					}
+					else {
+						caption = "<span class='b-xtip' title='"+caption+"'>"+caption+"</span>";
+					}
+				}
+
+				if(type != 'image') {
+					if(winData.opts.headerSticked) {
+						$headerContainer.addClass('b-xpopup-stick-top');
+					}
+					if(winData.opts.headerSubcaption){
+						var subcaption = winData.opts.headerSubcaption;
+						if(typeof subcaption == 'string' && subcaption.charAt(0)=='.'){
+							subcaption = $(subcaption,winData.opts.html).html();
+						}
+						if(subcaption){
+							headerCaption="<div class='b-xpopup__header-caption'><div class='b-xpopup__header-caption-inner'>"+caption+"<div class='b-xpopup__header-subcaption'>"+subcaption+"</div></div></div>";	    	
+							headerClasses += ' b-xpopup__header_has-subcaption';
+						}
+					}
+					if(!headerCaption){	    
+						headerCaption="<div class='b-xpopup__header-caption'><div class='b-xpopup__header-caption-inner'>"+caption+"</div></div>";
+					}
+					if(winData.opts.headerIcon){
+						headerIcon="<div class='b-xpopup__header-icon'>"+winData.opts.headerIcon+"</div>";
+						headerClasses += ' b-xpopup__header_has-icon';
+					}
+					// winData.opts.showBack=1;
+					if( winData.opts.showBack && winData.parentId){
+						headerBack="<span title='Go back' class='b-xpopup__back b-xpopup-action b-xpopup-action_type_back'>&#9668;</span>";
+						headerClasses += ' b-xpopup__header_has-back';
+					}
+				
+				// Header actions tests
+				// winData.opts.headerActions = [
+				// 	{
+				// 		url: 'http://<site>/page',
+				// 		title: 'Рассказать друзьям'
+				// 	},
+				// 	{
+				// 		url: 'http://<site>/page2',
+				// 		title: 'Поделиться в соц. сетях',
+				// 		data: {'xpopup-box-id':99},
+				// 		classes: 'ctools-use-modal'
+				// 	}
+				// ];
+
+				if(!calcMode && winData.opts.showHeaderActions && winData.opts.headerActions) {
+					headerActions ="<div class='b-xpopup__header-actions'>";
+					headerActions +="<div class='b-xpopup__header-actions-toggler' onclick='$(this).next().toggle();' role='button'><span>Действия</span></div>";
+					headerActions += "<ul class='b-xpopup__header-actions-items'>";
+
+					$.each(winData.opts.headerActions, function(index, action){
+						action.classes = 'b-xpopup__header-action-link ' + (action.classes || ''); 
+						headerActions += "<li class='b-xpopup__header-action'>";
+						headerActions += "<a href='" + action.url + "' class='" + action.classes + "' ";
+						if(action.attrs) {
+							headerActions +=  action.attrs;
+						}
+						if(action.data) {
+							$.each(action.data, function(k,v){
+								k = utils.camelToDash(k);
+								headerActions += ' data-'+k+'="'+v+'" ';
+							});
+						}
+						headerActions += " >";
+						headerActions += action.title;
+						headerActions += "</a>";
+						headerActions += "</li>";
+					});
+					headerActions += "</ul>";
+					headerActions += "</div>";
+					headerClasses += ' b-xpopup__header_has-actions';
+				}
+
+				// Close button
+				// Refactor it: it shouldn't depend on winData. 
+				// var closeBtn='<button title="'+winData.opts.tClose+'" type="button" class="b-xpopup__close b-xpopup__close_type_inside" ';
+				// if(winData.opts.showCloseBtns == 'none'){
+				// 	closeBtn+=' style="display:none;"';
+				// }
+				// closeBtn+='>&times;</button>';
+
+				var $header = $("<div class='"+headerClasses+"'>"+headerBack+headerIcon+headerCaption+headerActions + "</div>").prependTo($headerContainer);
+				if(!calcMode){
+					el.$header = $header;
+				}
+			}
+
+	    // if(winData.opts.skin=='lite'){
+	    // 	$header.addClass('b-xpopup-option_close_on');
+	    // }
+	    hasHeader =  true;
+		}
+		
+		if(!calcMode) {
+			if(el.$closeBtn){
+				el.$closeBtn.remove();
+			}
+			if(hasHeader) {
+				win._buildCloseIcon($headerContainer);
+			}
+			else{
+				win._buildCloseIcon(el.$contentContainer);
+			}
+		}
+
+	  return hasHeader;
+	},
+
+
+	_buildCloseIcon: function ($appendTo) {
+		var 
+			st = this.getStorage(),
+			winData = st.getBoxWindow(),
+			el=st.getElements();
+
+		// Close button
+		// Refactor it: it shouldn't depend on winData. 
+		var closeBtn='<button type="button" class="b-xpopup__close b-xpopup__close_type_inside" ';
+		if(winData.opts.showCloseBtns == 'none'){
+			closeBtn+=' style="display:none;"';
+		}
+		closeBtn+='>&times;</button>';
+
+		var $closeBtn = $(closeBtn).appendTo($appendTo);
+		el.$closeBtn = $closeBtn;
+
+		// if(winData.opts.skin=='lite'){
+		// 	$header.addClass('b-xpopup-option_close_on');
+		// }
+	},
+
+	_buildFooter: function(appendTo){
+		var 
+			st = this.getStorage(),
+			winData=st.getBoxWindow(),
+			el = st.getElements()
+			;
+
+	  if(winData.opts.footerActions){
+			var $footer=$('<div>').addClass('b-xpopup__footer');
+			if($.type(winData.opts.footerClasses) == 'string'){
+				$footer.addClass(winData.opts.footerClasses);
+			}
+			
+ 		  $.each(winData.opts.footerActions, _processAction);
+      $footer.appendTo(appendTo);
+
+			function _processAction(index, item){
+				var $action = $("<a>");
+				$action.addClass('b-xpopup__footer-action');
+				if($.type(item.xtype) == 'string'){
+					if(item.xtype == 'close'){
+						item.href = 'javascript:void(0);';
+						$action.addClass('b-xpopup-action b-xpopup-action_type_close');
+						if(!item.text){
+							item.text = 'Закрыть';
+						}
+						if(!item.classes){
+							$action.addClass('btn btn-default');
+						}
+					}
+				}
+				if($.type(item.classes) == 'string'){
+					$action.addClass(item.classes);
+				}
+
+				if($.type(item.href) == 'string'){
+					$action.attr('href',item.href);
+				}
+				if($.type(item.text) == 'string'){
+					$action.text(item.text);
+				}
+				if($.type(item.attrs) == 'array' )
+				$.each(item.attrs, function(attr){
+					$action.attr(attr.name,attr.value);
+				});
+				$footer.append($action);
+				el.$footer = $footer;
+			}			
+
+	    return true;
+	  }
+	  return false;
+	},
+
+
+
+  _updateArrow: function(type){
+  	var 
+  		st = this.getStorage(),  		
+  		winData = st.getBoxWindow(),
+  		el = st.getElements(),
+  		$arrow = null,arrowData=null,arrowTrigger=null
+			;
+			
+			if(winData.opts.type != 'image') {
+				//Режим галереи пока работает только для изображений
+				return;
+			}
+  	
+  	//Сформируем стрелку
+  	if(winData.opts[type+'ArrowData']){
+  		arrowData = winData.opts[type+'ArrowData'];
+  	}
+  	else if(winData.opts[type+'ArrowUrl']){
+  		arrowData = arrowData || {};
+  		arrowData['content'] = winData.opts[type+'ArrowUrl'];
+  	}
+  	else if(winData.opts[type+'ArrowTrigger']){
+  		arrowTrigger = winData.opts[type+'ArrowTrigger'];
+  	}
+  	else if( type=='left' && winData.galleryItemIndex > 0){
+  		arrowTrigger = $('.b-xpopup-gallery_id_'+winData.galleryId+'.b-xpopup-gallery__item-'+(winData.galleryItemIndex-1) )
+  	}
+  	else if( type=='right' && winData.galleryItemIndex < winData.galleryItemsCount-1){
+  		arrowTrigger = $('.b-xpopup-gallery_id_'+winData.galleryId+'.b-xpopup-gallery__item-'+(winData.galleryItemIndex+1) )
+  	}
+
+    if(arrowData || arrowTrigger){
+    	if(winData.opts[type+'ArrowTitle']){
+    		arrowData = arrowData || {};
+    		arrowData.headerCaption = winData.opts[type+'ArrowTitle'];
+    	}
+
+    	var arrowClasses = 'b-xpopup__arrow b-xpopup__arrow_'+type+'  b-xpopup-option_close_off';
+    	$arrow = $("<span class='"+arrowClasses+"' ><span class='b-xpopup__arrow-icon'></span></span>");
+    	$arrow.click(function(){
+				arrowData = arrowData || {};    		
+				arrowData.clickedArrow = type;
+	    	// if(typeof arrowData.noInheritance == 'undefined'){
+	    	// 	//по умолчанию запретим наследование опций родительского окна при открытии окон стрелками
+	    	// 	arrowData.noInheritance = true;
+	    	// }
+    		$.xpopup.open(arrowData, arrowTrigger);	
+    	});		    	
+  	}
+
+  	//Обновим стрелку и её контейнер
+  	var $type = '$'+type;
+	  if(el[$type+'Arrow']){
+	  	el[$type+'Arrow'].remove();
+	  }
+	  if($arrow){
+			el[$type+'Arrow'] = $arrow;
+			if(el[$type+'Arrow']){
+				el.$container.append(el[$type+'Arrow']);  			
+			}	 
+		}
+  },
+
+	_updateContainerSizes: function(allowAnimation){
+  	var 
+  		win = this,
+  		st = this.getStorage(),	
+  		boxData = st.getBox(),
+  		winData = st.getBoxWindow(),
+  		el = st.getElements()
+  		;
+
+  	if(winData.zoomed){
+  		return;
+		}
+		
+  	var winWidth = $(window).innerWidth();
+  	var winHeight = $(window).innerHeight();
+		var winWidth2 = winWidth;
+		var winHeight2 = winHeight;
+
+
+    //Необходимо высчитать и установить размеры окна для наилучшего отображения нового содержания. 
+    //Для этого высчитаем реальные размеры контейнера с новым содержанием.
+    var contentSize=win._calcContentSize(), 
+  	  hasContentSize = !$.isEmptyObject(contentSize),
+  	  css = {}
+    ;
+
+
+    if(boxData.windowStatus=='loading'){
+    	if(hasContentSize){
+  	    //Когда loading, то используем оптимальный размер - тот, который высчитали
+  	    css={maxWidth:contentSize.width};
+  	  }
+    }
+    else{
+      if(winData.opts.minWidth || winData.opts.initialMinWidth){
+        css.minWidth=winData.opts.initialMinWidth || winData.opts.minWidth;
+        if(css.minWidth > winWidth){
+        	css.minWidth = undefined;
+        }
+      }
+      if(winData.opts.width || winData.opts.initialWidth){
+        css.width=winData.opts.initialWidth || winData.opts.width;
+      }
+      if(winData.opts.maxWidth || winData.opts.initialMaxWidth){
+        css.maxWidth=winData.opts.initialMaxWidth || winData.opts.maxWidth;
+      }
+      else{
+      	if(!css.width && !winData.opts.width)
+        	css.maxWidth=contentSize.width;
+        if(!css.width)
+        	css.width="100%";
+      }
+
+      if(winData.opts.minHeight || winData.opts.initialMinHeight){
+        css.minHeight=winData.opts.initialMinHeight || winData.opts.minHeight;
+      }
+      if(winData.opts.height || winData.opts.initialHeight){
+        css.height=winData.opts.initialHeight || winData.opts.height ;
+      }
+      if(winData.opts.maxHeight || winData.opts.initialMaxHeight){
+        css.maxHeight= winData.opts.initialMaxHeight || winData.opts.maxHeight;
+      }
+      // else{
+      //   css.minHeight=containerDim.height;
+      // }
+		}
+		
+		function forceWidth(value){
+			if(value && $.isNumeric(value) == false){
+				if(value.endsWith('%')) {
+					value = (parseInt(value)/100)*winWidth2;
+				}
+			}
+			if($.isNumeric(value) && value > winWidth2) {
+				value = winWidth2;
+			}
+			return value;
+		}
+		function forceHeight(value){
+			if(value && $.isNumeric(value) == false){
+				if(value.endsWith('%')) {
+					value = (parseInt(value)/100)*winHeight;
+				}
+			}
+			if($.isNumeric(value) && value > winHeight) {
+				value = winHeight;
+			}
+			return value;
+		}
+	
+
+		if(winData.opts.sizeMode == 'screen') {
+	
+			css.width = forceWidth(css.width);
+	
+			css.height = forceHeight(css.height);
+	
+
+			var css2 = {};
+			if($.isNumeric(css.height)) {
+				css2.paddingTop = css2.paddingBottom = (winHeight - css.height)/2;
+				if(css2.paddingTop < 0 || winWidth < 768) {
+					css2.paddingTop = css2.paddingBottom = 0;
+				}
+			}
+			if($.isNumeric(css.width)) {
+				css2.paddingLeft = css2.paddingRight = (winWidth - css.width)/2;
+				if(css2.paddingLeft < 0 || winWidth < 768) {
+					css2.paddingLeft = css2.paddingRight = 0;
+				}
+			}
+			css2.overflow = 'hidden';
+			el.$box.css(css2);
+			var h = winHeight - css2.paddingTop*2; 
+
+
+// console.log(winHeight,winWidth,css,contentSize)
+	// debugger			
+
+			// css.maxHeight = '450px';
+			//Применим новые размеры, используя анимацию
+			if(!$.isEmptyObject(css)){
+				el.$container.attr('style','').css(css);
+				el.$container.find('.b-xpopup__size-holder').css({height:h+'px'});
+			}
+			return;
+		}
+		else{
+
+
+			//Применим новые размеры, используя анимацию
+			if(!$.isEmptyObject(css)){
+				el.$container.attr('style','').css(css);
+			}
+		}
+
+    //Если были заданы initial-свойства, то необходимо их сбросить
+    var initialSizeProps = {}, hasInitialSizeProps = false;
+    $.each(winData.opts,function(key,value){
+    	switch(key){
+    		case 'initialWidth':
+    		case 'initialMinWidth':
+    		case 'initialMaxWidth':
+    		case 'initialHeight':
+    		case 'initialMinHeight':
+    		case 'initialMaxHeight':
+    			var key2 = key.replace('initial','');
+    			key2 = key2.charAt(0).toLowerCase() + key2.slice(1); //MaxHeight -> maxHeight
+    			initialSizeProps[key2] = winData.opts[key] || '';
+    			hasInitialSizeProps = true;
+    			//Удалим initial-опцию, чтобы избежать её применения при ресайзе окна. 
+    			//Initial-опции применяются только при обновлении содержимого окна окна
+    			// delete winData.opts[key];
+  	  		break;
+    	}
+    });
+    if(hasInitialSizeProps){
+    	//Если такие свойства найдены, то сбросим их. Сбросим не сразу, а по таймеру, иначе возможны эффекты некорректным 
+    	//расчетом размеров элементов xpopup
+    	var timer = setTimeout(function(){
+    		el.$container.css(initialSizeProps);
+    	},300)
+		}
+
+
+		// 	var h = el.$box.height();
+		// 	debugger
+		// var timer2 = setTimeout(function(){
+		// 	var h = el.$box.height();
+		// 	debugger
+		// },300)		
+	
+		var maxH =  el.$container.height();
+		if(winData.opts.sizeMode != 'screen' && maxH && maxH < winHeight && winWidth>768){
+			el.$box.css('padding-top','40px');
+		}
+		else{
+			el.$box.css('padding-top','0px');
+		}
+
+  },  
+	
+
+// 	_updateContainerSizes__NEW: function(allowAnimation){
+//   	var 
+//   		win = this,
+//   		st = this.getStorage(),	
+//   		boxData = st.getBox(),
+//   		winData = st.getBoxWindow(),
+//   		el = st.getElements()
+//   		;
+
+//   	if(winData.zoomed){
+//   		return;
+//   	}
+
+//   	var winWidth = $(window).innerWidth();
+//   	var winHeight = $(window).innerHeight();
+// 		var winWidth2 = winWidth;
+// 		var winHeight2 = winHeight;
+
+// // debugger
+
+//     //Необходимо высчитать и установить размеры окна для наилучшего отображения нового содержания. 
+//     //Для этого высчитаем реальные размеры контейнера с новым содержанием.
+//     var contentSize=win._calcContentSize(), 
+//   	  hasContentSize = !$.isEmptyObject(contentSize),
+//   	  css = {}
+//     ;
+
+//     if(boxData.windowStatus=='loading'){
+//     	if(hasContentSize){
+//   	    //Когда loading, то используем оптимальный размер - тот, который высчитали
+//   	    css={maxWidth:contentSize.width};
+//   	  }
+//     }
+//     else{
+//       if(winData.opts.minWidth || winData.opts.initialMinWidth){
+//         css.minWidth=winData.opts.initialMinWidth || winData.opts.minWidth;
+//       }
+//       if(winData.opts.width || winData.opts.initialWidth){
+//         css.width=winData.opts.initialWidth || winData.opts.width;
+//       }
+//       if(winData.opts.maxWidth || winData.opts.initialMaxWidth){
+//         css.maxWidth=winData.opts.initialMaxWidth || winData.opts.maxWidth;
+//       }
+//       else{
+//       	if(!css.width && !winData.opts.width)
+//         	css.maxWidth=contentSize.width;
+//         // if(!css.width)
+//         // 	css.width="100%";
+//       }
+
+//       if(winData.opts.minHeight || winData.opts.initialMinHeight){
+//         css.minHeight=winData.opts.initialMinHeight || winData.opts.minHeight;
+//       }
+//       if(winData.opts.height || winData.opts.initialHeight){
+//         css.height=winData.opts.initialHeight || winData.opts.height ;
+//       }
+//       if(winData.opts.maxHeight || winData.opts.initialMaxHeight){
+//         css.maxHeight= winData.opts.initialMaxHeight || winData.opts.maxHeight;
+//       }
+//       // else{
+//       //   css.minHeight=containerDim.height;
+//       // }
+//     }
+
+
+// 		if(!css.height && contentSize.height > 0)  {
+// 			css.height = contentSize.height;
+// 		}
+// 		if(!css.width && contentSize.width > 0)  {
+// 			css.width = contentSize.width;
+// 		}
+
+// 		function forceWidth(value){
+// 			if(value && $.isNumeric(value) == false){
+// 				if(value.endsWith('%')) {
+// 					value = (parseInt(value)/100)*winWidth2;
+// 				}
+// 			}
+// 			if($.isNumeric(value) && value > winWidth2) {
+// 				value = winWidth2;
+// 			}
+// 			return value;
+// 		}
+// 		function forceHeight(value){
+// 			if(value && $.isNumeric(value) == false){
+// 				if(value.endsWith('%')) {
+// 					value = (parseInt(value)/100)*winHeight;
+// 				}
+// 			}
+// 			if($.isNumeric(value) && value > winHeight) {
+// 				value = winHeight;
+// 			}
+// 			return value;
+// 		}
+	
+
+// 		if(winData.opts.sizeMode == 'screen') {
+	
+// 			css.width = forceWidth(css.width);
+	
+// 			css.height = forceHeight(css.height);
+	
+
+// 			var css2 = {};
+// 			if($.isNumeric(css.height)) {
+// 				css2.paddingTop = css2.paddingBottom = (winHeight - css.height)/2;
+// 				if(css2.paddingTop < 0 || winWidth < 768) {
+// 					css2.paddingTop = css2.paddingBottom = 0;
+// 				}
+// 			}
+// 			if($.isNumeric(css.width)) {
+// 				css2.paddingLeft = css2.paddingRight = (winWidth - css.width)/2;
+// 				if(css2.paddingLeft < 0 || winWidth < 768) {
+// 					css2.paddingLeft = css2.paddingRight = 0;
+// 				}
+// 			}
+// 			css2.overflow = 'hidden';
+// 			el.$box.css(css2);
+// 			var h = winHeight - css2.paddingTop*2; 
+
+
+// // console.log(winHeight,winWidth,css,contentSize)
+// 	// debugger			
+
+// 			// css.maxHeight = '450px';
+// 			//Применим новые размеры, используя анимацию
+// 			if(!$.isEmptyObject(css)){
+// 				el.$container.attr('style','').css(css);
+// 				el.$container.find('.b-xpopup__size-holder').css({height:h+'px'});
+// 			}
+// 			return;
+// 		}
+// 		else{
+// 			// css.width = forceWidth(css.width);
+// 			// css.minWidth = forceWidth(css.minWidth);
+// 			// css.maxWidth = undefined; //forceWidth(css.maxWidth);
+	
+// 			// css.height = forceHeight(css.height);
+// 			// css.minHeight = forceHeight(css.minHeight);
+// 			// css.maxHeight = forceHeight(css.maxHeight);
+
+// 			// var css2 = {};
+// 			// if($.isNumeric(css.height)) {
+// 			// 	css2.paddingTop = css2.paddingBottom = (winHeight - css.height)/2;
+// 			// 	if(css2.paddingTop < 0 || winWidth < 768) {
+// 			// 		css2.paddingTop = css2.paddingBottom = 0;
+// 			// 	}
+// 			// }
+// 			// if($.isNumeric(css.width)) {
+// 			// 	css2.paddingLeft = css2.paddingRight = (winWidth - css.width)/2;
+// 			// 	if(css2.paddingLeft < 0 || winWidth < 768) {
+// 			// 		css2.paddingLeft = css2.paddingRight = 0;
+// 			// 	}
+// 			// }
+// 			// el.$box.css(css2);
+
+// 			// css.maxHeight = '450px';
+// 			//Применим новые размеры, используя анимацию
+// 			if(!$.isEmptyObject(css)){
+// 				el.$container.attr('style','').css(css);
+// 			}
+	
+
+// 			//Если были заданы initial-свойства, то необходимо их сбросить
+// 			var initialSizeProps = {}, hasInitialSizeProps = false;
+// 			$.each(winData.opts,function(key,value){
+// 				switch(key){
+// 					case 'initialWidth':
+// 					case 'initialMinWidth':
+// 					case 'initialMaxWidth':
+// 					case 'initialHeight':
+// 					case 'initialMinHeight':
+// 					case 'initialMaxHeight':
+// 						var key2 = key.replace('initial','');
+// 						key2 = key2.charAt(0).toLowerCase() + key2.slice(1); //MaxHeight -> maxHeight
+// 						initialSizeProps[key2] = winData.opts[key] || '';
+// 						hasInitialSizeProps = true;
+// 						//Удалим initial-опцию, чтобы избежать её применения при ресайзе окна. 
+// 						//Initial-опции применяются только при обновлении содержимого окна окна
+// 						// delete winData.opts[key];
+// 						break;
+// 				}
+// 			});
+// 			if(hasInitialSizeProps){
+// 				//Если такие свойства найдены, то сбросим их. Сбросим не сразу, а по таймеру, иначе возможны эффекты некорректным 
+// 				//расчетом размеров элементов xpopup
+// 				var timer = setTimeout(function(){
+// 					el.$container.css(initialSizeProps);
+// 				},300)
+// 			}
+			
+// 		}
+
+
+// 	},  
+	
+
+
+
+  /**
+   * Высчитывает реальные размер окна с содержимым content с учётом текущего скина
+   * @param  {[type]} obj [description]
+   * @return {[type]}     [description]
+   */
+  _calcContentSize: function(){
+  	var 
+  		win = this,
+  		st = this.getStorage(),
+  		winData=st.getBoxWindow(),
+  		el = st.getElements()
+  	;
+
+    if(!el.$contentContainer){
+      return {};
+    }
+    
+    var mainClass=winData.opts.mainClass;  //Необходимо, чтобы учесть стиль текущего скина
+    //Получим клон контента. При этом отфильтруем элементы <script>, поскольку они могут 
+    var $clone = el.$contentContainer.clone();
+
+  	$wrapper=$("<div class='"+mainClass+"'><div class='b-xpopup__content-container'></div>")
+  	.css({ position: "absolute", visibility: "hidden", display: 'inline-block'});
+  	$wrapper.find('.b-xpopup__content-container').append($clone);
+
+
+    //Если контент содержит элемент с классом .b-xpopup-size, то попробуем взять ширину и высоту из него
+    var $sizeEl=$wrapper.find('.b-xpopup-size').first();
+    if($sizeEl.length > 0){
+    	var $sizeElParent=$sizeEl.parent();
+      $sizeEl.css({position:'absolute',visibility:'hidden'}).appendTo('body');
+      var dimC={width:$sizeEl.outerWidth(),height:$sizeEl.outerHeight()};
+      $sizeEl.detach().appendTo($sizeElParent);
+      
+      //Теперь жестко установим клону контента полученные width и height. 
+      $wrapper.find('.b-xpopup__content-container').css( {width:dimC.width});
+    }
+
+    win._buildHeader($wrapper.find('.b-xpopup__content-container'), true); 
+    $('body').prepend($wrapper);
+    //debugger
+    var dim={width:$wrapper.outerWidth(),height:$wrapper.outerHeight()};
+    // console.log('TTT',dim);
+
+    $wrapper.remove();
+
+    return dim;
+  }  ,  	
+
+ 
+
+}; /* XPopupWindowCtrl core prototype end */
+
+
+$.xpopup.registerPlugin('window_ctrl', XPopupWindowCtrl);
+
+
+
+
+})(jQuery);;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_window_ctrl.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_types.js ///
+;
+(function($) {
+
+  /**
+   * AJAX content source plugin 
+   */
+  $.xpopup.registerPlugin('content_type.ajax', {
+
+    defaults: {
+      showCloseBtns: 'inside',
+      closeOnContentClick: false,
+      tError: '<a href="%url%">The content</a> could not be loaded.'
+    },
+    // isActive: function(){
+    //   return this.getWindowData(true).type==this.pluginName;
+    // },    
+
+    _destroyAjaxRequest: function() {
+      var 
+        st = this.getStorage(),
+        winData = st.getBoxWindow()
+        ;
+
+      if(winData._req) {
+        winData._req.abort();
+      }
+    },
+
+    on: {
+      window_settings_alter:function(){
+        var winDataOpts=this.getWindowData(true);
+
+        if(!winDataOpts.content){
+          winDataOpts.content=$(winDataOpts.triggerEl).attr('href');
+        }        
+      },
+      window_dispose_before: function(){
+        this._destroyAjaxRequest();      
+      },
+
+    },
+    fetchContent: function() {
+      var 
+        plugin = this,
+        st = this.getStorage(),
+        winData = st.getBoxNewWindow();
+
+      plugin.getBoxCtrl().setWindowStatus('loading');
+
+      //Сформируем объект с POST-параметрами, если они были переданы в виде аттрибута data-post="param1=value1&param2=value2"
+      var reqData = XSyst.ajax.extractDataPostParams(winData.triggerEl);
+      //Возможно, доп. параметры запроса были переданы в виде опции reqParams
+      if(winData.opts.reqParams){
+        reqData = $.extend(true,{},reqData,winData.opts.reqParams);
+      }
+
+      var ajaxRequestOpts = {
+        url: winData.opts.content,
+        data: reqData,
+        success: function(data, textStatus, jqXHR) {
+          var temp = {
+            response:data,
+            xhr:jqXHR
+          };
+
+          if($.type(temp.response)=='string'){
+            temp.response=[{command:'xoverlay_display',output:temp.response}];
+          }
+
+          $.xpopup.emit($.xpopup.EVENT_WINDOW_AJAX_SUCCESS,temp);
+
+          if(temp.ajaxResponseOptions){
+            winData.ajaxResponseOptions=temp.ajaxResponseOptions;
+          }
+          else{
+            winData.ajaxResponseOptions=temp.response;           
+          }
+
+          plugin.getBoxCtrl().setWindowStatus('updating');
+          //Need to 'rebuild' result window options to take account new window option sets: 
+          //ajaxResponseOptions and contentOptions
+          plugin.getBoxCtrl().rebuildWindowData(winData);
+          plugin.getWindowCtrl().applyContent();
+        },
+        error: function() {
+          //TODO:  сообщение об ошибке показывать в виде notify-уведомления
+          var errMsg = winData.opts.tError.replace('%url%', winData.opts.content);
+          console.warn(errMsg);
+          plugin.getBoxCtrl().setWindowStatus('error');
+        }
+      };
+
+      //Allow chenging ajax request options
+      $.xpopup.emit($.xpopup.EVENT_WINDOW_AJAX_REQUEST_BEFORE,ajaxRequestOpts);
+
+      //Let's go..
+      winData._req = $.ajax(ajaxRequestOpts);
+    },
+
+    applyContent: function() {
+      var 
+        plugin = this,
+        st = this.getStorage(),
+        winData = st.getBoxWindow();
+
+      plugin.getBoxCtrl().setWindowStatus('updating');
+
+      plugin.getWindowCtrl().setContent(winData.opts.html,'ajax')  ; //TODO: remove the method
+      // plugin.getBoxCtrl().setWindowStatus('ready');
+      		//Окно полностью готово и показано
+		  // $.xpopup.emit($.xpopup.EVENT_WINDOW_READY);  
+
+      winData._req = null;
+    }
+  });
+
+
+  /**
+   * INLINE content source plugin 
+   */
+  $.xpopup.registerPlugin('content_type.inline', {
+    defaults: {
+      showCloseBtns: 'inside',
+      closeOnContentClick: false,
+      tNotFound: 'Content not found'
+    },
+
+    _putInlineElementsBack: function() {
+      var
+        st = this.getStorage(), 
+        winData = st.getBoxWindow(),     
+        el = st.getElements()
+      ;
+
+      if(winData.$_detachedElement) {
+        winData.$_detachedElementParent.append(winData.$_detachedElement.detach());
+        winData.$_detachedElement = null;
+        winData.$_detachedElementParent = null;
+        el.$content=null; //Необходимо, чтобы предотвратить detach() для данного элемента в вызывающем коде
+      }
+    },
+
+    // isActive: function(){
+    //   return this.getWindowData(true).type==this.pluginName;
+    // },
+
+    on: {
+      window_dispose_before: function(){
+        this._putInlineElementsBack();      
+      },
+
+    },
+
+    fetchContent: function() {
+      var 
+        plugin = this,
+        st = this.getStorage(),
+        winData = st.getBoxNewWindow();
+
+      plugin._putInlineElementsBack();
+
+      if(winData.opts.content) {
+        var 
+          $el = $(winData.opts.content);
+
+        if($el.length) {
+
+          winData.opts.html=$el;
+
+          plugin.getBoxCtrl().setWindowStatus('updating');
+          //Need to 'rebuild' result window options to take account new window option sets: 
+          //ajaxResponseOptions and contentOptions
+          plugin.getBoxCtrl().rebuildWindowData(winData); ///????
+          plugin.getWindowCtrl().applyContent();
+        } 
+        else {
+          winData.opts.html = '<div>'+winData.opts.tNotFound+'</div>';
+          this.getWindowCtrl().applyContent();
+          this.getBoxCtrl().setWindowStatus('error',winData.opts.tNotFound);
+        }
+      }
+    },
+
+    applyContent: function(){
+      var 
+        st = this.getStorage(),
+        winData = st.getBoxWindow();
+
+      if(winData.opts.html){
+        var $el=$(winData.opts.html);
+
+        // If target element has parent - we replace it with placeholder and put it back after popup is closed
+        var parent = $el[0].parentNode;
+        if(parent && parent.tagName) {
+          winData.$_detachedElement = $el.detach();
+          winData.$_detachedElementParent = $(parent);
+        }
+        this.getWindowCtrl().setContent($el,'inline');
+      }
+    }
+  });
+
+
+
+  /**
+   * IMAGE content source plugin 
+   */
+  $.xpopup.registerPlugin('content_type.image', {
+    defaults: {
+      skin: 'lite',
+      animation: true,
+      tError: '<a href="%url%">The image</a> could not be loaded.',
+      skinMod: 'no-border',
+      // headerCaption: 'Это тестовое изображение !!!',
+
+      markup: '<div class="b-xpopup__content-inner" >'
+            +'<div class="b-xpopup__size-holder b-xpopup-image " style="background-image:url({src});background-size:contain;background-repeat:no-repeat;background-position:center center;" ></div>'
+            // +'<a style="display:{displayZoomer};" class="b-xpopup__image-zoomer b-xpopup-action b-xpopup-action_type_zoom  b-xpopup-option_close_off" href="{href}" >Zoom</a>'
+            +'<div style="display:{displayTitle};" class="b-xpopup__image-title">{title}</div>'
+            +'<div style="display:{displayCounter};" class="b-xpopup__image-counter">{galleryItemIndex}/{galleryItemsCount}</div>'
+            +'</div>'
+            ,
+            sizeMode: 'screen',
+            height: '100%',
+            width: '100%',
+            // maxWidth: 800,
+            // initialMinWidth: '100%',
+            // initialHeight: '90vh',
+      // showCloseBtns: 'none',
+      // closeOnContentClick: true,
+      closeOnBgClick: true,
+      tNotFound: 'Image %url is not available'
+    },
+
+    // isActive: function(){
+    //   return this.getWindowData(true).type==this.pluginName;
+    // },
+
+    on: {
+      window_settings_alter:function(){
+        var 
+          winDataOpts=this.getWindowData(true);
+
+        if(!winDataOpts.content){
+          winDataOpts.content=$(winDataOpts.triggerEl).attr('href');          
+        }
+        // winDataOpts.headerCaption=null;
+        winDataOpts.headerSticked = false;
+        // if(!winDataOpts.headerCaption){
+        //   var headerCaption=$(winDataOpts.triggerEl).attr('title');
+        //   if(headerCaption){
+        //     winDataOpts.headerCaption=headerCaption;
+        //   }
+        // }
+
+      },
+    },  
+
+    fetchContent: function() {
+      var 
+        plugin =  this;
+        st = this.getStorage(),
+        winData = st.getBoxNewWindow(),
+        utils = $.xpopup.getUtils()
+        ;
+
+      plugin.getBoxCtrl().setWindowStatus('loading');
+
+      var guard=0;
+      var imgSrc = winData.opts.content;
+      var img = document.createElement('img');
+
+      winData.$img = $(img)
+
+      
+      var title = winData.opts.headerCaption; 
+      if(!title) {
+        title = $(winData.triggerEl).attr('title');
+      }
+      // title='Это тестовое название изображение!';
+      if(title) {
+        displayTitle = 'block';
+      }
+      else{
+        displayTitle = 'none';
+      }
+
+      ///event handlers
+      // image load complete handler
+      onLoadComplete = function() {
+        if (winData.$img && winData.$img[0].complete) {
+          winData.$img.off('.xpopup_loader');
+
+          //Определим, нужно ли показывать зумер для данной картинки.
+          //TODO: при ресайзе окна displayZoomer сейчас не пересчитывается
+          var displayZoomer = 'block';
+          if($.type(winData.opts.maxWidth)=='number'){
+            if(winData.opts.maxWidth >= parseInt(winData.$img[0].width)){
+              displayZoomer='none';
+            }
+          }
+
+          // var $template = $(winData.opts.markup.replace(/{src}/,imgSrc).replace(/{href}/,imgSrc));
+
+          var tmplData = {
+            src:imgSrc,
+            href:imgSrc,
+            displayZoomer:displayZoomer,
+            title: title,
+            displayTitle: displayTitle
+          };
+
+          var displayCounter = 'none';
+          if(typeof winData.galleryItemIndex != 'undefined') {
+            tmplData.galleryItemIndex = 1 + winData.galleryItemIndex;
+          }
+          if(typeof winData.galleryItemsCount != 'undefined') {
+            tmplData.galleryItemsCount = winData.galleryItemsCount;
+            displayCounter = 'inline';
+          }
+          tmplData.displayCounter = displayCounter;
+
+          var $template = $(utils.renderTemplate(winData.opts.markup, tmplData) );
+
+          $template.find('.b-xpopup-action').xpopup();
+          winData.opts.html = $template;
+
+          plugin.getBoxCtrl().setWindowStatus('updating');
+          //Just apply new content. Do not rebuild window options.
+          plugin.getWindowCtrl().applyContent();
+
+          //по умолчанию открываем "вписанную" в экран картинку
+          // $.xpopup.zoom();
+        }
+        else {
+          // if image complete check fails 200 times (20 sec), we assume that there was an error.
+          guard++;
+          if(guard < 200) {
+            setTimeout(onLoadComplete,100);
+          } 
+          else {
+            onLoadError();
+          }
+        }
+      },
+      // image error handler
+      onLoadError = function() {
+        var errMsg = winData.opts.tError.replace('%url%', winData.opts.content);
+        plugin.getBoxCtrl().setWindowStatus('error');
+        console.warn(errMsg);
+      },    
+
+      winData.$img.on('load.xpopup_loader', onLoadComplete).on('error.xpopup_loader', onLoadError);
+      img.src = imgSrc;
+    },
+
+   applyContent: function() {
+     var 
+       plugin = this,
+       st = this.getStorage(),
+       winData = st.getBoxWindow();
+
+     plugin.getWindowCtrl().setContent(winData.opts.html,'image'); 
+     plugin.getBoxCtrl().setWindowStatus('ready');
+     winData.$img.remove();
+     winData.$img = null;
+   } 
+
+});
+
+
+/**
+ * IFRAME content source plugin 
+ */
+$.xpopup.registerPlugin('content_type.iframe', {
+
+  defaults: {
+    skin: 'lite',
+    skinMod: 'no-border',
+    width: '100%',
+    maxWidth: '900px',
+    height: '100%',
+    maxHeight: '90%',
+    showCloseBtns: 'inside',
+
+    markup: '<div class="b-xpopup__content-inner"><iframe src="{src}" frameborder="0" allowfullscreen></iframe></div>'
+  },
+  _emptyPage: '//about:blank',
+
+  _fixIframeBugs: function(isShowing) {
+    var 
+      st = this.getStorage(),      
+      winData = st.getBoxWindow()
+      ;
+
+    var template=$(winData.opts.markup);
+    var el = template.find('iframe');
+    if(el.length) { 
+      // reset src after the popup is closed to avoid "video keeps playing after popup is closed" bug
+      if(!isShowing) {
+        el[0].src = this._emptyPage;
+      }
+
+    }
+  },
+
+
+  on: {
+    window_settings_alter:function(){
+      var winDataOpts = this.getWindowData(true);
+
+      if(!winDataOpts.content){
+        winDataOpts.content=$(winDataOpts.triggerEl).attr('href');
+      }
+    },
+    window_change_before:function(){
+      this._fixIframeBugs(true); // iframe is showing
+    },
+    box_close_after:function(){
+      this._fixIframeBugs(); // iframe if removed
+    }
+  },
+
+  // isActive: function(){
+  //   return this.getWindowData(true).type==this.pluginName;
+  // },
+
+  fetchContent: function() {
+    var 
+      plugin = this,
+      st = this.getStorage(),      
+      winData = st.getBoxNewWindow(),
+      utils = $.xpopup.getUtils()
+      ;
+
+    plugin.getBoxCtrl().setWindowStatus('loading'); 
+
+    var embedSrc = winData.opts.content;
+    
+    var $template = $(utils.renderTemplate(winData.opts.markup,{src:embedSrc}) );
+
+
+    winData.opts.html = $template;
+
+    plugin.getBoxCtrl().setWindowStatus('updating');
+    //Just apply new content. Do not rebuild result window options
+    plugin.getWindowCtrl().applyContent();
+  },
+
+  applyContent: function() {
+    var 
+      plugin = this,
+      st = this.getStorage(),
+      winData = st.getBoxWindow();
+
+    plugin.getWindowCtrl().setContent(winData.opts.html,'iframe'); 
+    plugin.getBoxCtrl().setWindowStatus('ready');
+  }
+
+});
+
+
+/**
+ * Fotorama integration plugin 
+ *
+ * Обеспечивает более тесную интеграцию xpopup с плагином fotorama.
+ * На данный момент решает следующие задачи:
+ * - при выходе по клавише  Esc из fullscreen-режима плагина fotorama предотвращает закрытие 
+ *   окна xpopup, в котором отображается галерея fotorama. Без этого плагина закрытие xpopup происходит 
+ *   потому, что xpopup также "следит" за нажатием Esc и закрывает окно в случае её нажатия. 
+ */
+$.xpopup.registerPlugin('custom.fotorama', {
+
+  fullScreenTimeout: 1000, //Время, через которое после события 'fotorama:fullscreenexit' флаг fullscreen в настройках xpopup будет установлен в false
+  fotoramaContainerSel: '.b-xalbum-page-viewer',
+
+  on: {
+    window_ready:function(){
+      var 
+        plugin = this,
+        st = this.getStorage(),
+        glob = st.getGlobal(),
+        el = st.getElements()
+        ;
+
+      //fotorama integration
+      el.$box.find(plugin.fotoramaContainerSel)
+      .on('fotorama:fullscreenenter',function(){
+        //Установим флаг, что мы fullscreen режиме. В этом случае Esc не закрывает xpopup.
+        glob.isFullScreen=true;
+      })
+      .on('fotorama:fullscreenexit',function(){
+        //Снимем флаг fullscreen режима, но не сразу, а через fullScreenTimeout. 
+        //Только после этого Esc снова сможет закрывать xpopup
+        setTimeout(function(){
+          glob.isFullScreen=false;
+
+        },plugin.fullScreenTimeout);
+      })
+    }
+  } //,
+
+  // isActive: function(){
+  //   return $.type($.fn.fotorama)=='function';
+  // },
+});
+
+})(jQuery);
+
+
+
+
+;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_types.js ///
+
+/// BEGIN sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_autorun.js ///
+;
+(function($) {
+
+  /**
+   * Реализация автооткрытия xpopup-окна. 
+   * В настоящий момент реализован обработчик для открытия окна при наличии спец. хэша в URL страницы.
+   * В будущем возможно добавление иных триггеров для автооткрытия xpopup-окна.
+   */
+   if(!window.xpopupAutoRunner){
+    $(document).ready(function(){
+      //Разрешаем запуск только один раз
+      window.xpopupAutoRunner=true;
+      xpopupProcessUrlHash();
+
+      //Добавим поддержку событий от history api. 
+      //Это позволит отслеживать любые изменения URL и, в том числе, корректно реагировать на кнопки браузера Back/Forward
+      window.addEventListener('popstate',function(e){
+        xpopupProcessUrlHash();
+      })
+    });
+  }
+
+  function xpopupProcessUrlHash(){
+
+    var isOpen = $.xpopup.isOpen();
+
+    if(!location.hash){
+      if(isOpen){
+        $.xpopup.close();
+      }
+      return;
+    }
+
+    var hash = location.hash.substr(1); //Удалим  #
+    var i = hash.indexOf('=');
+    if(i == -1){
+      if(isOpen){
+        $.xpopup.close();
+      }
+      return; 
+    }
+
+    var hashName = hash.substr(0,i);
+    var hashValue = hash.substr(i+1);
+
+    if(hashName!='xpopup'){
+      if(isOpen){
+        $.xpopup.close();
+      }
+      return;
+    }
+
+    //Кажется наш случай..
+    //Будем обрабатывать xpopup-хэш и показывать окно.
+    var options={};
+    $.each(hashValue.split(','),function(key,value){
+      var i = value.indexOf(':');
+      var propKey = value.substr(0,i);
+      var propVal = value.substr(i+1);
+      propVal = decodeURI(propVal);
+      if(propVal == 'true'){
+        propVal = true; 
+      }
+      else if(propVal == 'false'){
+        propVal = false; 
+      }
+      else if(isFinite(propVal)){
+        if(propVal.indexOf('.')!=-1){
+          propVal = Number.parseFloat(propVal);
+        }
+        else{
+          propVal = Number.parseInt(propVal);
+        }
+      }
+      // else if(propVal.charAt(0)=='"'){
+      //   propVal = propVal.replace(/["']/g,'');
+      // }
+      options[propKey] = propVal;
+    });
+
+    if(options.type){
+      $.xpopup.open(options);      
+    }
+}
+})(jQuery);;
+/// END sites/all/modules/xlogic/xoverlay/src/Plugins/client/xpopup/src/js/xpopup_autorun.js ///
+
+/// BEGIN sites/all/modules/xlogic/xtools/src/Plugins/client/xbacktotop/jquery.xbacktotop.js ///
+/*!
+ * jquery.xbacktotop
+ *
+ * Добавляет на страницу виджет "Наверх", представляющий собой стрелку вверх, расположенную в нижнем левом углу страницы.
+ * При клике по этой стрелке происходит прокрутка в начало страницы.
+ * Стрелка появляется только, если в этом есть необходимость.
+ *
+ * Пример использования:
+ *   $('body').filter(':not(.xbacktotop-processed)').addClass('xbacktotop-processed').xbacktotop();
+ *
+ * @version 1.0.0
+ *
+ * @author XLogic (http://www.xlogicsoft.ru)
+ *
+ * @license MIT
+ * 
+ **/
+
+;(function($) {
+  $.fn.xbacktotop = function(options){
+    if(window.xbacktotopProcessed) return;
+
+    var o = $.extend({},$.fn.xbacktotop.defaults, options);    
+    window.xbacktotopProcessed = true;
+
+    if(o.linkText){
+      $('body').append('<a href="#" class="'+o.buttonClass+'" style="display: none;"><span class="'+o.buttonClass+'__btn"></span><span class="'+o.buttonClass+'__link">'+o.linkText+'</span></a>');
+    } else{
+      $('body').append('<a href="#" class="'+o.buttonClass+'" style="display: none;"><span class="'+o.buttonClass+'__btn"></span></a>');
+    }
+
+    $(window).bind('scroll', function(){
+      var heightLowering = $(window).height();
+
+      if ($(this).scrollTop() > heightLowering) {
+        $('.'+o.buttonClass).fadeIn().addClass('_show');
+      } else {
+        $('.'+o.buttonClass).fadeOut().removeClass('_show');
+      }
+    });
+
+    $('.'+o.buttonClass).click(function () {
+      $('body, html').animate({scrollTop: 0}, 100);
+      return false;
+    });    
+  }
+    
+  $.fn.xbacktotop.defaults = {
+    buttonClass: 'b-xbacktotop',
+    linkText: null
+    // linkText: 'Наверх'
+  }; 
+
+})(jQuery);
+
+
+
+;
+/// END sites/all/modules/xlogic/xtools/src/Plugins/client/xbacktotop/jquery.xbacktotop.js ///
+
+/// BEGIN sites/all/modules/xlogic/xtools/src/Plugins/client/xtip/xtip.js ///
+// tipsy, facebook style tooltips for jquery
+// version 1.0.0a
+// (c) 2008-2010 jason frame [jason@onehackoranother.com]
+// released under the MIT license
+
+(function($) {
+    
+    function maybeCall(thing, ctx) {
+        return (typeof thing == 'function') ? (thing.call(ctx)) : thing;
+    };
+    
+    function isElementInDOM(ele) {
+      while (ele = ele.parentNode) {
+        if (ele == document) return true;
+      }
+      return false;
+    };
+    
+    function Tipsy(element, options) {
+        this.$element = $(element);
+        this.options = options;
+        this.enabled = true;
+        this.fixTitle();
+    };
+    
+    Tipsy.prototype = {
+        show: function() {
+            var title = this.getTitle();
+            if (title && this.enabled) {
+                var $tip = this.tip();
+                
+                $tip.find('.tipsy-inner')[this.options.html ? 'html' : 'text'](title);
+                $tip[0].className = 'tipsy'; // reset classname in case of dynamic gravity
+                $tip.remove().css({top: 0, left: 0, visibility: 'hidden', display: 'block'}).prependTo(document.body);
+                
+                var pos = $.extend({}, this.$element.offset(), {
+                    width: this.$element[0].offsetWidth,
+                    height: this.$element[0].offsetHeight
+                });
+                
+                var actualWidth = $tip[0].offsetWidth,
+                    actualHeight = $tip[0].offsetHeight,
+                    gravity = maybeCall(this.options.gravity, this.$element[0]);
+                
+                var tp;
+                switch (gravity.charAt(0)) {
+                    case 'n':
+                        tp = {top: pos.top + pos.height + this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        break;
+                    case 's':
+                        tp = {top: pos.top - actualHeight - this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        break;
+                    case 'e':
+                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth - this.options.offset};
+                        break;
+                    case 'w':
+                        tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width + this.options.offset};
+                        break;
+                }
+                
+                if (gravity.length == 2) {
+                    if (gravity.charAt(1) == 'w') {
+                        tp.left = pos.left + pos.width / 2 - 15;
+                    } else {
+                        tp.left = pos.left + pos.width / 2 - actualWidth + 15;
+                    }
+                }
+                
+                $tip.css(tp).addClass('tipsy-' + gravity);
+                $tip.find('.tipsy-arrow')[0].className = 'tipsy-arrow tipsy-arrow-' + gravity.charAt(0);
+                if (this.options.className) {
+                    $tip.addClass(maybeCall(this.options.className, this.$element[0]));
+                }
+                
+                if (this.options.fade) {
+                    $tip.stop().css({opacity: 0, display: 'block', visibility: 'visible'}).animate({opacity: this.options.opacity});
+                } else {
+                    $tip.css({visibility: 'visible', opacity: this.options.opacity});
+                }
+            }
+        },
+        
+        hide: function() {
+            if (this.options.fade) {
+                this.tip().stop().fadeOut(function() { $(this).remove(); });
+            } else {
+                this.tip().remove();
+            }
+        },
+        
+        fixTitle: function() {
+            var $e = this.$element;
+            if ($e.attr('title') || typeof($e.attr('original-title')) != 'string') {
+                $e.attr('original-title', $e.attr('title') || '').removeAttr('title');
+            }
+        },
+        
+        getTitle: function() {
+            var title, $e = this.$element, o = this.options;
+            this.fixTitle();
+            var title, o = this.options;
+            if (typeof o.title == 'string') {
+                title = $e.attr(o.title == 'title' ? 'original-title' : o.title);
+            } else if (typeof o.title == 'function') {
+                title = o.title.call($e[0]);
+            }
+            title = ('' + title).replace(/(^\s*|\s*$)/, "");
+            return title || o.fallback;
+        },
+        
+        tip: function() {
+            if (!this.$tip) {
+                this.$tip = $('<div class="tipsy"></div>').html('<div class="tipsy-arrow"></div><div class="tipsy-inner"></div>');
+                this.$tip.data('tipsy-pointee', this.$element[0]);
+            }
+            return this.$tip;
+        },
+        
+        validate: function() {
+            if (!this.$element[0].parentNode) {
+                this.hide();
+                this.$element = null;
+                this.options = null;
+            }
+        },
+        
+        enable: function() { this.enabled = true; },
+        disable: function() { this.enabled = false; },
+        toggleEnabled: function() { this.enabled = !this.enabled; }
+    };
+    
+    $.fn.tipsy = function(options) {
+        
+        if (options === true) {
+            return this.data('tipsy');
+        } else if (typeof options == 'string') {
+            var tipsy = this.data('tipsy');
+            if (tipsy) tipsy[options]();
+            return this;
+        }
+        
+        options = $.extend({}, $.fn.tipsy.defaults, options);
+        
+        function get(ele) {
+            var tipsy = $.data(ele, 'tipsy');
+            if (!tipsy) {
+                tipsy = new Tipsy(ele, $.fn.tipsy.elementOptions(ele, options));
+                $.data(ele, 'tipsy', tipsy);
+            }
+            return tipsy;
+        }
+        
+        function enter() {
+            var tipsy = get(this);
+            tipsy.hoverState = 'in';
+            if (options.delayIn == 0) {
+                tipsy.show();
+            } else {
+                tipsy.fixTitle();
+                setTimeout(function() { if (tipsy.hoverState == 'in') tipsy.show(); }, options.delayIn);
+            }
+        };
+        
+        function leave() {
+            var tipsy = get(this);
+            tipsy.hoverState = 'out';
+            if (options.delayOut == 0) {
+                tipsy.hide();
+            } else {
+                setTimeout(function() { if (tipsy.hoverState == 'out') tipsy.hide(); }, options.delayOut);
+            }
+        };
+        
+        if (!options.live) this.each(function() { get(this); });
+        
+        if (options.trigger != 'manual') {
+            var binder   = options.live ? 'live' : 'bind',
+                eventIn  = options.trigger == 'hover' ? 'mouseenter' : 'focus',
+                eventOut = options.trigger == 'hover' ? 'mouseleave' : 'blur';
+            this[binder](eventIn, enter)[binder](eventOut, leave);
+        }
+        
+        return this;
+        
+    };
+    
+    $.fn.tipsy.defaults = {
+        className: null,
+        delayIn: 0,
+        delayOut: 0,
+        fade: false,
+        fallback: '',
+        gravity: 'n',
+        html: false,
+        live: false,
+        offset: 0,
+        opacity: 0.8,
+        title: 'title',
+        trigger: 'hover'
+    };
+    
+    $.fn.tipsy.revalidate = function() {
+      $('.tipsy').each(function() {
+        var pointee = $.data(this, 'tipsy-pointee');
+        if (!pointee || !isElementInDOM(pointee)) {
+          $(this).remove();
+        }
+      });
+    };
+    
+    // Overwrite this method to provide options on a per-element basis.
+    // For example, you could store the gravity in a 'tipsy-gravity' attribute:
+    // return $.extend({}, options, {gravity: $(ele).attr('tipsy-gravity') || 'n' });
+    // (remember - do not modify 'options' in place!)
+    $.fn.tipsy.elementOptions = function(ele, options) {
+        return $.metadata ? $.extend({}, options, $(ele).metadata()) : options;
+    };
+    
+    $.fn.tipsy.autoNS = function() {
+        return $(this).offset().top > ($(document).scrollTop() + $(window).height() / 2) ? 's' : 'n';
+    };
+    
+    $.fn.tipsy.autoWE = function() {
+        return $(this).offset().left > ($(document).scrollLeft() + $(window).width() / 2) ? 'e' : 'w';
+    };
+    
+    /**
+     * yields a closure of the supplied parameters, producing a function that takes
+     * no arguments and is suitable for use as an autogravity function like so:
+     *
+     * @param margin (int) - distance from the viewable region edge that an
+     *        element should be before setting its tooltip's gravity to be away
+     *        from that edge.
+     * @param prefer (string, e.g. 'n', 'sw', 'w') - the direction to prefer
+     *        if there are no viewable region edges effecting the tooltip's
+     *        gravity. It will try to vary from this minimally, for example,
+     *        if 'sw' is preferred and an element is near the right viewable 
+     *        region edge, but not the top edge, it will set the gravity for
+     *        that element's tooltip to be 'se', preserving the southern
+     *        component.
+     */
+     $.fn.tipsy.autoBounds = function(margin, prefer) {
+		return function() {
+			var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
+			    boundTop = $(document).scrollTop() + margin,
+			    boundLeft = $(document).scrollLeft() + margin,
+			    $this = $(this);
+
+			if ($this.offset().top < boundTop) dir.ns = 'n';
+			if ($this.offset().left < boundLeft) dir.ew = 'w';
+			if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
+			if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
+
+			return dir.ns + (dir.ew ? dir.ew : '');
+		}
+	};
+    
+})(jQuery);
+;
+/// END sites/all/modules/xlogic/xtools/src/Plugins/client/xtip/xtip.js ///
+

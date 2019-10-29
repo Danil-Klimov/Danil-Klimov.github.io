@@ -1,0 +1,11 @@
+/// Used items (1): 
+/// raw_06a780cb11 
+
+
+/// BEGIN raw_06a780cb11 ///
+$(document).ready(function(){
+    var time = new Date().getTime();
+    XSyst.settings.diffClientServerTimeSec = Math.round((1572338224000 - time) / 1000);
+  });
+/// END raw_06a780cb11 ///
+

@@ -1,0 +1,63 @@
+/// Used items (12): 
+/// xmedia_2ee2b18955 
+/// xtabs_4b35bac018 
+/// icheck_2fefe0083b 
+/// xconfirm_d75b88241a 
+/// xsound_2f0e05e751 
+/// xextlinks_69a6b166f5 
+/// xad_banner_stat_d14405ec06 
+/// xalbumviewer_9348e3f75c 
+/// xmosaic_d2f271ad66 
+/// xbox_fddfb489d3 
+/// xtagshash_aafac3c338 
+/// xmodclasses_ef7d33e8a7 
+
+
+/// BEGIN xmedia_2ee2b18955 ///
+XSyst.onReady('xmedia_2ee2b18955',function(context){ $('audio:not(._manual)',context).once('xmedia').mediaelementplayer({ "audioWidth": "auto", "defaultAudioWidth": "auto", "defaultAudioHeight": 24, "isVideo": false, "enableKeyboard": false, "httpsBasicAuthSite": true, "startLanguage": "ru", "success": function(media, node, player){ xalbumBoxlightPlayerEnded(media, node, player); }, "_selector": "audio:not(._manual)", "_plugin_id": "xmedia_2ee2b18955" }); } );
+/// END xmedia_2ee2b18955 ///
+
+/// BEGIN xtabs_4b35bac018 ///
+XSyst.onReady('xtabs_4b35bac018',function(context){ $('#order-offer-104',context).once('xtabs').xtabs({ "history": 0, "_selector": "#order-offer-104", "_plugin_id": "xtabs_4b35bac018" }); } );
+/// END xtabs_4b35bac018 ///
+
+/// BEGIN icheck_2fefe0083b ///
+XSyst.onReady('icheck_2fefe0083b',function(context){ $('input[type=checkbox]:not(._skip_icheck), input[type=radio]:not(._skip_icheck)',context).once('icheck').xicheck({ "checkboxClass": "icheckbox icheckbox_minimal-grey", "radioClass": "iradio iradio_minimal-grey", "_selector": "input[type=checkbox]:not(._skip_icheck), input[type=radio]:not(._skip_icheck)", "_plugin_id": "icheck_2fefe0083b" }); } );
+/// END icheck_2fefe0083b ///
+
+/// BEGIN xconfirm_d75b88241a ///
+XSyst.onReady('xconfirm_d75b88241a',function(context){ $('.xconfirm',context).once('xconfirm').xconfirm({ "_selector": ".xconfirm", "_plugin_id": "xconfirm_d75b88241a" }); } );
+/// END xconfirm_d75b88241a ///
+
+/// BEGIN xsound_2f0e05e751 ///
+XSyst.onReady('xsound_2f0e05e751',function(context){ $('body',context).once('xsound').xsound({ "sounds": [ { "name": "alert" }, { "name": "notify" } ], "path": "/sites/all/modules/xlogic/xtools/src/Plugins/client/xsound/sounds/", "preload": false, "_selector": "body", "_plugin_id": "xsound_2f0e05e751" }); } );
+/// END xsound_2f0e05e751 ///
+
+/// BEGIN xextlinks_69a6b166f5 ///
+XSyst.onReady('xextlinks_69a6b166f5',function(context){ $('a[href^="http[s]?:"],.b-xlink',context).once('xextlinks').xextlinks({ "_selector": "a[href^=\"http[s]?:\"],.b-xlink", "_plugin_id": "xextlinks_69a6b166f5" }); } );
+/// END xextlinks_69a6b166f5 ///
+
+/// BEGIN xad_banner_stat_d14405ec06 ///
+XSyst.onReady('xad_banner_stat_d14405ec06',function(context){ $('.xad-banner-link',context).once('xad_banner_stat').xad_banner_stat({ "_selector": ".xad-banner-link", "_plugin_id": "xad_banner_stat_d14405ec06" }); } );
+/// END xad_banner_stat_d14405ec06 ///
+
+/// BEGIN xalbumviewer_9348e3f75c ///
+XSyst.onReady('xalbumviewer_9348e3f75c',function(context){ $('.b-xalbum-page-viewer',context).once('xalbumviewer').xalbumviewer({ "xalbum": true, "fit": "cover", "_selector": ".b-xalbum-page-viewer", "_plugin_id": "xalbumviewer_9348e3f75c" }); } );
+/// END xalbumviewer_9348e3f75c ///
+
+/// BEGIN xmosaic_d2f271ad66 ///
+XSyst.onReady('xmosaic_d2f271ad66',function(context){ $('.b-grid',context).once('xmosaic').justifiedGallery({ "captions": false, "margins": 3, "lastRow": "nojustify", "rowHeight": 120, "border": 0, "cssAnimation": true, "maxRowHeight": 280, "caption": true, "_selector": ".b-grid", "_plugin_id": "xmosaic_d2f271ad66" }); } );
+/// END xmosaic_d2f271ad66 ///
+
+/// BEGIN xbox_fddfb489d3 ///
+XSyst.onReady('xbox_fddfb489d3',function(context){ $('a[rel^=xbox]',context).once('xbox').xbox({ "_selector": "a[rel^=xbox]", "_plugin_id": "xbox_fddfb489d3" }); } );
+/// END xbox_fddfb489d3 ///
+
+/// BEGIN xtagshash_aafac3c338 ///
+XSyst.onReady('xtagshash_aafac3c338',function(context){ $('.b-hash-link',context).once('xtagshash').xtagshash({ "_selector": ".b-hash-link", "_plugin_id": "xtagshash_aafac3c338" }); } );
+/// END xtagshash_aafac3c338 ///
+
+/// BEGIN xmodclasses_ef7d33e8a7 ///
+XSyst.onReady('xmodclasses_ef7d33e8a7',function(context){ $('.bue-ui.editor-container + .form-textarea',context).once('xmodclasses').xmodclasses({ "add": "form-control", "_selector": ".bue-ui.editor-container + .form-textarea", "_plugin_id": "xmodclasses_ef7d33e8a7" }); } );
+/// END xmodclasses_ef7d33e8a7 ///
+

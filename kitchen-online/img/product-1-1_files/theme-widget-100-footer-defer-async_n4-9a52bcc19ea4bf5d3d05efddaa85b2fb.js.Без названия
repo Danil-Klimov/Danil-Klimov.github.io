@@ -1,0 +1,119 @@
+/// Used files (4): 
+/// sites/all/themes/main/src/Plugins/widget/master/master-order/master-order-summary/master-order-summary.js 
+/// sites/all/themes/main/src/Plugins/widget/block/block-header/block-header-user-actions/block-header-user-actions.js 
+/// sites/all/themes/main/src/Plugins/widget/block/block-header/block-header.js 
+/// sites/all/themes/main/src/Plugins/widget/block/block-footer/block-footer.js 
+
+
+/// BEGIN sites/all/themes/main/src/Plugins/widget/master/master-order/master-order-summary/master-order-summary.js ///
+XSyst.onReady('masterOrderSummary', function(context){
+  $(context).find('.b-image-slides').once().slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    infinite: true,   
+    dots: true
+  });
+
+  window.clickPhoneButton = function(event, el){
+    var $el = $(el);
+    var phone = $el.data('value');
+    if(!$el.hasClass('_ready')){
+      $el.attr('href','tel:'+phone).html(phone).addClass('_ready');
+      //here I want to prevent default
+      event.preventDefault();      
+      return false;
+    }
+  };
+
+});;
+/// END sites/all/themes/main/src/Plugins/widget/master/master-order/master-order-summary/master-order-summary.js ///
+
+/// BEGIN sites/all/themes/main/src/Plugins/widget/block/block-header/block-header-user-actions/block-header-user-actions.js ///
+// $(document).ready(function(){
+//   $('.dropdown-toggle').dropdown();
+// });
+
+$(function(){
+  // ADD SLIDEDOWN ANIMATION TO DROPDOWN //
+  $('.dropdown').on('show.bs.dropdown', function(e){
+      $(this).find('.dropdown-menu').first().stop(true, true).slideDown(100,'linear');
+  });
+
+  // ADD SLIDEUP ANIMATION TO DROPDOWN //
+  $('.dropdown').on('hide.bs.dropdown', function(e){
+      e.preventDefault();
+      $(this).find('.dropdown-menu').first().stop(true, true).slideUp(100, function(){
+          //On Complete, we reset all active dropdown classes and attributes
+          //This fixes the visual bug associated with the open class being removed too fast
+          $('.dropdown').removeClass('open');
+          // $('.dropdown-menu').removeClass('show');
+          $('.dropdown').find('.dropdown-toggle').attr('aria-expanded','false');
+      });
+  });
+});
+;
+/// END sites/all/themes/main/src/Plugins/widget/block/block-header/block-header-user-actions/block-header-user-actions.js ///
+
+/// BEGIN sites/all/themes/main/src/Plugins/widget/block/block-header/block-header.js ///
+$(function(){
+
+var onScroll = function () {
+  if(lastScrollTop > 5){
+    if(!$body.hasClass('b-scrolled'))
+      $body.addClass('b-scrolled');
+  }  
+  else{
+    if($body.hasClass('b-scrolled'))
+      $body.removeClass('b-scrolled');
+  }
+};
+
+var raf = window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    window.oRequestAnimationFrame;
+var $window = $(window);
+var $body = $('body');
+var lastScrollTop = $window.scrollTop();
+
+if (raf) {
+  onScroll();
+  loop();
+}
+
+function loop() {
+  var scrollTop = $window.scrollTop();
+  if (lastScrollTop === scrollTop) {
+    raf(loop);
+    return;
+  } 
+  else {
+    lastScrollTop = scrollTop;
+
+    // fire scroll function if scrolls vertically
+    onScroll();
+    raf(loop);
+  }
+}
+});;
+/// END sites/all/themes/main/src/Plugins/widget/block/block-header/block-header.js ///
+
+/// BEGIN sites/all/themes/main/src/Plugins/widget/block/block-footer/block-footer.js ///
+$(function(){
+  
+  var $menus = $('.b-block-footer__menus');
+
+  $menus.find('.b-block-footer__menu-title').click(function(){
+    var $expanded = $(this).find('+ .b-block-footer__menu-items').filter(':not(.hidden-xs)');
+    var needExpand = ($expanded.size() == 0) || ($(this).data('menuId') != $expanded.attr('id'));
+    $menus.find('.b-block-footer__menu-items').addClass('hidden-xs');    
+    if(needExpand){
+      $(this).find('+ .b-block-footer__menu-items').removeClass('hidden-xs');
+    }
+  });
+
+});;
+/// END sites/all/themes/main/src/Plugins/widget/block/block-footer/block-footer.js ///
+

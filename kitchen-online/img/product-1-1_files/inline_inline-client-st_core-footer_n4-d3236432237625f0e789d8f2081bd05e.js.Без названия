@@ -1,0 +1,23 @@
+/// Used items (4): 
+/// ctools_ajax_extra_40cd750bba 
+/// xpopup_3820e4f92c 
+/// xbacktotop_fa860a7c37 
+/// xtip_da71bebc65 
+
+
+/// BEGIN ctools_ajax_extra_40cd750bba ///
+XSyst.onReady('ctools_ajax_extra_40cd750bba',function(context){ $.ctools_ajax_extra(context,{ "_plugin_id": "ctools_ajax_extra_40cd750bba" }); } );
+/// END ctools_ajax_extra_40cd750bba ///
+
+/// BEGIN xpopup_3820e4f92c ///
+XSyst.onReady('xpopup_3820e4f92c',function(context){ $('.b-xpopup-action',context).once('xpopup').xpopup({ "_selector": ".b-xpopup-action", "_plugin_id": "xpopup_3820e4f92c" }); } );
+/// END xpopup_3820e4f92c ///
+
+/// BEGIN xbacktotop_fa860a7c37 ///
+XSyst.onReady('xbacktotop_fa860a7c37',function(context){ $('body',context).once('xbacktotop').xbacktotop({ "_selector": "body", "_plugin_id": "xbacktotop_fa860a7c37" }); } );
+/// END xbacktotop_fa860a7c37 ///
+
+/// BEGIN xtip_da71bebc65 ///
+XSyst.onReady('xtip_da71bebc65',function(context){ $('.xtip,.b-xtip',context).once('xtip').tipsy({ "html": true, "gravity": $.fn.tipsy.autoNS, "delayIn": 250, "offset": 3, "_selector": ".xtip,.b-xtip", "_plugin_id": "xtip_da71bebc65" }); } );
+/// END xtip_da71bebc65 ///
+
