@@ -833,11 +833,11 @@ li {
   bottom: 0;
   left: 0;
   right: 0;
-  opacity: 0;
   -webkit-transition: opacity 0.55s, visibility 0.55s;
   -o-transition: opacity 0.55s, visibility 0.55s;
   -moz-transition: opacity 0.55s, visibility 0.55s;
   transition: opacity 0.55s, visibility 0.55s;
+  opacity: 0;
   visibility: hidden;
   z-index: 10;
 }
@@ -1588,6 +1588,7 @@ li {
 }
 
 .products__img a {
+  display: block;
   position: relative;
 }
 
@@ -1729,6 +1730,10 @@ li {
   color: #f56444;
 }
 
+.products__hidden {
+  display: none;
+}
+
 .loupe-icon {
   background-image: url(../img/sprites.png);
   background-position: -130px -66px;
@@ -1851,10 +1856,18 @@ li {
   width: calc(100% - 30px);
 }
 
+.producers__slide {
+  margin: 0 15px;
+}
+
 .producers__slide img {
   margin: 0 auto;
   -webkit-filter: grayscale(100%) opacity(60%);
           filter: grayscale(100%) opacity(60%);
+  -webkit-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  -moz-transition: all, 0.3s;
+  transition: all, 0.3s;
 }
 
 .producers__slide img:hover {
