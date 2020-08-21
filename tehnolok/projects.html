@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Site description">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <meta name="theme-color" content="#fff">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <title>Наши проекты - ТехноЛОК</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row"><a class="header__logo" href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 324.33 53.37">
+              <path fill="none" stroke="#fff" stroke-width="1.5px" d="M4.89,52.87V18L52.89.53l47.44,17.89V52.87L90.44,23.64l-37.55-13L15.44,22.87Zm4.29-12.2L5.27,37.06l6.33-4.25L5.35,26.72l10.09-3.85L4.89,18m95.44.56-10.09,5,9.51,4-5.66,6,5.83,4.31-3.41,3.56M52.89,10.63l-9.1-6.26-3.57,9.69-8.9-5.24-4.1,9.7-8.59-5.11-3.19,9.46m75,.34-3.75-9.63L78,19,74,8.77,65,14.33,61.65,4.27l-8.76,6.36m0-10.1V10.71"></path>
+              <path fill="#fff" d="M234.11,47.7a9.19,9.19,0,0,1-2.4-.24V40.2a11.07,11.07,0,0,0,1.92.18,3.8,3.8,0,0,0,3.06-1,6.15,6.15,0,0,0,1-3.54L239,5.64h23.58v42h-8.4V13h-7.26L246,36.48q-.24,5.94-3,8.58C241.15,46.83,238.19,47.7,234.11,47.7Zm32.16-11.57v-19q0-5.76,3.3-8.94T279,5q6.12,0,9.42,3.18t3.3,8.94v19c0,3.83-1.1,6.82-3.3,8.93s-5.34,3.18-9.42,3.18-7.22-1.05-9.42-3.18S266.27,40,266.27,36.13Zm17,.29V16.86q0-4.5-4.32-4.5t-4.32,4.5V36.42q0,4.5,4.32,4.5T283.31,36.42ZM323,47.64h-9l-6.78-18.3-3.42,5.34v13h-8.4v-42h8.4v17.1l10.5-17.1h8.52L313,21.24Zm-197.16,0h-8.4V13h-8.76V5.64h25.92V13h-8.76Zm29.39,0H137V14h18.29V19.9H143.69v7.78h9.22v5.85h-9.22v8.26h11.57Zm8.26,0H157l7.77-17.23L157.37,14h7.25l4.32,10.56L173.41,14h6.48l-7.44,16.37,7.77,17.23H173l-4.7-11.47Zm26.35,0h-6.72V14h6.72V27.68h7.2V14h6.72v33.6h-6.72V33.53h-7.2Zm18-9.21V23.26a9.46,9.46,0,0,1,2.64-7.15q2.64-2.55,7.53-2.55t7.54,2.55a9.46,9.46,0,0,1,2.64,7.15V38.43a9.47,9.47,0,0,1-2.64,7.15q-2.64,2.55-7.54,2.55t-7.53-2.55A9.47,9.47,0,0,1,207.92,38.43Zm13.63.24V23q0-3.6-3.46-3.6T214.64,23V38.67q0,3.6,3.45,3.6T221.55,38.67Z"></path>
+              <line stroke="#fff" y1="52.87" x2="324.33" y2="52.87"></line>
+            </svg></a>
+          <nav class="header__menu">
+            <ul>
+              <li><a href="about.html">О КОМПАНИИ</a></li>
+              <li><a href="services.html">УСЛУГИ</a></li>
+              <li><a href="projects.html">НАШИ ПРОЕКТЫ</a></li>
+              <li><a href="information.html">ИНФОРМАЦИЯ</a></li>
+              <li><a href="price.html">ЦЕНЫ</a></li>
+              <li><a href="#">ОТЗЫВЫ</a></li>
+              <li><a href="#">КОНТАКТЫ</a></li>
+            </ul>
+          </nav>
+          <div class="header__call">
+            <button class="button button_fill button_w-icon" type="button" data-src="#modal-call" data-fancybox><img src="img/call-icon.png" alt=""><span>ЗАКАЗАТЬ ЗВОНОК</span></button>
+          </div>
+          <div class="header__button">
+            <button class="burger__button" type="button"><span></span><span></span><span></span><span></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="burger__menu">
+        <nav class="container burger__nav">
+          <ul class="burger__list">
+            <li><a href="single-project.html">“СПОРТ ТАЙМ”</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+            <li><a href="#">О КОМПАНИИ</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+            <li><a href="#">О КОМПАНИИ</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+          </ul>
+          <button class="burger__button" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 320 512">
+              <path fill="currentColor" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+      <button class="order__request header__order" type="button" data-src="#modal-request" data-fancybox><img src="img/calculation-icon.png"><span>ЗАКАЗАТЬ <br> РАСЧЕТ</span></button>
+    </header>
+    <main class="main main_page">
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="row">
+            <div class="breadcrumbs__container"><span><span><a href="index.html">Главная</a> &nbsp;/&nbsp;&nbsp;<span class="breadcrumb_last">Наши работы</span></span></span></div>
+          </div>
+        </div>
+      </section>
+      <section class="page-header">
+        <div class="container">
+          <div class="row">
+            <div class="page-header__content">
+              <h1 class="page-header__title">НАШИ ПРОЕКТЫ</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <form class="filter" id="filter"><span>Назначение</span>
+        <select class="input select" name="filter">
+          <option value="1">Для спорта (футбольное поле)</option>
+          <option value="2">Для бизнеса</option>
+          <option value="3">Промышленные</option>
+        </select>
+      </form>
+      <section class="our-projects our-projects_clean our-projects__w-filter">
+        <div class="our-projects__wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="our-projects__body big-square">
+                <div class="our-projects__inner">
+                  <div class="our-projects__img">
+                    <div class="our-projects__img-slider-w-nav swiper-container">
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide"><a href="img/our-projects-img.jpg" data-fancybox><img src="img/our-projects-img.jpg" alt=""></a>
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Название фотографии, на которой подробности</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №2</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №3</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="our-projects__controls">
+                        <button class="arrow arrow_sm arrow_light arrow_prev" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+                          </svg>
+                        </button>
+                        <button class="arrow arrow_sm arrow_light arrow_next" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="our-projects__img-nav swiper-container">
+                      <div class="swiper-wrapper"><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="our-projects__content">
+                    <div class="our-projects__title">Спортивный комплекс Спорт Тайм — ледовые катки и теннисные корты</div>
+                    <div class="our-projects__text">
+                      <p><span style="font-weight: 700; color: #054c7a">Назначение:</span> Укрытия ледовых полей и теннисных кортов</p>
+                      <p>Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для размещения раздевалок, кафе, спортивного зала и др. помещений.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Размеры</span> 40 х 144 х 5,1м/14,4м(по стене/ в коньке), пристройка 15 х 68 х 5м (по стене)</p>
+                      <p>Ворота подъемные для въезда ледоуборочных машин  4 шт</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Место расположения:</span> г. Москва.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Год постройки:</span> 2018</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Срок монтажа:</span> 60 рабочих дней</p>
+                    </div>
+                    <div class="our-projects__content-footer"><a class="button button_fill" href="#">СМОТРЕТЬ ПРОЕКТ</a></div>
+                  </div>
+                </div>
+                <div class="vertical-text">ПРОЕКТЫ</div>
+              </div>
+            </div>
+          </div>
+          <div class="our-projects__bg-element our-projects__bg-element_left" style="background-image: url(img/our-projects-left-bg.jpg)"></div>
+          <div class="our-projects__bg-element our-projects__bg-element_right" style="background-image: url(img/our-projects-right-bg.jpg)"></div>
+        </div>
+      </section>
+      <section class="our-projects our-projects_clean">
+        <div class="our-projects__wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="our-projects__body big-square">
+                <div class="our-projects__inner">
+                  <div class="our-projects__img">
+                    <div class="our-projects__img-slider-w-nav swiper-container">
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide"><a href="img/our-projects-img.jpg" data-fancybox><img src="img/our-projects-img.jpg" alt=""></a>
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Название фотографии, на которой подробности</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №2</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №3</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="our-projects__controls">
+                        <button class="arrow arrow_sm arrow_light arrow_prev" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+                          </svg>
+                        </button>
+                        <button class="arrow arrow_sm arrow_light arrow_next" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="our-projects__img-nav swiper-container">
+                      <div class="swiper-wrapper"><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="our-projects__content">
+                    <div class="our-projects__title">Спортивный комплекс Спорт Тайм — ледовые катки и теннисные корты</div>
+                    <div class="our-projects__text">
+                      <p><span style="font-weight: 700; color: #054c7a">Назначение:</span> Укрытия ледовых полей и теннисных кортов</p>
+                      <p>Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для размещения раздевалок, кафе, спортивного зала и др. помещений.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Размеры</span> 40 х 144 х 5,1м/14,4м(по стене/ в коньке), пристройка 15 х 68 х 5м (по стене)</p>
+                      <p>Ворота подъемные для въезда ледоуборочных машин  4 шт</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Место расположения:</span> г. Москва.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Год постройки:</span> 2018</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Срок монтажа:</span> 60 рабочих дней</p>
+                    </div>
+                    <div class="our-projects__content-footer"><a class="button button_fill" href="#">СМОТРЕТЬ ПРОЕКТ</a></div>
+                  </div>
+                </div>
+                <div class="vertical-text">ПРОЕКТЫ</div>
+              </div>
+            </div>
+          </div>
+          <div class="our-projects__bg-element our-projects__bg-element_left" style="background-image: linear-gradient(270deg, rgba(23,99,174, 0.2) 0%, rgba(23,99,174, 0.2) 100%), url(img/our-projects-left-bg.jpg)"></div>
+          <div class="our-projects__bg-element our-projects__bg-element_right" style="background-image: linear-gradient(270deg, rgba(0,151,209, 0.2) 0%, rgba(0,151,209, 0.2) 100%), url(img/our-projects-right-bg.jpg)"></div>
+        </div>
+      </section>
+      <section class="our-projects our-projects_clean">
+        <div class="our-projects__wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="our-projects__body big-square">
+                <div class="our-projects__inner">
+                  <div class="our-projects__img">
+                    <div class="our-projects__img-slider-w-nav swiper-container">
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide"><a href="img/our-projects-img.jpg" data-fancybox><img src="img/our-projects-img.jpg" alt=""></a>
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Название фотографии, на которой подробности</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №2</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №3</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="our-projects__controls">
+                        <button class="arrow arrow_sm arrow_light arrow_prev" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+                          </svg>
+                        </button>
+                        <button class="arrow arrow_sm arrow_light arrow_next" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="our-projects__img-nav swiper-container">
+                      <div class="swiper-wrapper"><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="our-projects__content">
+                    <div class="our-projects__title">Спортивный комплекс Спорт Тайм — ледовые катки и теннисные корты</div>
+                    <div class="our-projects__text">
+                      <p><span style="font-weight: 700; color: #054c7a">Назначение:</span> Укрытия ледовых полей и теннисных кортов</p>
+                      <p>Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для размещения раздевалок, кафе, спортивного зала и др. помещений.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Размеры</span> 40 х 144 х 5,1м/14,4м(по стене/ в коньке), пристройка 15 х 68 х 5м (по стене)</p>
+                      <p>Ворота подъемные для въезда ледоуборочных машин  4 шт</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Место расположения:</span> г. Москва.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Год постройки:</span> 2018</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Срок монтажа:</span> 60 рабочих дней</p>
+                    </div>
+                    <div class="our-projects__content-footer"><a class="button button_fill" href="#">СМОТРЕТЬ ПРОЕКТ</a></div>
+                  </div>
+                </div>
+                <div class="vertical-text">ПРОЕКТЫ</div>
+              </div>
+            </div>
+          </div>
+          <div class="our-projects__bg-element our-projects__bg-element_left" style="background-image: url(img/our-projects-left-bg.jpg)"></div>
+          <div class="our-projects__bg-element our-projects__bg-element_right" style="background-image: url(img/our-projects-right-bg.jpg)"></div>
+        </div>
+      </section>
+      <section class="our-projects our-projects_clean">
+        <div class="our-projects__wrapper">
+          <div class="container">
+            <div class="row">
+              <div class="our-projects__body big-square">
+                <div class="our-projects__inner">
+                  <div class="our-projects__img">
+                    <div class="our-projects__img-slider-w-nav swiper-container">
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide"><a href="img/our-projects-img.jpg" data-fancybox><img src="img/our-projects-img.jpg" alt=""></a>
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Название фотографии, на которой подробности</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №2</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №3</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                        <div class="swiper-slide"><img src="img/our-projects-img.jpg" alt="">
+                          <div class="our-projects__img-footer">
+                            <div class="our-projects__img-caption">Фотография №4</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="our-projects__controls">
+                        <button class="arrow arrow_sm arrow_light arrow_prev" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+                          </svg>
+                        </button>
+                        <button class="arrow arrow_sm arrow_light arrow_next" type="button">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                            <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="our-projects__img-nav swiper-container">
+                      <div class="swiper-wrapper"><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""><img class="swiper-slide" src="img/our-projects-img-nav.jpg" alt=""></div>
+                    </div>
+                  </div>
+                  <div class="our-projects__content">
+                    <div class="our-projects__title">Спортивный комплекс Спорт Тайм — ледовые катки и теннисные корты</div>
+                    <div class="our-projects__text">
+                      <p><span style="font-weight: 700; color: #054c7a">Назначение:</span> Укрытия ледовых полей и теннисных кортов</p>
+                      <p>Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для размещения раздевалок, кафе, спортивного зала и др. помещений.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Размеры</span> 40 х 144 х 5,1м/14,4м(по стене/ в коньке), пристройка 15 х 68 х 5м (по стене)</p>
+                      <p>Ворота подъемные для въезда ледоуборочных машин  4 шт</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Место расположения:</span> г. Москва.</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Год постройки:</span> 2018</p>
+                      <p><span style="font-weight: 700; color: #054c7a">Срок монтажа:</span> 60 рабочих дней</p>
+                    </div>
+                    <div class="our-projects__content-footer"><a class="button button_fill" href="#">СМОТРЕТЬ ПРОЕКТ</a></div>
+                  </div>
+                </div>
+                <div class="vertical-text">ПРОЕКТЫ</div>
+              </div>
+            </div>
+          </div>
+          <div class="our-projects__bg-element our-projects__bg-element_left" style="background-image: linear-gradient(270deg, rgba(23,99,174, 0.2) 0%, rgba(23,99,174, 0.2) 100%), url(img/our-projects-left-bg.jpg)"></div>
+          <div class="our-projects__bg-element our-projects__bg-element_right" style="background-image: linear-gradient(270deg, rgba(0,151,209, 0.2) 0%, rgba(0,151,209, 0.2) 100%), url(img/our-projects-right-bg.jpg)"></div>
+        </div>
+      </section>
+      <section class="request">
+        <div class="container">
+          <div class="row">
+            <div class="request__container">
+              <div class="request__header">
+                <div class="vertical-text">КОНТАКТЫ</div>
+                <h2 class="title request__title">ОСТАЛИСЬ ВОПРОСЫ</h2>
+                <div class="request__subtitle">Заполните небольшую форму и мы ответим вам</div>
+              </div>
+              <form class="request__form">
+                <div class="request__group">
+                  <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+                  <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+                </div>
+                <div class="request__group">
+                  <div class="textarea">
+                    <textarea class="input" placeholder="Сообщение"></textarea>
+                  </div>
+                </div>
+                <label class="checkbox">
+                  <input type="checkbox" required>
+                  <div></div>
+                  <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+                </label>
+                <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="row footer__container">
+          <div class="footer__copyright">Копирайт © 2020 ТехноЛОК. <br> Все права защищены.</div>
+          <div class="footer__contacts"><a class="footer__tel" href="#">+7 123 456 78 90</a><a class="footer__mail" href="#">info@tehno-lok.ru</a></div>
+          <div class="footer__button">
+            <button class="button button_fill button_w-icon"><img src="img/call-icon.png" alt=""><span>ЗАКАЗАТЬ ЗВОНОК</span></button>
+          </div><a class="footer__logo" href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 324.33 53.37">
+              <path fill="none" stroke="#fff" stroke-width="1.5px" d="M4.89,52.87V18L52.89.53l47.44,17.89V52.87L90.44,23.64l-37.55-13L15.44,22.87Zm4.29-12.2L5.27,37.06l6.33-4.25L5.35,26.72l10.09-3.85L4.89,18m95.44.56-10.09,5,9.51,4-5.66,6,5.83,4.31-3.41,3.56M52.89,10.63l-9.1-6.26-3.57,9.69-8.9-5.24-4.1,9.7-8.59-5.11-3.19,9.46m75,.34-3.75-9.63L78,19,74,8.77,65,14.33,61.65,4.27l-8.76,6.36m0-10.1V10.71"></path>
+              <path fill="#fff" d="M234.11,47.7a9.19,9.19,0,0,1-2.4-.24V40.2a11.07,11.07,0,0,0,1.92.18,3.8,3.8,0,0,0,3.06-1,6.15,6.15,0,0,0,1-3.54L239,5.64h23.58v42h-8.4V13h-7.26L246,36.48q-.24,5.94-3,8.58C241.15,46.83,238.19,47.7,234.11,47.7Zm32.16-11.57v-19q0-5.76,3.3-8.94T279,5q6.12,0,9.42,3.18t3.3,8.94v19c0,3.83-1.1,6.82-3.3,8.93s-5.34,3.18-9.42,3.18-7.22-1.05-9.42-3.18S266.27,40,266.27,36.13Zm17,.29V16.86q0-4.5-4.32-4.5t-4.32,4.5V36.42q0,4.5,4.32,4.5T283.31,36.42ZM323,47.64h-9l-6.78-18.3-3.42,5.34v13h-8.4v-42h8.4v17.1l10.5-17.1h8.52L313,21.24Zm-197.16,0h-8.4V13h-8.76V5.64h25.92V13h-8.76Zm29.39,0H137V14h18.29V19.9H143.69v7.78h9.22v5.85h-9.22v8.26h11.57Zm8.26,0H157l7.77-17.23L157.37,14h7.25l4.32,10.56L173.41,14h6.48l-7.44,16.37,7.77,17.23H173l-4.7-11.47Zm26.35,0h-6.72V14h6.72V27.68h7.2V14h6.72v33.6h-6.72V33.53h-7.2Zm18-9.21V23.26a9.46,9.46,0,0,1,2.64-7.15q2.64-2.55,7.53-2.55t7.54,2.55a9.46,9.46,0,0,1,2.64,7.15V38.43a9.47,9.47,0,0,1-2.64,7.15q-2.64,2.55-7.54,2.55t-7.53-2.55A9.47,9.47,0,0,1,207.92,38.43Zm13.63.24V23q0-3.6-3.46-3.6T214.64,23V38.67q0,3.6,3.45,3.6T221.55,38.67Z"></path>
+              <line stroke="#fff" y1="52.87" x2="324.33" y2="52.87"></line>
+            </svg></a>
+        </div>
+      </div>
+    </footer>
+    <div class="modal modal_call big-square" id="modal-call">
+      <div class="modal__title modal__call-title">ОБРАТНЫЙ ЗВОНОК</div>
+      <div class="modal__subtitle">Заполните небольшую форму и мы перезвоним вам</div>
+      <form class="modal__form modal-call__form" data-name="Заказ звонка">
+        <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+        <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+        <label class="checkbox modal__policy">
+          <input type="checkbox" required>
+          <div></div>
+          <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+        </label>
+        <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+      </form>
+    </div>
+    <div class="modal modal_request big-square" id="modal-request">
+      <div class="modal__title">ОСТАВИТЬ ЗАЯВКУ</div>
+      <div class="modal__subtitle">Заполните небольшую форму и мы ответим вам</div>
+      <form class="modal__form modal-call__form" data-name="Заказ звонка">
+        <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+        <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+        <div class="textarea">
+          <textarea class="input" placeholder="Сообщение" name="client_message" rows="6"></textarea>
+        </div>
+        <label class="checkbox modal__policy">
+          <input type="checkbox" required>
+          <div></div>
+          <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+        </label>
+        <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+      </form>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/libs.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

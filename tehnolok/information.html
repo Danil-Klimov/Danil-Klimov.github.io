@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Site description">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <meta name="theme-color" content="#fff">
+    <link href="css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <title>Информация - ТехноЛОК</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="row"><a class="header__logo" href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 324.33 53.37">
+              <path fill="none" stroke="#fff" stroke-width="1.5px" d="M4.89,52.87V18L52.89.53l47.44,17.89V52.87L90.44,23.64l-37.55-13L15.44,22.87Zm4.29-12.2L5.27,37.06l6.33-4.25L5.35,26.72l10.09-3.85L4.89,18m95.44.56-10.09,5,9.51,4-5.66,6,5.83,4.31-3.41,3.56M52.89,10.63l-9.1-6.26-3.57,9.69-8.9-5.24-4.1,9.7-8.59-5.11-3.19,9.46m75,.34-3.75-9.63L78,19,74,8.77,65,14.33,61.65,4.27l-8.76,6.36m0-10.1V10.71"></path>
+              <path fill="#fff" d="M234.11,47.7a9.19,9.19,0,0,1-2.4-.24V40.2a11.07,11.07,0,0,0,1.92.18,3.8,3.8,0,0,0,3.06-1,6.15,6.15,0,0,0,1-3.54L239,5.64h23.58v42h-8.4V13h-7.26L246,36.48q-.24,5.94-3,8.58C241.15,46.83,238.19,47.7,234.11,47.7Zm32.16-11.57v-19q0-5.76,3.3-8.94T279,5q6.12,0,9.42,3.18t3.3,8.94v19c0,3.83-1.1,6.82-3.3,8.93s-5.34,3.18-9.42,3.18-7.22-1.05-9.42-3.18S266.27,40,266.27,36.13Zm17,.29V16.86q0-4.5-4.32-4.5t-4.32,4.5V36.42q0,4.5,4.32,4.5T283.31,36.42ZM323,47.64h-9l-6.78-18.3-3.42,5.34v13h-8.4v-42h8.4v17.1l10.5-17.1h8.52L313,21.24Zm-197.16,0h-8.4V13h-8.76V5.64h25.92V13h-8.76Zm29.39,0H137V14h18.29V19.9H143.69v7.78h9.22v5.85h-9.22v8.26h11.57Zm8.26,0H157l7.77-17.23L157.37,14h7.25l4.32,10.56L173.41,14h6.48l-7.44,16.37,7.77,17.23H173l-4.7-11.47Zm26.35,0h-6.72V14h6.72V27.68h7.2V14h6.72v33.6h-6.72V33.53h-7.2Zm18-9.21V23.26a9.46,9.46,0,0,1,2.64-7.15q2.64-2.55,7.53-2.55t7.54,2.55a9.46,9.46,0,0,1,2.64,7.15V38.43a9.47,9.47,0,0,1-2.64,7.15q-2.64,2.55-7.54,2.55t-7.53-2.55A9.47,9.47,0,0,1,207.92,38.43Zm13.63.24V23q0-3.6-3.46-3.6T214.64,23V38.67q0,3.6,3.45,3.6T221.55,38.67Z"></path>
+              <line stroke="#fff" y1="52.87" x2="324.33" y2="52.87"></line>
+            </svg></a>
+          <nav class="header__menu">
+            <ul>
+              <li><a href="about.html">О КОМПАНИИ</a></li>
+              <li><a href="services.html">УСЛУГИ</a></li>
+              <li><a href="projects.html">НАШИ ПРОЕКТЫ</a></li>
+              <li><a href="information.html">ИНФОРМАЦИЯ</a></li>
+              <li><a href="price.html">ЦЕНЫ</a></li>
+              <li><a href="#">ОТЗЫВЫ</a></li>
+              <li><a href="#">КОНТАКТЫ</a></li>
+            </ul>
+          </nav>
+          <div class="header__call">
+            <button class="button button_fill button_w-icon" type="button" data-src="#modal-call" data-fancybox><img src="img/call-icon.png" alt=""><span>ЗАКАЗАТЬ ЗВОНОК</span></button>
+          </div>
+          <div class="header__button">
+            <button class="burger__button" type="button"><span></span><span></span><span></span><span></span></button>
+          </div>
+        </div>
+      </div>
+      <div class="burger__menu">
+        <nav class="container burger__nav">
+          <ul class="burger__list">
+            <li><a href="single-project.html">“СПОРТ ТАЙМ”</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+            <li><a href="#">О КОМПАНИИ</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+            <li><a href="#">О КОМПАНИИ</a></li>
+            <li><a href="#">УСЛУГИ</a></li>
+            <li><a href="#">НАШИ ПРОЕКТЫ</a></li>
+            <li><a href="#">ЦЕНЫ</a></li>
+            <li><a href="#">ОТЗЫВЫ</a></li>
+            <li><a href="#">КОНТАКТЫ</a></li>
+          </ul>
+          <button class="burger__button" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 320 512">
+              <path fill="currentColor" d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"></path>
+            </svg>
+          </button>
+        </nav>
+      </div>
+      <button class="order__request header__order" type="button" data-src="#modal-request" data-fancybox><img src="img/calculation-icon.png"><span>ЗАКАЗАТЬ <br> РАСЧЕТ</span></button>
+    </header>
+    <main class="main main_page">
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="row">
+            <div class="breadcrumbs__container"><span><span><a href="index.html">Главная</a> &nbsp;/&nbsp;&nbsp;<span class="breadcrumb_last">Наши работы</span></span></span></div>
+          </div>
+        </div>
+      </section>
+      <section class="page-header">
+        <div class="container">
+          <div class="row">
+            <div class="page-header__content">
+              <h1 class="page-header__title">ИНФОРМАЦИЯ</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="information">
+        <div class="container">
+          <div class="row information__body">
+            <ul class="information__menu">
+              <li class="current-menu-item"><img src="img/menu-img-1.png" alt=""><a href="#">НОВОСТИ СТРОИТЕЛЬСТВА</a></li>
+              <li><img src="img/menu-img-2.png" alt=""><a href="#">ПОЛЕЗНЫЕ СТАТЬИ</a></li>
+              <li><img src="img/menu-img-3.png" alt=""><a href="#">ВАШИ ВОПРОСЫ</a></li>
+              <li><img src="img/menu-img-4.png" alt=""><a href="#">ИНТЕРВЬЮ</a></li>
+            </ul>
+            <div class="information__text">
+              <p>Наша компания постоянно находится в процессе роста и совершенствования услуг, в этом разделе вы узнаете о последних построенных нами проектоах, найдете видео с площадки текущих объектов.</p>
+            </div>
+            <div class="information__img"><img src="img/information-img.jpg" alt=""></div>
+          </div>
+        </div>
+      </section>
+      <section class="news">
+        <div class="container">
+          <div class="row">
+            <div class="news__header">
+              <h2 class="title news__title">НОВОСТИ СТРОИТЕЛЬСТВА</h2>
+            </div>
+          </div>
+          <div class="news__container">
+            <div class="news__slider swiper-container">
+              <div class="swiper-wrapper"><a class="news__item swiper-slide" href="#">
+                  <div class="news__item-body"><img src="img/types-img-1.jpg">
+                    <div class="news__text">
+                      <div class="news__item-title">Закончен объект Название</div>
+                      <div class="news__excerpt">Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для двух хоккейных полей размещения...</div>
+                    </div>
+                    <div class="news__date">
+                      <div class="news__date-number">19</div>
+                      <div class="news__date-other">июня 2020</div>
+                    </div>
+                  </div>
+                  <div class="news__item-footer">
+                    <div class="news__link"><span>выбрать</span>
+                      <button class="arrow arrow_sm arrow_dark" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                          <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </div></a><a class="news__item swiper-slide" href="#">
+                  <div class="news__item-body"><img src="img/types-img-2.jpg">
+                    <div class="news__text">
+                      <div class="news__item-title">Закончен объект Название</div>
+                      <div class="news__excerpt">Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для двух хоккейных полей размещения...</div>
+                    </div>
+                  </div>
+                  <div class="news__item-footer">
+                    <div class="news__link"><span>выбрать</span>
+                      <button class="arrow arrow_sm arrow_dark" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                          <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </div></a><a class="news__item swiper-slide" href="#">
+                  <div class="news__item-body"><img src="img/types-img-3.jpg">
+                    <div class="news__text">
+                      <div class="news__item-title">Закончен объект Название</div>
+                      <div class="news__excerpt">Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для двух хоккейных полей размещения...</div>
+                    </div>
+                  </div>
+                  <div class="news__item-footer">
+                    <div class="news__link"><span>выбрать</span>
+                      <button class="arrow arrow_sm arrow_dark" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                          <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </div></a><a class="news__item swiper-slide" href="#">
+                  <div class="news__item-body"><img src="img/types-img-1.jpg">
+                    <div class="news__text">
+                      <div class="news__item-title">Закончен объект Название</div>
+                      <div class="news__excerpt">Утепленное каркасно-мембранное укрытие двух хоккейных полей и четырех теннисных кортов с пристройкой для двух хоккейных полей размещения...</div>
+                    </div>
+                  </div>
+                  <div class="news__item-footer">
+                    <div class="news__link"><span>выбрать</span>
+                      <button class="arrow arrow_sm arrow_dark" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                          <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                        </svg>
+                      </button>
+                    </div>
+                  </div></a></div>
+            </div>
+            <button class="arrow arrow_sm arrow_dark arrow_prev news__prev" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+              </svg>
+            </button>
+            <button class="arrow arrow_sm arrow_dark arrow_next news__next" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="posts">
+        <div class="container">
+          <div class="row">
+            <div class="posts__header">
+              <div class="vertical-text">СТАТЬИ</div>
+              <h2 class="title posts__title">ВАМ МОЖЕТ БЫТЬ ИНТЕРЕСНО</h2>
+              <div class="posts__subtitle">Полезная информация</div>
+            </div>
+            <div class="posts__container">
+              <div class="posts__slider swiper-container">
+                <div class="swiper-wrapper"><a class="posts__slide swiper-slide" href="#"><img src="img/posts-img-1.jpg">
+                    <div class="posts__text">
+                      <div class="posts__item-title">Заголовок статьи может быть длинным</div>
+                      <div class="posts__excerpt">Это небольшой анонс статьи, создан для примера текста...</div>
+                    </div></a><a class="posts__slide swiper-slide" href="#"><img src="img/posts-img-2.jpg">
+                    <div class="posts__text">
+                      <div class="posts__item-title">Заголовок статьи может быть длинным</div>
+                      <div class="posts__excerpt">Это небольшой анонс статьи, создан для примера текста...</div>
+                    </div></a><a class="posts__slide swiper-slide" href="#"><img src="img/posts-img-3.jpg">
+                    <div class="posts__text">
+                      <div class="posts__item-title">Заголовок статьи может быть длинным</div>
+                      <div class="posts__excerpt">Это небольшой анонс статьи, создан для примера текста...</div>
+                    </div></a><a class="posts__slide swiper-slide" href="#"><img src="img/posts-img-3.jpg">
+                    <div class="posts__text">
+                      <div class="posts__item-title">Заголовок статьи может быть длинным</div>
+                      <div class="posts__excerpt">Это небольшой анонс статьи, создан для примера текста...</div>
+                    </div></a></div>
+              </div>
+              <button class="arrow arrow_sm arrow_light arrow_prev posts__prev" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                  <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+                </svg>
+              </button>
+              <button class="arrow arrow_sm arrow_light arrow_next posts__next" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                  <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="faq">
+        <div class="container">
+          <div class="row">
+            <div class="faq__header">
+              <h2 class="title">ПОПУЛЯРНЫЕ ВОПРОСЫ И ОТВЕТЫ</h2>
+              <div class="subtitle">Наших клиентов об услугах</div>
+            </div>
+            <div class="faq__container big-square">
+              <div class="faq__questions">
+                <div class="faq__tab">
+                  <div class="faq__question">Сколько по времени займет возведение ледовой арены?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Иванов Иван<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Уникальные технологические разработки наших специалистов на основе опытно конструкторских работ, проведенных совместно с Министерством Обороны России</p>
+                    <p style="font-style: italic;">Производство утепленных тентовых покрытий, позволяющих получить реальную экономию порядка 1 млн. руб за отопительный период</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Вы работаете с НДС?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Виталий Витальев<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur assumenda deserunt, dolorem dolores ea eius error expedita id, inventore ipsam minima nesciunt nostrum nulla odio optio praesentium! Accusantium amet, beatae deleniti dignissimos ducimus ea expedita, ipsa magnam nihil nisi officiis placeat possimus quia quibusdam tempore veritatis voluptatum! Dolorem fugiat harum in inventore quaerat quis repellat sint soluta suscipit, vitae? Accusamus at deserunt dolores, eum explicabo inventore odio quos sequi vel voluptatibus! Accusantium aliquam, animi corporis debitis dolorem doloribus ea esse facilis nobis numquam odio qui quidem, sed, sint soluta vel voluptates! Aspernatur error laborum maiores nobis repellat rerum, vero.</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Какой нужно закладывать бюджет и от чего он зависит?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Павел Федоров<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquam distinctio eligendi exercitationem laborum neque sed, totam ullam. Aliquid beatae cupiditate deleniti doloribus eligendi est eum facere harum hic ipsum nesciunt nobis nostrum optio praesentium, qui sapiente soluta unde. At deleniti dignissimos eaque eum iure nostrum quam quia temporibus voluptate!</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Сколько по времени займет возведение ледовой арены?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Сергей Сергеев<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Уникальные технологические разработки наших специалистов на основе опытно конструкторских работ, проведенных совместно с Министерством Обороны России</p>
+                    <p style="font-style: italic;">Производство утепленных тентовых покрытий, позволяющих получить реальную экономию порядка 1 млн. руб за отопительный период</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Вы работаете с НДС?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Ирина Иринина<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Уникальные технологические разработки наших специалистов на основе опытно конструкторских работ, проведенных совместно с Министерством Обороны России</p>
+                    <p style="font-style: italic;">Производство утепленных тентовых покрытий, позволяющих получить реальную экономию порядка 1 млн. руб за отопительный период</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Какой нужно закладывать бюджет и от чего он зависит?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Лев Львович<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Уникальные технологические разработки наших специалистов на основе опытно конструкторских работ, проведенных совместно с Министерством Обороны России</p>
+                    <p style="font-style: italic;">Производство утепленных тентовых покрытий, позволяющих получить реальную экономию порядка 1 млн. руб за отопительный период</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                  </div>
+                </div>
+                <div class="faq__tab">
+                  <div class="faq__question">Сколько по времени займет возведение ледовой арены?</div>
+                  <div class="faq__answer">
+                    <p style="color: #80dffe; font-weight: 700">Отвечает Павел Павлов<br><span style="font-size: 15px">инженер</span></p>
+                    <p style="font-style: italic;">Уникальные технологические разработки наших специалистов на основе опытно конструкторских работ, проведенных совместно с Министерством Обороны России</p>
+                    <p style="font-style: italic;">Производство утепленных тентовых покрытий, позволяющих получить реальную экономию порядка 1 млн. руб за отопительный период</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                    <p style="font-style: italic;">Широкий спектр дополнительных услуг: монтаж, расчет и устройство оснований и инженерных систем</p>
+                  </div>
+                </div>
+              </div>
+              <svg class="faq__mask" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%">
+                <defs>
+                  <mask id="hole1">
+                    <rect width="100%" height="100%" fill="#fff"></rect>
+                    <rect class="faq__mask-rect"></rect>
+                  </mask>
+                </defs>
+                <rect width="100%" height="100%" fill="#fff" mask="url(#hole1)"></rect>
+              </svg>
+            </div>
+            <div class="faq__footer">
+              <button class="button button_fill" type="button">ЗАДАЙТЕ ВАШ ВОПРОС</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="interview">
+        <div class="container">
+          <div class="row">
+            <div class="interview__header">
+              <h2 class="title interview__title">ИНТЕРВЬЮ СО СТРОИТЕЛЬСТВА</h2>
+            </div>
+          </div>
+          <div class="row interview__container">
+            <div class="interview__slider swiper-container">
+              <div class="swiper-wrapper">
+                <div class="interview__slide swiper-slide">
+                  <div class="interview__video video-border">
+                    <!--.video
+                    a.video__link(href='https://youtu.be/Uoq8NA_N7Ao')
+                    	picture
+                    		img.video__media(src='img/video-thumb.jpg' alt='')
+                    button.video__button(type="button")
+                    	svg(width="68" height="48" viewbox="0 0 68 48")
+                    		path.video__button-shape(d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z")
+                    		path.video__button-icon(d="M 45,24 27,14 27,34")
+                    -->
+                    <video src="video_2.mp4" controls></video>
+                  </div>
+                  <div class="interview__text">
+                    <p style="color: #054c7a; font-size: 16px; font-weight: 700;">Иванов Иван о строительстве ледового комплекса</p>
+                    <p></p>
+                    <p>прекрасная альтернатива традиционным зданиям. Эти конструкции могут быть любых размеров и форм, поэтому и имеют такую широкую область применения: в качестве складов, хранилищ, укрытий, помещений для хранения и обслуживания различной техники и оборудования, животноводческих комплексов (СТФ и МТФ), выставочных павильонов, в последнее время особенно популярны стали в сфере спортивного строительства</p><a class="button button_fill" href="#">ПОСМОТРЕТЬ ПРОЕКТ</a>
+                  </div>
+                </div>
+                <div class="interview__slide swiper-slide">
+                  <div class="interview__video video-border">
+                    <div class="video"><a class="video__link" href="https://youtu.be/Uoq8NA_N7Ao">
+                        <picture><img class="video__media" src="img/video-thumb.jpg" alt=""></picture></a>
+                      <button class="video__button" type="button">
+                        <svg width="68" height="48" viewbox="0 0 68 48">
+                          <path class="video__button-shape" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z"></path>
+                          <path class="video__button-icon" d="M 45,24 27,14 27,34"></path>
+                        </svg>
+                      </button>
+                    </div>
+                    <!--video(src='video_2.mp4' controls)-->
+                  </div>
+                  <div class="interview__text">
+                    <p style="color: #054c7a; font-size: 16px; font-weight: 700;">Интервью №2</p>
+                    <p></p>
+                    <p>прекрасная альтернатива традиционным зданиям. Эти конструкции могут быть любых размеров и форм, поэтому и имеют такую широкую область применения: в качестве складов, хранилищ, укрытий, помещений для хранения и обслуживания различной техники и оборудования, животноводческих комплексов (СТФ и МТФ), выставочных павильонов, в последнее время особенно популярны стали в сфере спортивного строительства</p><a class="button button_fill" href="#">ПОСМОТРЕТЬ ПРОЕКТ</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="arrow arrow_sm arrow_dark arrow_prev interview__prev" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                <polygon points="0 5.5 9 0 9 11 0 5.5"></polygon>
+              </svg>
+            </button>
+            <button class="arrow arrow_sm arrow_dark arrow_next interview__next" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 11" fill="currentColor">
+                <polygon points="9 5.5 0 0 0 11 9 5.5"></polygon>
+              </svg>
+            </button>
+          </div>
+          <div class="row">
+            <div class="interview__footer"><a class="button button_empty" href="#">СМОТРЕТЬ ВСЕ 120 ПРОЕКТОВ</a></div>
+          </div>
+        </div>
+      </section>
+      <section class="request">
+        <div class="container">
+          <div class="row">
+            <div class="request__container">
+              <div class="request__header">
+                <div class="vertical-text">КОНТАКТЫ</div>
+                <h2 class="title request__title">ОСТАЛИСЬ ВОПРОСЫ</h2>
+                <div class="request__subtitle">Заполните небольшую форму и мы ответим вам</div>
+              </div>
+              <form class="request__form">
+                <div class="request__group">
+                  <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+                  <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+                </div>
+                <div class="request__group">
+                  <div class="textarea">
+                    <textarea class="input" placeholder="Сообщение"></textarea>
+                  </div>
+                </div>
+                <label class="checkbox">
+                  <input type="checkbox" required>
+                  <div></div>
+                  <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+                </label>
+                <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="row footer__container">
+          <div class="footer__copyright">Копирайт © 2020 ТехноЛОК. <br> Все права защищены.</div>
+          <div class="footer__contacts"><a class="footer__tel" href="#">+7 123 456 78 90</a><a class="footer__mail" href="#">info@tehno-lok.ru</a></div>
+          <div class="footer__button">
+            <button class="button button_fill button_w-icon"><img src="img/call-icon.png" alt=""><span>ЗАКАЗАТЬ ЗВОНОК</span></button>
+          </div><a class="footer__logo" href="index.html">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 324.33 53.37">
+              <path fill="none" stroke="#fff" stroke-width="1.5px" d="M4.89,52.87V18L52.89.53l47.44,17.89V52.87L90.44,23.64l-37.55-13L15.44,22.87Zm4.29-12.2L5.27,37.06l6.33-4.25L5.35,26.72l10.09-3.85L4.89,18m95.44.56-10.09,5,9.51,4-5.66,6,5.83,4.31-3.41,3.56M52.89,10.63l-9.1-6.26-3.57,9.69-8.9-5.24-4.1,9.7-8.59-5.11-3.19,9.46m75,.34-3.75-9.63L78,19,74,8.77,65,14.33,61.65,4.27l-8.76,6.36m0-10.1V10.71"></path>
+              <path fill="#fff" d="M234.11,47.7a9.19,9.19,0,0,1-2.4-.24V40.2a11.07,11.07,0,0,0,1.92.18,3.8,3.8,0,0,0,3.06-1,6.15,6.15,0,0,0,1-3.54L239,5.64h23.58v42h-8.4V13h-7.26L246,36.48q-.24,5.94-3,8.58C241.15,46.83,238.19,47.7,234.11,47.7Zm32.16-11.57v-19q0-5.76,3.3-8.94T279,5q6.12,0,9.42,3.18t3.3,8.94v19c0,3.83-1.1,6.82-3.3,8.93s-5.34,3.18-9.42,3.18-7.22-1.05-9.42-3.18S266.27,40,266.27,36.13Zm17,.29V16.86q0-4.5-4.32-4.5t-4.32,4.5V36.42q0,4.5,4.32,4.5T283.31,36.42ZM323,47.64h-9l-6.78-18.3-3.42,5.34v13h-8.4v-42h8.4v17.1l10.5-17.1h8.52L313,21.24Zm-197.16,0h-8.4V13h-8.76V5.64h25.92V13h-8.76Zm29.39,0H137V14h18.29V19.9H143.69v7.78h9.22v5.85h-9.22v8.26h11.57Zm8.26,0H157l7.77-17.23L157.37,14h7.25l4.32,10.56L173.41,14h6.48l-7.44,16.37,7.77,17.23H173l-4.7-11.47Zm26.35,0h-6.72V14h6.72V27.68h7.2V14h6.72v33.6h-6.72V33.53h-7.2Zm18-9.21V23.26a9.46,9.46,0,0,1,2.64-7.15q2.64-2.55,7.53-2.55t7.54,2.55a9.46,9.46,0,0,1,2.64,7.15V38.43a9.47,9.47,0,0,1-2.64,7.15q-2.64,2.55-7.54,2.55t-7.53-2.55A9.47,9.47,0,0,1,207.92,38.43Zm13.63.24V23q0-3.6-3.46-3.6T214.64,23V38.67q0,3.6,3.45,3.6T221.55,38.67Z"></path>
+              <line stroke="#fff" y1="52.87" x2="324.33" y2="52.87"></line>
+            </svg></a>
+        </div>
+      </div>
+    </footer>
+    <div class="modal modal_call big-square" id="modal-call">
+      <div class="modal__title modal__call-title">ОБРАТНЫЙ ЗВОНОК</div>
+      <div class="modal__subtitle">Заполните небольшую форму и мы перезвоним вам</div>
+      <form class="modal__form modal-call__form" data-name="Заказ звонка">
+        <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+        <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+        <label class="checkbox modal__policy">
+          <input type="checkbox" required>
+          <div></div>
+          <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+        </label>
+        <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+      </form>
+    </div>
+    <div class="modal modal_request big-square" id="modal-request">
+      <div class="modal__title">ОСТАВИТЬ ЗАЯВКУ</div>
+      <div class="modal__subtitle">Заполните небольшую форму и мы ответим вам</div>
+      <form class="modal__form modal-call__form" data-name="Заказ звонка">
+        <input class="input" type="text" name="client_name" placeholder="Ваше имя" required>
+        <input class="input" type="tel" name="client_tel" placeholder="Ваш телефон" pattern="[+]7\([0-9]{3}\)[0-9]{3}-[0-9]{2}-[0-9]{2}" required>
+        <div class="textarea">
+          <textarea class="input" placeholder="Сообщение" name="client_message" rows="6"></textarea>
+        </div>
+        <label class="checkbox modal__policy">
+          <input type="checkbox" required>
+          <div></div>
+          <p>Вы соглашаетесь с <a href="#" target="_blank">политикой персональных данных</a>, нажимая кнопку</p>
+        </label>
+        <button class="button button_fill" type="submit">ОТПРАВИТЬ</button>
+      </form>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/libs.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
